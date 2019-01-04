@@ -1,11 +1,15 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * and open the templatex| in the editor.
  */
 package tesis;
 
 import java.awt.Dimension;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -15,8 +19,19 @@ import javax.swing.JLabel;
  */
 public class UI extends javax.swing.JFrame {
     
-    private Render render;
-    private JLabel mapa;
+    private final static double FACTOR_AUTOSCROLL = 0.95;
+    private final static double ACELERACION_AUTOSCROLL = 0.01;
+    
+    private int ultimoX;
+    private int ultimoY;
+    private int deltaX;
+    private int deltaY;
+    
+    private final Render render;
+    private final JLabel mapa;
+    
+    private final ScheduledExecutorService autoScroll;
+    private static ScheduledFuture<?> t;
 
     /**
      * Creates new form UI
@@ -24,11 +39,23 @@ public class UI extends javax.swing.JFrame {
     public UI() {
         initComponents();
         this.setResizable(false);
+        
+        ultimoX = -1;
+        ultimoY = -1;
+        
         render = new Render();
         mapa = new JLabel(new ImageIcon(render.getRender()), JLabel.CENTER);
         mapa.setSize(new Dimension(render.getMetadata().getDimX(),
         render.getMetadata().getDimY()));
         contenedorMapa.add(mapa);
+        
+        autoScroll = Executors.newSingleThreadScheduledExecutor();
+        btnZoomIn.setFocusPainted(false);
+        btnZoomOut.setFocusPainted(false);
+    }
+    
+    private void actualizarMapa() {
+        mapa.setIcon(new ImageIcon(render.getRender()));
     }
 
     /**
@@ -41,6 +68,8 @@ public class UI extends javax.swing.JFrame {
     private void initComponents() {
 
         contenedorMapa = new javax.swing.JPanel();
+        btnZoomIn = new javax.swing.JButton();
+        btnZoomOut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,16 +81,45 @@ public class UI extends javax.swing.JFrame {
                 contenedorMapaMouseDragged(evt);
             }
         });
+        contenedorMapa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                contenedorMapaMouseReleased(evt);
+            }
+        });
+
+        btnZoomIn.setText("+");
+        btnZoomIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnZoomInActionPerformed(evt);
+            }
+        });
+
+        btnZoomOut.setText("-");
+        btnZoomOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnZoomOutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout contenedorMapaLayout = new javax.swing.GroupLayout(contenedorMapa);
         contenedorMapa.setLayout(contenedorMapaLayout);
         contenedorMapaLayout.setHorizontalGroup(
             contenedorMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1280, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorMapaLayout.createSequentialGroup()
+                .addContainerGap(1184, Short.MAX_VALUE)
+                .addGroup(contenedorMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnZoomOut, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnZoomIn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36))
         );
         contenedorMapaLayout.setVerticalGroup(
             contenedorMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 696, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorMapaLayout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addComponent(btnZoomIn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(btnZoomOut, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(513, 513, 513))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -85,10 +143,63 @@ public class UI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void contenedorMapaMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contenedorMapaMouseDragged
-        
+        if (ultimoX != -1 && ultimoY != -1) {
+            deltaX = ultimoX - evt.getX();
+            deltaY = ultimoY - evt.getY();
+            render.actualizarPosicion(ultimoX - evt.getX(), ultimoY - evt.getY());
+            actualizarMapa();
+        }
+        ultimoX = evt.getX();
+        ultimoY = evt.getY();
     }//GEN-LAST:event_contenedorMapaMouseDragged
 
+    private void contenedorMapaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contenedorMapaMouseReleased
+        t = autoScroll.scheduleAtFixedRate(new Runnable() {
+            int n = 0;
+            int variacion = 0;
+            @Override
+            public void run() {
+                n++;
+                if (deltaX == 0 && deltaY == 0) {
+                    t.cancel(true);
+                }
+                render.actualizarPosicion((int)(FACTOR_AUTOSCROLL * deltaX), (int)(FACTOR_AUTOSCROLL * deltaY));
+                actualizarMapa();
+                
+                if (deltaX > 0) {
+                    variacion = deltaX - (int)(n * n * ACELERACION_AUTOSCROLL);
+                } else if (deltaX < 0) {
+                    variacion = deltaX + (int)(n * n * ACELERACION_AUTOSCROLL);                    
+                }
+                               
+                deltaX = ((deltaX >= 0 && variacion <= 0) || (deltaX <= 0 && variacion >= 0) ? 0 : variacion);
+                     
+                if (deltaY > 0) {
+                    variacion = deltaY - (int)(n * n * ACELERACION_AUTOSCROLL);                    
+                } else if (deltaY < 0) {
+                    variacion = deltaY + (int)(n * n * ACELERACION_AUTOSCROLL);
+                }
+                
+                deltaY = ((deltaY >= 0 && variacion <= 0) || (deltaY <= 0 && variacion >= 0) ? 0 : variacion);
+            }
+        }, 0, 5, TimeUnit.MILLISECONDS);
+        ultimoX = -1;
+        ultimoY = -1;
+    }//GEN-LAST:event_contenedorMapaMouseReleased
+
+    private void btnZoomInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZoomInActionPerformed
+        render.zoomIn();
+        actualizarMapa();
+    }//GEN-LAST:event_btnZoomInActionPerformed
+
+    private void btnZoomOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZoomOutActionPerformed
+        render.zoomOut();
+        actualizarMapa();
+    }//GEN-LAST:event_btnZoomOutActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnZoomIn;
+    private javax.swing.JButton btnZoomOut;
     private javax.swing.JPanel contenedorMapa;
     // End of variables declaration//GEN-END:variables
 }

@@ -17,6 +17,8 @@ import javax.imageio.ImageIO;
  */
 public class Render {
     
+    private final static double FACTOR_SENSIBILIDAD_MAPA = 0.7; // No puede ser igual o menor a 0
+    
     private final MetadataMapa metadata;
     
     private BufferedImage[][] tilesCargados;
@@ -29,8 +31,8 @@ public class Render {
         try {
             metadata = new MetadataMapa();
             zoom = metadata.getMinZoom();
-            pixelX = 300;
-            pixelY = 250;
+            pixelX = 0;
+            pixelY = 0;
         } catch (NullPointerException e) {
             throw e;
         }
@@ -44,6 +46,39 @@ public class Render {
     
     public MetadataMapa getMetadata() {
         return metadata;
+    }
+    
+    public void actualizarPosicion(int deltaX, int deltaY) {
+        if (pixelX + deltaX >= 0 &&
+                pixelX + deltaX + metadata.getDimX() < metadata.getDato(zoom, "numX") * metadata.getDimTile()) {
+            pixelX += (FACTOR_SENSIBILIDAD_MAPA * deltaX);
+        }
+        if (pixelY + deltaY >= 0 &&
+                pixelY + deltaY + metadata.getDimY() < metadata.getDato(zoom, "numY") * metadata.getDimTile()) {
+            pixelY += (FACTOR_SENSIBILIDAD_MAPA * deltaY);
+        }
+    }
+    
+    public void zoomIn() {
+        if (zoom < metadata.getMaxZoom()) {
+            zoom++;
+            pixelX = 2 * (pixelX + 2 * metadata.getDimTile());
+            pixelY = 2 * (pixelY + metadata.getDimTile());
+            pixelX = pixelX > (metadata.getDato(zoom, "numX") * metadata.getDimTile() - metadata.getDimX()) ? (metadata.getDato(zoom, "numX") * metadata.getDimTile() - metadata.getDimX() - 1) : pixelX;
+            pixelY = pixelY > (metadata.getDato(zoom, "numY") * metadata.getDimTile() - metadata.getDimY()) ? (metadata.getDato(zoom, "numY") * metadata.getDimTile() - metadata.getDimY() - 1) : pixelY;
+        }
+    }
+    
+    public void zoomOut() {
+        if (zoom > metadata.getMinZoom()) {
+            zoom--;
+            pixelX = (pixelX / 2) - (2 * metadata.getDimTile());
+            pixelY = (pixelY / 2) - (metadata.getDimTile());
+            pixelX = pixelX < 0 ? 0 : pixelX;
+            pixelY = pixelY < 0 ? 0 : pixelY;
+            pixelX = pixelX > (metadata.getDato(zoom, "numX") * metadata.getDimTile() - metadata.getDimX()) ? (metadata.getDato(zoom, "numX") * metadata.getDimTile() - metadata.getDimX() - 1) : pixelX;
+            pixelY = pixelY > (metadata.getDato(zoom, "numY") * metadata.getDimTile() - metadata.getDimY()) ? (metadata.getDato(zoom, "numY") * metadata.getDimTile() - metadata.getDimY() - 1) : pixelY;
+        }
     }
     
     private BufferedImage renderizarMapa() {
