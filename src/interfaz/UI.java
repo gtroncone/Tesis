@@ -3,15 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the templatex| in the editor.
  */
-package tesis;
+package interfaz;
 
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import logica.Render;
 
 /**
  *
@@ -29,26 +34,48 @@ public class UI extends javax.swing.JFrame {
     
     private final Render render;
     private final JLabel mapa;
+    private final MenuRuta menuRuta;
+    private final MenuCamiones menuCamiones;
+    private final MenuPuntosAcum menuPuntosAcum;
+    private final MenuBarredores menuBarredores;
     
     private final ScheduledExecutorService autoScroll;
     private static ScheduledFuture<?> t;
 
     /**
      * Creates new form UI
+     * @throws java.io.IOException
      */
-    public UI() {
+    public UI() throws IOException {
         initComponents();
         this.setResizable(false);
         
+        menuRuta = new MenuRuta(this);
+        menuCamiones = new MenuCamiones(this);
+        menuPuntosAcum = new MenuPuntosAcum(this);
+        menuBarredores = new MenuBarredores(this);
+        
         ultimoX = -1;
         ultimoY = -1;
-        
+
         render = new Render();
         mapa = new JLabel(new ImageIcon(render.getRender()), JLabel.CENTER);
         mapa.setSize(new Dimension(render.getMetadata().getDimX(),
-        render.getMetadata().getDimY()));
+                render.getMetadata().getDimY()));
         contenedorMapa.add(mapa);
+
+        BufferedImage imagen = ImageIO.read(new File("assets/ruta.png"));
+        btnRutas.setIcon(new ImageIcon(imagen));
         
+        imagen = ImageIO.read(new File("assets/camion.png"));
+        btnCamiones.setIcon(new ImageIcon(imagen));
+        
+        imagen = ImageIO.read(new File("assets/ptoacum.png"));
+        btnPtosAcum.setIcon(new ImageIcon(imagen));
+        
+        imagen = ImageIO.read(new File("assets/barredor.png"));
+        btnBarrido.setIcon(new ImageIcon(imagen));
+
         autoScroll = Executors.newSingleThreadScheduledExecutor();
         btnZoomIn.setFocusPainted(false);
         btnZoomOut.setFocusPainted(false);
@@ -70,6 +97,10 @@ public class UI extends javax.swing.JFrame {
         contenedorMapa = new javax.swing.JPanel();
         btnZoomIn = new javax.swing.JButton();
         btnZoomOut = new javax.swing.JButton();
+        btnRutas = new javax.swing.JButton();
+        btnCamiones = new javax.swing.JButton();
+        btnPtosAcum = new javax.swing.JButton();
+        btnBarrido = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,6 +132,30 @@ public class UI extends javax.swing.JFrame {
             }
         });
 
+        btnRutas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRutasActionPerformed(evt);
+            }
+        });
+
+        btnCamiones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCamionesActionPerformed(evt);
+            }
+        });
+
+        btnPtosAcum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPtosAcumActionPerformed(evt);
+            }
+        });
+
+        btnBarrido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBarridoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout contenedorMapaLayout = new javax.swing.GroupLayout(contenedorMapa);
         contenedorMapa.setLayout(contenedorMapaLayout);
         contenedorMapaLayout.setHorizontalGroup(
@@ -111,6 +166,16 @@ public class UI extends javax.swing.JFrame {
                     .addComponent(btnZoomOut, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnZoomIn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36))
+            .addGroup(contenedorMapaLayout.createSequentialGroup()
+                .addGap(154, 154, 154)
+                .addComponent(btnRutas, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(154, 154, 154)
+                .addComponent(btnCamiones, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(154, 154, 154)
+                .addComponent(btnPtosAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(154, 154, 154)
+                .addComponent(btnBarrido, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         contenedorMapaLayout.setVerticalGroup(
             contenedorMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,7 +184,14 @@ public class UI extends javax.swing.JFrame {
                 .addComponent(btnZoomIn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(btnZoomOut, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(513, 513, 513))
+                .addGap(332, 332, 332)
+                .addGroup(contenedorMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnBarrido, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                    .addGroup(contenedorMapaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnPtosAcum, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                        .addComponent(btnCamiones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRutas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(53, 53, 53))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -197,7 +269,27 @@ public class UI extends javax.swing.JFrame {
         actualizarMapa();
     }//GEN-LAST:event_btnZoomOutActionPerformed
 
+    private void btnRutasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRutasActionPerformed
+        menuRuta.setVisible(true);
+    }//GEN-LAST:event_btnRutasActionPerformed
+
+    private void btnCamionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCamionesActionPerformed
+        menuCamiones.setVisible(true);
+    }//GEN-LAST:event_btnCamionesActionPerformed
+
+    private void btnPtosAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPtosAcumActionPerformed
+        menuPuntosAcum.setVisible(true);
+    }//GEN-LAST:event_btnPtosAcumActionPerformed
+
+    private void btnBarridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBarridoActionPerformed
+        menuBarredores.setVisible(true);
+    }//GEN-LAST:event_btnBarridoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBarrido;
+    private javax.swing.JButton btnCamiones;
+    private javax.swing.JButton btnPtosAcum;
+    private javax.swing.JButton btnRutas;
     private javax.swing.JButton btnZoomIn;
     private javax.swing.JButton btnZoomOut;
     private javax.swing.JPanel contenedorMapa;

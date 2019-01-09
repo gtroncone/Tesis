@@ -3,7 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tesis;
+package logica;
+
+import interfaz.UI;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,7 +22,11 @@ public class Tesis {
     private UI interfaz;
 
     public Tesis() {
-        interfaz = new UI();
+        try {
+            interfaz = new UI();
+        } catch (IOException ex) {
+            Logger.getLogger(Tesis.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void ejecutar() {
@@ -52,11 +61,9 @@ public class Tesis {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                tesis.getInterfaz().setVisible(true);
-                tesis.getInterfaz().setResizable(false);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            tesis.getInterfaz().setVisible(true);
+            tesis.getInterfaz().setResizable(false);
         });
     }
 
