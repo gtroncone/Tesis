@@ -27,19 +27,129 @@ public class MenuCalles extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        etiquetaListaCallesRuta = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaCallesRuta = new javax.swing.JList<>();
+        etiquetaVelRecorCalle = new javax.swing.JLabel();
+        campoVelRecorCalle = new javax.swing.JTextField();
+        etiquetaNombreCalle = new javax.swing.JLabel();
+        campoNombreCalle = new javax.swing.JTextField();
+        etiquetaFactorDesgaste = new javax.swing.JLabel();
+        dropFactorDesgaste = new javax.swing.JComboBox<>();
+        btnCrearCalle = new javax.swing.JButton();
+        btnEditarCalle = new javax.swing.JButton();
+        btnEliminarCalle = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        btnSeleccionarPtos = new javax.swing.JButton();
+
+        etiquetaListaCallesRuta.setText("Lista de Calles en Ruta");
+
+        listaCallesRuta.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(listaCallesRuta);
+
+        etiquetaVelRecorCalle.setText("Velocidad de Recorrido (Dist)");
+
+        etiquetaNombreCalle.setText("Nombre");
+
+        etiquetaFactorDesgaste.setText("Factor de Desgaste");
+
+        dropFactorDesgaste.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btnCrearCalle.setText("Crear");
+
+        btnEditarCalle.setText("Editar");
+
+        btnEliminarCalle.setText("Eliminar");
+
+        jButton4.setText("Cerrar");
+
+        btnSeleccionarPtos.setText("Seleccionar Puntos (Inicio y Fin)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(etiquetaListaCallesRuta)
+                    .addComponent(etiquetaFactorDesgaste)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(etiquetaVelRecorCalle)
+                            .addComponent(etiquetaNombreCalle))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(campoVelRecorCalle)
+                            .addComponent(dropFactorDesgaste, 0, 185, Short.MAX_VALUE)
+                            .addComponent(campoNombreCalle))))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(95, 95, 95)
+                .addComponent(btnSeleccionarPtos)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(btnCrearCalle, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEditarCalle, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEliminarCalle, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(etiquetaListaCallesRuta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaNombreCalle)
+                    .addComponent(campoNombreCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaVelRecorCalle)
+                    .addComponent(campoVelRecorCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaFactorDesgaste)
+                    .addComponent(dropFactorDesgaste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSeleccionarPtos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearCalle)
+                    .addComponent(btnEditarCalle)
+                    .addComponent(btnEliminarCalle)
+                    .addComponent(jButton4))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCrearCalle;
+    private javax.swing.JButton btnEditarCalle;
+    private javax.swing.JButton btnEliminarCalle;
+    private javax.swing.JButton btnSeleccionarPtos;
+    private javax.swing.JTextField campoNombreCalle;
+    private javax.swing.JTextField campoVelRecorCalle;
+    private javax.swing.JComboBox<String> dropFactorDesgaste;
+    private javax.swing.JLabel etiquetaFactorDesgaste;
+    private javax.swing.JLabel etiquetaListaCallesRuta;
+    private javax.swing.JLabel etiquetaNombreCalle;
+    private javax.swing.JLabel etiquetaVelRecorCalle;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> listaCallesRuta;
     // End of variables declaration//GEN-END:variables
 }

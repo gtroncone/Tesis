@@ -5,8 +5,10 @@
  */
 package interfaz;
 
-import interfaz.UI;
+import java.awt.LayoutManager;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  *
@@ -35,21 +37,984 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jComboBox8 = new javax.swing.JComboBox<>();
+        tabsConfCiclos = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        btnSelPuntoAcum = new javax.swing.JButton();
+        etiquetaIDPunAcum = new javax.swing.JLabel();
+        etiquetaCapacidad = new javax.swing.JLabel();
+        etiquetaTazaAcum = new javax.swing.JLabel();
+        etiquetaTIpoPunAcum = new javax.swing.JLabel();
+        dropTipoPunAcum = new javax.swing.JComboBox<>();
+        campoCapacidad = new javax.swing.JTextField();
+        dropUnidCapacidad = new javax.swing.JComboBox<>();
+        campoIDPunAcum = new javax.swing.JTextField();
+        campoTazaAcum = new javax.swing.JTextField();
+        btnCrearPtoAcum = new javax.swing.JButton();
+        btnEditarPtoAcum = new javax.swing.JButton();
+        btnColocarPtoAcumRuta = new javax.swing.JButton();
+        btnCancelarPtoAcum = new javax.swing.JButton();
+        etiquetaTazaGen = new javax.swing.JLabel();
+        campoTazaGen = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        etiquetaCicloDiario = new javax.swing.JLabel();
+        etiquetaCicloSemanal = new javax.swing.JLabel();
+        tabCicloDIario = new javax.swing.JTabbedPane();
+        jPanel8 = new javax.swing.JPanel();
+        slider12AM = new javax.swing.JSlider();
+        etiqueta12AM = new javax.swing.JLabel();
+        slider1AM = new javax.swing.JSlider();
+        etiqueta1AM = new javax.swing.JLabel();
+        etiqueta2AM = new javax.swing.JLabel();
+        slider2AM = new javax.swing.JSlider();
+        etiqueta3AM = new javax.swing.JLabel();
+        slider3AM = new javax.swing.JSlider();
+        slider4AM = new javax.swing.JSlider();
+        etiqueta4AM = new javax.swing.JLabel();
+        etiqueta5AM = new javax.swing.JLabel();
+        slider5AM = new javax.swing.JSlider();
+        jPanel9 = new javax.swing.JPanel();
+        slider6AM = new javax.swing.JSlider();
+        etiqueta6AM = new javax.swing.JLabel();
+        etiqueta7AM = new javax.swing.JLabel();
+        slider7AM = new javax.swing.JSlider();
+        slider8AM = new javax.swing.JSlider();
+        etiqueta8AM = new javax.swing.JLabel();
+        etiqueta9AM = new javax.swing.JLabel();
+        slider9AM = new javax.swing.JSlider();
+        slider10AM = new javax.swing.JSlider();
+        etiqueta10AM = new javax.swing.JLabel();
+        slider11AM = new javax.swing.JSlider();
+        etiqueta11AM = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        slider12PM = new javax.swing.JSlider();
+        etiqueta12PM = new javax.swing.JLabel();
+        etiqueta1PM = new javax.swing.JLabel();
+        slider1PM = new javax.swing.JSlider();
+        slider2PM = new javax.swing.JSlider();
+        etiqueta2PM = new javax.swing.JLabel();
+        etiqueta3PM = new javax.swing.JLabel();
+        slider3PM = new javax.swing.JSlider();
+        slider4PM = new javax.swing.JSlider();
+        etiqueta4PM = new javax.swing.JLabel();
+        slider5PM = new javax.swing.JSlider();
+        etiqueta5PM = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        etiqueta6PM = new javax.swing.JLabel();
+        slider6PM = new javax.swing.JSlider();
+        etiqueta7PM = new javax.swing.JLabel();
+        slider7PM = new javax.swing.JSlider();
+        etiqueta8PM = new javax.swing.JLabel();
+        slider8PM = new javax.swing.JSlider();
+        etiqueta9PM = new javax.swing.JLabel();
+        slider9PM = new javax.swing.JSlider();
+        etiqueta10PM = new javax.swing.JLabel();
+        slider10PM = new javax.swing.JSlider();
+        etiqueta11PM = new javax.swing.JLabel();
+        slider11PM = new javax.swing.JSlider();
+        jPanel12 = new javax.swing.JPanel();
+        etiquetaLunes = new javax.swing.JLabel();
+        sliderLunes = new javax.swing.JSlider();
+        etiquetaMartes = new javax.swing.JLabel();
+        sliderMartes = new javax.swing.JSlider();
+        etiquetaMiercoles = new javax.swing.JLabel();
+        sliderMiercoles = new javax.swing.JSlider();
+        etiquetaJueves = new javax.swing.JLabel();
+        sliderJueves = new javax.swing.JSlider();
+        etiquetaViernes = new javax.swing.JLabel();
+        sliderViernes = new javax.swing.JSlider();
+        etiquetaSabado = new javax.swing.JLabel();
+        sliderSabado = new javax.swing.JSlider();
+        sliderDomingo = new javax.swing.JSlider();
+        etiquetaDoming = new javax.swing.JLabel();
+
+        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnSelPuntoAcum.setText("Seleccionar Punto de Acumulación");
+
+        etiquetaIDPunAcum.setText("ID del Punto de Acumulación");
+
+        etiquetaCapacidad.setText("Capacidad");
+
+        etiquetaTazaAcum.setText("Taza de Acumulación (Dist)");
+
+        etiquetaTIpoPunAcum.setText("Tipo");
+
+        dropTipoPunAcum.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        dropUnidCapacidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btnCrearPtoAcum.setText("Crear");
+
+        btnEditarPtoAcum.setText("Editar");
+
+        btnColocarPtoAcumRuta.setText("Colocar Punto de Acumulación en Ruta");
+
+        btnCancelarPtoAcum.setText("Cancelar");
+
+        etiquetaTazaGen.setText("Taza de Generación (Dist)");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(67, 67, 67)
+                                .addComponent(btnSelPuntoAcum))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(etiquetaCapacidad)
+                                    .addComponent(etiquetaTazaAcum)
+                                    .addComponent(etiquetaTIpoPunAcum)
+                                    .addComponent(etiquetaIDPunAcum)
+                                    .addComponent(etiquetaTazaGen))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(campoIDPunAcum)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(campoCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(dropUnidCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(dropTipoPunAcum, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(campoTazaAcum)
+                                    .addComponent(campoTazaGen)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnCrearPtoAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnEditarPtoAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancelarPtoAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnColocarPtoAcumRuta))))
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnSelPuntoAcum)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(campoIDPunAcum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaIDPunAcum))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dropUnidCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dropTipoPunAcum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaTIpoPunAcum))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(campoTazaAcum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaTazaAcum))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaTazaGen)
+                    .addComponent(campoTazaGen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnColocarPtoAcumRuta)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearPtoAcum)
+                    .addComponent(btnEditarPtoAcum)
+                    .addComponent(btnCancelarPtoAcum))
+                .addContainerGap(102, Short.MAX_VALUE))
+        );
+
+        tabsConfCiclos.addTab("Punto de Acumulación", jPanel1);
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(2000, 100));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 2000, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 45, Short.MAX_VALUE)
+        );
+
+        etiquetaCicloDiario.setText("Ciclo Diario");
+
+        etiquetaCicloSemanal.setText("Ciclo Semanal");
+
+        slider12AM.setMaximum(10);
+        slider12AM.setMinimum(-10);
+        slider12AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider12AM.setPaintLabels(true);
+        slider12AM.setSnapToTicks(true);
+        slider12AM.setValue(0);
+
+        etiqueta12AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta12AM.setText("12");
+
+        slider1AM.setMaximum(10);
+        slider1AM.setMinimum(-10);
+        slider1AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider1AM.setPaintLabels(true);
+        slider1AM.setSnapToTicks(true);
+        slider1AM.setValue(0);
+
+        etiqueta1AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta1AM.setText("01");
+
+        etiqueta2AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta2AM.setText("02");
+
+        slider2AM.setMaximum(10);
+        slider2AM.setMinimum(-10);
+        slider2AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider2AM.setPaintLabels(true);
+        slider2AM.setSnapToTicks(true);
+        slider2AM.setValue(0);
+
+        etiqueta3AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta3AM.setText("03");
+
+        slider3AM.setMaximum(10);
+        slider3AM.setMinimum(-10);
+        slider3AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider3AM.setPaintLabels(true);
+        slider3AM.setSnapToTicks(true);
+        slider3AM.setValue(0);
+
+        slider4AM.setMaximum(10);
+        slider4AM.setMinimum(-10);
+        slider4AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider4AM.setPaintLabels(true);
+        slider4AM.setSnapToTicks(true);
+        slider4AM.setValue(0);
+
+        etiqueta4AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta4AM.setText("04");
+
+        etiqueta5AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta5AM.setText("05");
+
+        slider5AM.setMaximum(10);
+        slider5AM.setMinimum(-10);
+        slider5AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider5AM.setPaintLabels(true);
+        slider5AM.setSnapToTicks(true);
+        slider5AM.setValue(0);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider12AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta12AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider1AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta1AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider2AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta2AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider3AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta3AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider4AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta4AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider5AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta5AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(etiqueta12AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider12AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(etiqueta1AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider1AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(etiqueta2AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider2AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(etiqueta3AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider3AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(etiqueta4AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider4AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(etiqueta5AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider5AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        tabCicloDIario.addTab("AM (12 - 5)", jPanel8);
+
+        slider6AM.setMaximum(10);
+        slider6AM.setMinimum(-10);
+        slider6AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider6AM.setPaintLabels(true);
+        slider6AM.setSnapToTicks(true);
+        slider6AM.setValue(0);
+
+        etiqueta6AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta6AM.setText("06");
+
+        etiqueta7AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta7AM.setText("07");
+
+        slider7AM.setMaximum(10);
+        slider7AM.setMinimum(-10);
+        slider7AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider7AM.setPaintLabels(true);
+        slider7AM.setSnapToTicks(true);
+        slider7AM.setValue(0);
+
+        slider8AM.setMaximum(10);
+        slider8AM.setMinimum(-10);
+        slider8AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider8AM.setPaintLabels(true);
+        slider8AM.setSnapToTicks(true);
+        slider8AM.setValue(0);
+
+        etiqueta8AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta8AM.setText("08");
+
+        etiqueta9AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta9AM.setText("09");
+
+        slider9AM.setMaximum(10);
+        slider9AM.setMinimum(-10);
+        slider9AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider9AM.setPaintLabels(true);
+        slider9AM.setSnapToTicks(true);
+        slider9AM.setValue(0);
+
+        slider10AM.setMaximum(10);
+        slider10AM.setMinimum(-10);
+        slider10AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider10AM.setPaintLabels(true);
+        slider10AM.setSnapToTicks(true);
+        slider10AM.setValue(0);
+
+        etiqueta10AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta10AM.setText("10");
+
+        slider11AM.setMaximum(10);
+        slider11AM.setMinimum(-10);
+        slider11AM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider11AM.setPaintLabels(true);
+        slider11AM.setSnapToTicks(true);
+        slider11AM.setValue(0);
+
+        etiqueta11AM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta11AM.setText("11");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider6AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta6AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider7AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta7AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider8AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta8AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider9AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta9AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider10AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta10AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider11AM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta11AM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(etiqueta6AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider6AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(etiqueta7AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider7AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(etiqueta8AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider8AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(etiqueta9AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider9AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(etiqueta10AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider10AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(etiqueta11AM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider11AM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        tabCicloDIario.addTab("AM (6 - 11)", jPanel9);
+
+        slider12PM.setMaximum(10);
+        slider12PM.setMinimum(-10);
+        slider12PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider12PM.setPaintLabels(true);
+        slider12PM.setSnapToTicks(true);
+        slider12PM.setValue(0);
+
+        etiqueta12PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta12PM.setText("12");
+
+        etiqueta1PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta1PM.setText("01");
+
+        slider1PM.setMaximum(10);
+        slider1PM.setMinimum(-10);
+        slider1PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider1PM.setPaintLabels(true);
+        slider1PM.setSnapToTicks(true);
+        slider1PM.setValue(0);
+
+        slider2PM.setMaximum(10);
+        slider2PM.setMinimum(-10);
+        slider2PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider2PM.setPaintLabels(true);
+        slider2PM.setSnapToTicks(true);
+        slider2PM.setValue(0);
+
+        etiqueta2PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta2PM.setText("02");
+
+        etiqueta3PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta3PM.setText("03");
+
+        slider3PM.setMaximum(10);
+        slider3PM.setMinimum(-10);
+        slider3PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider3PM.setPaintLabels(true);
+        slider3PM.setSnapToTicks(true);
+        slider3PM.setValue(0);
+
+        slider4PM.setMaximum(10);
+        slider4PM.setMinimum(-10);
+        slider4PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider4PM.setPaintLabels(true);
+        slider4PM.setSnapToTicks(true);
+        slider4PM.setValue(0);
+
+        etiqueta4PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta4PM.setText("04");
+
+        slider5PM.setMaximum(10);
+        slider5PM.setMinimum(-10);
+        slider5PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider5PM.setPaintLabels(true);
+        slider5PM.setSnapToTicks(true);
+        slider5PM.setValue(0);
+
+        etiqueta5PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta5PM.setText("05");
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider12PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta12PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider1PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta1PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider2PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta2PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider3PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta3PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider4PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta4PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider5PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta5PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addComponent(etiqueta12PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider12PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addComponent(etiqueta1PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider1PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addComponent(etiqueta2PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider2PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addComponent(etiqueta3PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider3PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addComponent(etiqueta4PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider4PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addComponent(etiqueta5PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider5PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        tabCicloDIario.addTab("PM (12 - 5)", jPanel10);
+
+        etiqueta6PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta6PM.setText("06");
+
+        slider6PM.setMaximum(10);
+        slider6PM.setMinimum(-10);
+        slider6PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider6PM.setPaintLabels(true);
+        slider6PM.setSnapToTicks(true);
+        slider6PM.setValue(0);
+
+        etiqueta7PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta7PM.setText("07");
+
+        slider7PM.setMaximum(10);
+        slider7PM.setMinimum(-10);
+        slider7PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider7PM.setPaintLabels(true);
+        slider7PM.setSnapToTicks(true);
+        slider7PM.setValue(0);
+
+        etiqueta8PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta8PM.setText("08");
+
+        slider8PM.setMaximum(10);
+        slider8PM.setMinimum(-10);
+        slider8PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider8PM.setPaintLabels(true);
+        slider8PM.setSnapToTicks(true);
+        slider8PM.setValue(0);
+
+        etiqueta9PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta9PM.setText("09");
+
+        slider9PM.setMaximum(10);
+        slider9PM.setMinimum(-10);
+        slider9PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider9PM.setPaintLabels(true);
+        slider9PM.setSnapToTicks(true);
+        slider9PM.setValue(0);
+
+        etiqueta10PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta10PM.setText("10");
+
+        slider10PM.setMaximum(10);
+        slider10PM.setMinimum(-10);
+        slider10PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider10PM.setPaintLabels(true);
+        slider10PM.setSnapToTicks(true);
+        slider10PM.setValue(0);
+
+        etiqueta11PM.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiqueta11PM.setText("11");
+
+        slider11PM.setMaximum(10);
+        slider11PM.setMinimum(-10);
+        slider11PM.setOrientation(javax.swing.JSlider.VERTICAL);
+        slider11PM.setPaintLabels(true);
+        slider11PM.setSnapToTicks(true);
+        slider11PM.setValue(0);
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider6PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta6PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider7PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta7PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider8PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta8PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider9PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta9PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider10PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta10PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(slider11PM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiqueta11PM, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(etiqueta6PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider6PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(etiqueta7PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider7PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(etiqueta8PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider8PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(etiqueta9PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider9PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(etiqueta10PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider10PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(etiqueta11PM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slider11PM, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        tabCicloDIario.addTab("PM (6 - 11)", jPanel11);
+
+        etiquetaLunes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiquetaLunes.setText("Lunes");
+
+        sliderLunes.setMaximum(10);
+        sliderLunes.setMinimum(-10);
+        sliderLunes.setOrientation(javax.swing.JSlider.VERTICAL);
+        sliderLunes.setPaintLabels(true);
+        sliderLunes.setSnapToTicks(true);
+        sliderLunes.setValue(0);
+
+        etiquetaMartes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiquetaMartes.setText("Martes");
+
+        sliderMartes.setMaximum(10);
+        sliderMartes.setMinimum(-10);
+        sliderMartes.setOrientation(javax.swing.JSlider.VERTICAL);
+        sliderMartes.setPaintLabels(true);
+        sliderMartes.setSnapToTicks(true);
+        sliderMartes.setValue(0);
+
+        etiquetaMiercoles.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiquetaMiercoles.setText("Miércoles");
+
+        sliderMiercoles.setMaximum(10);
+        sliderMiercoles.setMinimum(-10);
+        sliderMiercoles.setOrientation(javax.swing.JSlider.VERTICAL);
+        sliderMiercoles.setPaintLabels(true);
+        sliderMiercoles.setSnapToTicks(true);
+        sliderMiercoles.setValue(0);
+
+        etiquetaJueves.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiquetaJueves.setText("Jueves");
+
+        sliderJueves.setMaximum(10);
+        sliderJueves.setMinimum(-10);
+        sliderJueves.setOrientation(javax.swing.JSlider.VERTICAL);
+        sliderJueves.setPaintLabels(true);
+        sliderJueves.setSnapToTicks(true);
+        sliderJueves.setValue(0);
+
+        etiquetaViernes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiquetaViernes.setText("Viernes");
+
+        sliderViernes.setMaximum(10);
+        sliderViernes.setMinimum(-10);
+        sliderViernes.setOrientation(javax.swing.JSlider.VERTICAL);
+        sliderViernes.setPaintLabels(true);
+        sliderViernes.setSnapToTicks(true);
+        sliderViernes.setValue(0);
+
+        etiquetaSabado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiquetaSabado.setText("Sábado");
+
+        sliderSabado.setMaximum(10);
+        sliderSabado.setMinimum(-10);
+        sliderSabado.setOrientation(javax.swing.JSlider.VERTICAL);
+        sliderSabado.setPaintLabels(true);
+        sliderSabado.setSnapToTicks(true);
+        sliderSabado.setValue(0);
+
+        sliderDomingo.setMaximum(10);
+        sliderDomingo.setMinimum(-10);
+        sliderDomingo.setOrientation(javax.swing.JSlider.VERTICAL);
+        sliderDomingo.setPaintLabels(true);
+        sliderDomingo.setSnapToTicks(true);
+        sliderDomingo.setValue(0);
+
+        etiquetaDoming.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        etiquetaDoming.setText("Domingo");
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(sliderLunes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiquetaLunes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(sliderMartes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiquetaMartes, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(sliderMiercoles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiquetaMiercoles, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(sliderJueves, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiquetaJueves, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(sliderViernes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiquetaViernes, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(sliderSabado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiquetaSabado, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sliderDomingo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaDoming, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addComponent(etiquetaLunes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sliderLunes, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addComponent(etiquetaMartes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sliderMartes, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addComponent(etiquetaMiercoles)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sliderMiercoles, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addComponent(etiquetaJueves)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sliderJueves, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addComponent(etiquetaViernes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sliderViernes, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaSabado)
+                    .addComponent(etiquetaDoming))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(sliderSabado, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(sliderDomingo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(etiquetaCicloDiario)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(tabCicloDIario, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(102, 102, 102)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(etiquetaCicloSemanal)
+                            .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(etiquetaCicloDiario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tabCicloDIario, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(etiquetaCicloSemanal)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        tabsConfCiclos.addTab("Ciclos Diarios y Semanales", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(tabsConfCiclos, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(tabsConfCiclos, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelarPtoAcum;
+    private javax.swing.JButton btnColocarPtoAcumRuta;
+    private javax.swing.JButton btnCrearPtoAcum;
+    private javax.swing.JButton btnEditarPtoAcum;
+    private javax.swing.JButton btnSelPuntoAcum;
+    private javax.swing.JTextField campoCapacidad;
+    private javax.swing.JTextField campoIDPunAcum;
+    private javax.swing.JTextField campoTazaAcum;
+    private javax.swing.JTextField campoTazaGen;
+    private javax.swing.JComboBox<String> dropTipoPunAcum;
+    private javax.swing.JComboBox<String> dropUnidCapacidad;
+    private javax.swing.JLabel etiqueta10AM;
+    private javax.swing.JLabel etiqueta10PM;
+    private javax.swing.JLabel etiqueta11AM;
+    private javax.swing.JLabel etiqueta11PM;
+    private javax.swing.JLabel etiqueta12AM;
+    private javax.swing.JLabel etiqueta12PM;
+    private javax.swing.JLabel etiqueta1AM;
+    private javax.swing.JLabel etiqueta1PM;
+    private javax.swing.JLabel etiqueta2AM;
+    private javax.swing.JLabel etiqueta2PM;
+    private javax.swing.JLabel etiqueta3AM;
+    private javax.swing.JLabel etiqueta3PM;
+    private javax.swing.JLabel etiqueta4AM;
+    private javax.swing.JLabel etiqueta4PM;
+    private javax.swing.JLabel etiqueta5AM;
+    private javax.swing.JLabel etiqueta5PM;
+    private javax.swing.JLabel etiqueta6AM;
+    private javax.swing.JLabel etiqueta6PM;
+    private javax.swing.JLabel etiqueta7AM;
+    private javax.swing.JLabel etiqueta7PM;
+    private javax.swing.JLabel etiqueta8AM;
+    private javax.swing.JLabel etiqueta8PM;
+    private javax.swing.JLabel etiqueta9AM;
+    private javax.swing.JLabel etiqueta9PM;
+    private javax.swing.JLabel etiquetaCapacidad;
+    private javax.swing.JLabel etiquetaCicloDiario;
+    private javax.swing.JLabel etiquetaCicloSemanal;
+    private javax.swing.JLabel etiquetaDoming;
+    private javax.swing.JLabel etiquetaIDPunAcum;
+    private javax.swing.JLabel etiquetaJueves;
+    private javax.swing.JLabel etiquetaLunes;
+    private javax.swing.JLabel etiquetaMartes;
+    private javax.swing.JLabel etiquetaMiercoles;
+    private javax.swing.JLabel etiquetaSabado;
+    private javax.swing.JLabel etiquetaTIpoPunAcum;
+    private javax.swing.JLabel etiquetaTazaAcum;
+    private javax.swing.JLabel etiquetaTazaGen;
+    private javax.swing.JLabel etiquetaViernes;
+    private javax.swing.JComboBox<String> jComboBox8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JSlider slider10AM;
+    private javax.swing.JSlider slider10PM;
+    private javax.swing.JSlider slider11AM;
+    private javax.swing.JSlider slider11PM;
+    private javax.swing.JSlider slider12AM;
+    private javax.swing.JSlider slider12PM;
+    private javax.swing.JSlider slider1AM;
+    private javax.swing.JSlider slider1PM;
+    private javax.swing.JSlider slider2AM;
+    private javax.swing.JSlider slider2PM;
+    private javax.swing.JSlider slider3AM;
+    private javax.swing.JSlider slider3PM;
+    private javax.swing.JSlider slider4AM;
+    private javax.swing.JSlider slider4PM;
+    private javax.swing.JSlider slider5AM;
+    private javax.swing.JSlider slider5PM;
+    private javax.swing.JSlider slider6AM;
+    private javax.swing.JSlider slider6PM;
+    private javax.swing.JSlider slider7AM;
+    private javax.swing.JSlider slider7PM;
+    private javax.swing.JSlider slider8AM;
+    private javax.swing.JSlider slider8PM;
+    private javax.swing.JSlider slider9AM;
+    private javax.swing.JSlider slider9PM;
+    private javax.swing.JSlider sliderDomingo;
+    private javax.swing.JSlider sliderJueves;
+    private javax.swing.JSlider sliderLunes;
+    private javax.swing.JSlider sliderMartes;
+    private javax.swing.JSlider sliderMiercoles;
+    private javax.swing.JSlider sliderSabado;
+    private javax.swing.JSlider sliderViernes;
+    private javax.swing.JTabbedPane tabCicloDIario;
+    private javax.swing.JTabbedPane tabsConfCiclos;
     // End of variables declaration//GEN-END:variables
 }

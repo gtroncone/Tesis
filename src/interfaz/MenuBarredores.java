@@ -34,21 +34,217 @@ public class MenuBarredores extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel10 = new javax.swing.JLabel();
+        etiquetaRutas = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaRutas = new javax.swing.JList<>();
+        etiquetaAreaBarrido = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listaAreaBarrido = new javax.swing.JList<>();
+        etiquetaNumBarredores = new javax.swing.JLabel();
+        etiquetaNumCuadras = new javax.swing.JLabel();
+        etiquetaDistVelAcopio = new javax.swing.JLabel();
+        etiquetaDigNumBarredores = new javax.swing.JLabel();
+        btnNuevoBarredor = new javax.swing.JButton();
+        btnRemoverBarredor = new javax.swing.JButton();
+        etiquetaDigNumCuadras = new javax.swing.JLabel();
+        btnSumarCuadra = new javax.swing.JButton();
+        btnRestarCuadra = new javax.swing.JButton();
+        campoDistVelAcopio = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        etiquetaCapacidad = new javax.swing.JLabel();
+        campoCapacidad = new javax.swing.JTextField();
+        btnCrearAreaBarrido = new javax.swing.JButton();
+        btnEditarAreaBarrido = new javax.swing.JButton();
+        btnCancelarAreaBarrido = new javax.swing.JButton();
+        etiquetaKilogramo = new javax.swing.JLabel();
+
+        jLabel10.setText("jLabel10");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        etiquetaRutas.setText("Rutas");
+
+        listaRutas.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(listaRutas);
+
+        etiquetaAreaBarrido.setText("Área de Barrido");
+
+        listaAreaBarrido.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(listaAreaBarrido);
+
+        etiquetaNumBarredores.setText("Número de Barredores");
+
+        etiquetaNumCuadras.setText("Número de Cuadras");
+
+        etiquetaDistVelAcopio.setText("Velocidad de Acopio (Dist.)");
+
+        etiquetaDigNumBarredores.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        etiquetaDigNumBarredores.setText("0");
+
+        btnNuevoBarredor.setText("+");
+
+        btnRemoverBarredor.setText("-");
+
+        etiquetaDigNumCuadras.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        etiquetaDigNumCuadras.setText("0");
+
+        btnSumarCuadra.setText("+");
+
+        btnRestarCuadra.setText("-");
+
+        etiquetaCapacidad.setText("Capacidad");
+
+        campoCapacidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoCapacidadActionPerformed(evt);
+            }
+        });
+
+        btnCrearAreaBarrido.setText("Crear");
+
+        btnEditarAreaBarrido.setText("Editar");
+
+        btnCancelarAreaBarrido.setText("Cancelar");
+
+        etiquetaKilogramo.setText("Kg.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(etiquetaNumCuadras, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(etiquetaNumBarredores, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(etiquetaDigNumBarredores, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnNuevoBarredor)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRemoverBarredor))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(etiquetaDigNumCuadras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSumarCuadra)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRestarCuadra))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(etiquetaRutas)
+                            .addComponent(etiquetaAreaBarrido)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(27, 27, 27)
+                                        .addComponent(btnCrearAreaBarrido, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnEditarAreaBarrido, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancelarAreaBarrido)))
+                        .addGap(28, 28, 28))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(etiquetaDistVelAcopio)
+                            .addComponent(etiquetaCapacidad))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(campoCapacidad)
+                                .addGap(23, 23, 23)
+                                .addComponent(etiquetaKilogramo))
+                            .addComponent(campoDistVelAcopio))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(etiquetaRutas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(etiquetaAreaBarrido)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaNumBarredores)
+                    .addComponent(etiquetaDigNumBarredores)
+                    .addComponent(btnNuevoBarredor)
+                    .addComponent(btnRemoverBarredor))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaNumCuadras)
+                    .addComponent(etiquetaDigNumCuadras)
+                    .addComponent(btnSumarCuadra)
+                    .addComponent(btnRestarCuadra))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaCapacidad)
+                    .addComponent(campoCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaKilogramo))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaDistVelAcopio)
+                    .addComponent(campoDistVelAcopio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearAreaBarrido)
+                    .addComponent(btnEditarAreaBarrido)
+                    .addComponent(btnCancelarAreaBarrido))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void campoCapacidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCapacidadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoCapacidadActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelarAreaBarrido;
+    private javax.swing.JButton btnCrearAreaBarrido;
+    private javax.swing.JButton btnEditarAreaBarrido;
+    private javax.swing.JButton btnNuevoBarredor;
+    private javax.swing.JButton btnRemoverBarredor;
+    private javax.swing.JButton btnRestarCuadra;
+    private javax.swing.JButton btnSumarCuadra;
+    private javax.swing.JTextField campoCapacidad;
+    private javax.swing.JTextField campoDistVelAcopio;
+    private javax.swing.JLabel etiquetaAreaBarrido;
+    private javax.swing.JLabel etiquetaCapacidad;
+    private javax.swing.JLabel etiquetaDigNumBarredores;
+    private javax.swing.JLabel etiquetaDigNumCuadras;
+    private javax.swing.JLabel etiquetaDistVelAcopio;
+    private javax.swing.JLabel etiquetaKilogramo;
+    private javax.swing.JLabel etiquetaNumBarredores;
+    private javax.swing.JLabel etiquetaNumCuadras;
+    private javax.swing.JLabel etiquetaRutas;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> listaAreaBarrido;
+    private javax.swing.JList<String> listaRutas;
     // End of variables declaration//GEN-END:variables
 }

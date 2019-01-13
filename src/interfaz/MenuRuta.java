@@ -5,7 +5,11 @@
  */
 package interfaz;
 
-import interfaz.UI;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -15,15 +19,22 @@ import javax.swing.JFrame;
 public class MenuRuta extends javax.swing.JFrame {
 
     private final UI interfaz;
+    private final MenuHorarios menuHorarios;
     
     /**
      * Creates new form MenuRuta
      * @param ui
+     * @throws java.io.IOException
      */    
-    public MenuRuta(UI ui) {
+    public MenuRuta(UI ui) throws IOException {
         interfaz = ui;
         initComponents();
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        this.setResizable(false);
+        
+        BufferedImage imagen = ImageIO.read(new File("assets/dibujar-ruta.png"));
+        btnDibujarRuta.setIcon(new ImageIcon(imagen));
+        menuHorarios = new MenuHorarios();
     }
 
     /**
@@ -35,32 +46,167 @@ public class MenuRuta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        etiquetaHorario = new javax.swing.JLabel();
+        btnEditarHorario = new javax.swing.JButton();
+        etiquetaTipoRecol = new javax.swing.JLabel();
+        dropTipoRec = new javax.swing.JComboBox<>();
+        btnDibujarRuta = new javax.swing.JButton();
+        etiquetaCalles = new javax.swing.JLabel();
+        btnEditarCalles = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        dropSelRuta = new javax.swing.JComboBox<>();
+        btnEliminarRuta = new javax.swing.JButton();
+        etiquetaSelRuta = new javax.swing.JLabel();
+        etiquetaNomRuta = new javax.swing.JLabel();
+        campoNombreRuta = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabel1");
+        etiquetaHorario.setText("Horario");
+
+        btnEditarHorario.setText("Editar Horario");
+        btnEditarHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarHorarioActionPerformed(evt);
+            }
+        });
+
+        etiquetaTipoRecol.setText("Tipo de Recolección");
+
+        dropTipoRec.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        etiquetaCalles.setText("Calles");
+
+        btnEditarCalles.setText("Editar Calles");
+
+        btnAceptar.setText("Crear");
+
+        btnCancelar.setText("Cancelar");
+
+        dropSelRuta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btnEliminarRuta.setText("Eliminar");
+
+        etiquetaSelRuta.setText("Seleccionar Ruta");
+
+        etiquetaNomRuta.setText("Nombre de Ruta");
+
+        jLabel1.setText("Flujo Peatonal (Dist)");
+
+        jLabel2.setText("Desechos por Peatón (Dist)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jLabel1)
-                .addContainerGap(231, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(etiquetaSelRuta)
+                    .addComponent(etiquetaHorario)
+                    .addComponent(etiquetaTipoRecol)
+                    .addComponent(etiquetaCalles)
+                    .addComponent(etiquetaNomRuta)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dropTipoRec, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditarHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(campoNombreRuta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dropSelRuta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEliminarRuta))
+                    .addComponent(btnEditarCalles, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addGap(29, 29, 29))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addComponent(btnCancelar)
+                .addGap(51, 51, 51)
+                .addComponent(btnDibujarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(69, 69, 69))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(136, 136, 136)
-                .addComponent(jLabel1)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dropSelRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarRuta)
+                    .addComponent(etiquetaSelRuta))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaNomRuta)
+                    .addComponent(campoNombreRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaHorario)
+                    .addComponent(btnEditarHorario))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaTipoRecol)
+                    .addComponent(dropTipoRec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaCalles)
+                    .addComponent(btnEditarCalles))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDibujarRuta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCancelar)
+                            .addComponent(btnAceptar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEditarHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarHorarioActionPerformed
+        menuHorarios.setVisible(true);
+    }//GEN-LAST:event_btnEditarHorarioActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnDibujarRuta;
+    private javax.swing.JButton btnEditarCalles;
+    private javax.swing.JButton btnEditarHorario;
+    private javax.swing.JButton btnEliminarRuta;
+    private javax.swing.JTextField campoNombreRuta;
+    private javax.swing.JComboBox<String> dropSelRuta;
+    private javax.swing.JComboBox<String> dropTipoRec;
+    private javax.swing.JLabel etiquetaCalles;
+    private javax.swing.JLabel etiquetaHorario;
+    private javax.swing.JLabel etiquetaNomRuta;
+    private javax.swing.JLabel etiquetaSelRuta;
+    private javax.swing.JLabel etiquetaTipoRecol;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
