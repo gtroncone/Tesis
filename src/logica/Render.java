@@ -31,6 +31,7 @@ public class Render {
     private int pixelX;
     private int pixelY;
     private LinkedList<Point> puntosDibujados;
+    private Point leadingPoint;
 
     private final Simulacion simulacion;
     private final static int DIAMETRO_PUNTO = 12;
@@ -67,13 +68,6 @@ public class Render {
         puntosDibujados.add(punto);
     }
     
-    public void cambiarUltimoPunto(Point punto) {
-        if (!puntosDibujados.isEmpty()) {
-            punto.translate(pixelX, pixelY);
-            puntosDibujados.getLast().setLocation(punto.getX(), punto.getY());
-        }
-    }
-    
     public BufferedImage getRender() {
         mapa = renderizarMapa();
         dibujarRutas();
@@ -105,6 +99,14 @@ public class Render {
                         (int) siguientePunto.getX() - pixelX, (int) siguientePunto.getY() - pixelY);
             }
         }
+        if (!puntosDibujados.isEmpty()) {
+            Point puntoFinal = puntosDibujados.getLast();
+            g2d.drawLine((int) puntoFinal.getX() - pixelX, (int) puntoFinal.getY() - pixelY,
+                    (int) leadingPoint.getX() - pixelX, (int) leadingPoint.getY() - pixelY);
+        }
+            g2d.fillOval((int) leadingPoint.getX() - pixelX - RADIO_PUNTO,
+                    (int) leadingPoint.getY() - pixelY - RADIO_PUNTO,
+                    DIAMETRO_PUNTO, DIAMETRO_PUNTO);
     }
 
     public LinkedList<Point> getPuntosDibujados() {
@@ -175,6 +177,11 @@ public class Render {
             System.out.println(e);
             return null;
         }
+    }
+    
+    
+    public void setLeadingPoint(Point leadingPoint) {
+        this.leadingPoint = leadingPoint;
     }
 
     private String generarFilepath(int i, int j, int coordInicialX, int coordInicialY) {

@@ -100,10 +100,15 @@ public class UI extends javax.swing.JFrame {
         mapa.setIcon(new ImageIcon(render.getRender()));
     }
     
+    public int getZoom() {
+        return render.getZoom();
+    }
+    
     public void iniciarProcesoDeDibujo(LinkedList<Point> puntos) {
         modoDibujo = true;
         render.setPuntosDibujados(puntos);
         render.setModoDeDibujo(true);
+        render.setLeadingPoint(new Point(0, 0));
         actualizarMapa();
     }
 
@@ -335,7 +340,7 @@ public class UI extends javax.swing.JFrame {
 
     private void contenedorMapaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contenedorMapaMouseMoved
         if (modoDibujo) {
-            render.cambiarUltimoPunto(new Point(evt.getX(), evt.getY()));
+            render.setLeadingPoint(new Point(evt.getX(), evt.getY()));
             actualizarMapa();
         }
     }//GEN-LAST:event_contenedorMapaMouseMoved

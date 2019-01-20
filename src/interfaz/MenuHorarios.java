@@ -280,7 +280,7 @@ public class MenuHorarios extends javax.swing.JFrame {
                 String[] entrada = ((String) modelo.get(i)).split(" ");
                 String[] horas = entrada[0].split(":");
                 horario.nuevoDato(Integer.parseInt(horas[0]),
-                        Integer.parseInt(horas[1]), Integer.parseInt(entrada[2]));
+                        Integer.parseInt(horas[1]), entrada[2]);
             }
             menuRuta.setHorario(horario);
             this.setVisible(false);

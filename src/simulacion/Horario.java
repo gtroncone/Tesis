@@ -14,16 +14,30 @@ import java.util.LinkedList;
 public class Horario {
     
     private final LinkedList<int[]> datos;
+    private String frecuencia;
     
     public Horario() {
         datos = new LinkedList<>();
     }
     
-    public void nuevoDato(int hora, int minuto, int frecuencia) {
+    public Horario(Horario horario) {
+        this.datos = horario.getDatos();
+        this.frecuencia = horario.getFrecuencia();
+    }
+
+    public LinkedList<int[]> getDatos() {
+        return datos;
+    }
+
+    public String getFrecuencia() {
+        return frecuencia;
+    }
+    
+    public void nuevoDato(int hora, int minuto, String frecuencia) {
         int[] entrada = new int[3];
         entrada[0] = hora;
         entrada[1] = minuto;
-        entrada[2] = frecuencia;
+        this.frecuencia = frecuencia;
         datos.add(entrada);
     }
     
