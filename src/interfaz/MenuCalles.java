@@ -5,17 +5,52 @@
  */
 package interfaz;
 
+import java.awt.Point;
+import java.util.LinkedList;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import simulacion.Calle;
+
 /**
  *
  * @author gtroncone
  */
-public class MenuCalles extends javax.swing.JPanel {
+public class MenuCalles extends javax.swing.JFrame {
 
+    private LinkedList<Calle> calles;
+    private Point[] puntosCalle;
+
+    private DefaultListModel modelo;
+    private MenuRuta menuRuta;
+    
     /**
      * Creates new form MenuCalles
+     * @param menuRuta
      */
-    public MenuCalles() {
+    public MenuCalles(MenuRuta menuRuta) {
         initComponents();
+        this.setResizable(false);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        modelo = new DefaultListModel();
+        listaCallesRuta.setModel(modelo);
+        this.menuRuta = menuRuta;
+
+        dropFactorDesgaste.removeAllItems();
+        for (int i = 0; i < 10; i++) {
+            if (i == 0) {
+                dropFactorDesgaste.addItem(String.valueOf(i));                
+            } else {
+                dropFactorDesgaste.addItem("0." + String.valueOf(i));
+            }
+        }
+    }
+    
+    public void setCalles(LinkedList<Calle> calles) {
+        this.calles = calles;
+    }
+    
+    public void setPuntosCalle(Point[] puntosCalle) {
+        this.puntosCalle = puntosCalle;
     }
 
     /**
@@ -30,17 +65,19 @@ public class MenuCalles extends javax.swing.JPanel {
         etiquetaListaCallesRuta = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listaCallesRuta = new javax.swing.JList<>();
-        etiquetaVelRecorCalle = new javax.swing.JLabel();
-        campoVelRecorCalle = new javax.swing.JTextField();
-        etiquetaNombreCalle = new javax.swing.JLabel();
         campoNombreCalle = new javax.swing.JTextField();
+        etiquetaNombreCalle = new javax.swing.JLabel();
+        etiquetaVelRecorCalle = new javax.swing.JLabel();
         etiquetaFactorDesgaste = new javax.swing.JLabel();
         dropFactorDesgaste = new javax.swing.JComboBox<>();
+        campoVelRecorCalle = new javax.swing.JTextField();
+        btnSeleccionarPtos = new javax.swing.JButton();
         btnCrearCalle = new javax.swing.JButton();
         btnEditarCalle = new javax.swing.JButton();
         btnEliminarCalle = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        btnSeleccionarPtos = new javax.swing.JButton();
+        btnCerrar = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         etiquetaListaCallesRuta.setText("Lista de Calles en Ruta");
 
@@ -51,13 +88,20 @@ public class MenuCalles extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(listaCallesRuta);
 
-        etiquetaVelRecorCalle.setText("Velocidad de Recorrido (Dist)");
-
         etiquetaNombreCalle.setText("Nombre");
+
+        etiquetaVelRecorCalle.setText("Velocidad de Recorrido (Dist)");
 
         etiquetaFactorDesgaste.setText("Factor de Desgaste");
 
         dropFactorDesgaste.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btnSeleccionarPtos.setText("Seleccionar Puntos (Inicio y Fin)");
+        btnSeleccionarPtos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarPtosActionPerformed(evt);
+            }
+        });
 
         btnCrearCalle.setText("Crear");
 
@@ -65,12 +109,10 @@ public class MenuCalles extends javax.swing.JPanel {
 
         btnEliminarCalle.setText("Eliminar");
 
-        jButton4.setText("Cerrar");
+        btnCerrar.setText("Cerrar");
 
-        btnSeleccionarPtos.setText("Seleccionar Puntos (Inicio y Fin)");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -101,7 +143,7 @@ public class MenuCalles extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEliminarCalle, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -125,18 +167,25 @@ public class MenuCalles extends javax.swing.JPanel {
                     .addComponent(dropFactorDesgaste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSeleccionarPtos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrearCalle)
                     .addComponent(btnEditarCalle)
                     .addComponent(btnEliminarCalle)
-                    .addComponent(jButton4))
+                    .addComponent(btnCerrar))
                 .addContainerGap())
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSeleccionarPtosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarPtosActionPerformed
+        menuRuta.iniciarProcesoSeleccionCalle(puntosCalle);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnSeleccionarPtosActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnCrearCalle;
     private javax.swing.JButton btnEditarCalle;
     private javax.swing.JButton btnEliminarCalle;
@@ -148,7 +197,6 @@ public class MenuCalles extends javax.swing.JPanel {
     private javax.swing.JLabel etiquetaListaCallesRuta;
     private javax.swing.JLabel etiquetaNombreCalle;
     private javax.swing.JLabel etiquetaVelRecorCalle;
-    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listaCallesRuta;
     // End of variables declaration//GEN-END:variables

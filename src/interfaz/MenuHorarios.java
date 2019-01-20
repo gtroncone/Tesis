@@ -5,17 +5,66 @@
  */
 package interfaz;
 
+import java.awt.event.WindowEvent;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import simulacion.Horario;
+
 /**
  *
  * @author gtroncone
  */
 public class MenuHorarios extends javax.swing.JFrame {
 
+    private Horario horario;
+    private DefaultListModel modelo;
+    private MenuRuta menuRuta;
+    
     /**
      * Creates new form MenuHorarios
+     * @param menuRuta
      */
-    public MenuHorarios() {
+    public MenuHorarios(MenuRuta menuRuta) {
         initComponents();
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        this.setResizable(false);
+        
+        this.menuRuta = menuRuta;
+        
+        ((JLabel)dropHoras.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        dropHoras.removeAllItems();
+        for (int i = 0; i < 24; i++) {
+            if (i < 10) {
+               dropHoras.addItem("0" + Integer.toString(i));
+            } else {
+                dropHoras.addItem(Integer.toString(i));                
+            }
+        }
+        
+        ((JLabel)dropMinutos.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        dropMinutos.removeAllItems();
+        for (int i = 0; i < 60; i++) {
+            if (i < 10) {
+                dropMinutos.addItem("0" + Integer.toString(i));
+            } else {
+                dropMinutos.addItem(Integer.toString(i));
+            }
+        }
+        
+        ((JLabel)dropFrecuencias.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        dropFrecuencias.removeAllItems();
+        dropFrecuencias.addItem("Diaria");
+        dropFrecuencias.addItem("Interdiaria");
+        
+        modelo = new DefaultListModel();
+        listaHorarios.setModel(modelo);
+        
+
+    }
+    
+    public void setHorario(Horario horario) {
+        this.horario = horario;
     }
 
     /**
@@ -32,13 +81,13 @@ public class MenuHorarios extends javax.swing.JFrame {
         etiquetaHorarios = new javax.swing.JLabel();
         etiquetaListHorarios = new javax.swing.JLabel();
         dropHoras = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
+        etiquetaHoras = new javax.swing.JLabel();
         dropMinutos = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
+        etiquetaMinutos = new javax.swing.JLabel();
         etiquetaFrecuencia = new javax.swing.JLabel();
         dropFrecuencias = new javax.swing.JComboBox<>();
         btnCrearHorario = new javax.swing.JButton();
-        btnEditarHorario = new javax.swing.JButton();
+        btnNuevoHorario = new javax.swing.JButton();
         btnCerrarHorarios = new javax.swing.JButton();
         btnBorrarHorario = new javax.swing.JButton();
 
@@ -49,6 +98,16 @@ public class MenuHorarios extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        listaHorarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaHorariosMouseClicked(evt);
+            }
+        });
+        listaHorarios.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaHorariosValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(listaHorarios);
 
         etiquetaHorarios.setText("Horario");
@@ -57,23 +116,43 @@ public class MenuHorarios extends javax.swing.JFrame {
 
         dropHoras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel3.setText("hh");
+        etiquetaHoras.setText("hh");
 
         dropMinutos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel4.setText("mm");
+        etiquetaMinutos.setText("mm");
 
         etiquetaFrecuencia.setText("Frecuencia");
 
         dropFrecuencias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnCrearHorario.setText("Crear");
+        btnCrearHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearHorarioActionPerformed(evt);
+            }
+        });
 
-        btnEditarHorario.setText("Editar");
+        btnNuevoHorario.setText("+");
+        btnNuevoHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoHorarioActionPerformed(evt);
+            }
+        });
 
-        btnCerrarHorarios.setText("Eliminar");
+        btnCerrarHorarios.setText("-");
+        btnCerrarHorarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarHorariosActionPerformed(evt);
+            }
+        });
 
         btnBorrarHorario.setText("Cerrar");
+        btnBorrarHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarHorarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -88,30 +167,32 @@ public class MenuHorarios extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(etiquetaListHorarios)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnCrearHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnEditarHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnCerrarHorarios, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnBorrarHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(etiquetaHorarios)
-                                        .addComponent(etiquetaFrecuencia))
-                                    .addGap(20, 20, 20)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(dropHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(4, 4, 4)
-                                            .addComponent(jLabel3)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(dropMinutos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(4, 4, 4)
-                                            .addComponent(jLabel4))
-                                        .addComponent(dropFrecuencias, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(etiquetaHorarios)
+                                    .addComponent(etiquetaFrecuencia))
+                                .addGap(20, 20, 20)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(dropHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(etiquetaHoras)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(dropMinutos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(etiquetaMinutos))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(btnCrearHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(34, 34, 34)
+                                                .addComponent(btnBorrarHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(dropFrecuencias, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(btnNuevoHorario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addGap(12, 12, 12)
+                                        .addComponent(btnCerrarHorarios, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 31, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -125,18 +206,18 @@ public class MenuHorarios extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaHorarios)
                     .addComponent(dropHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
+                    .addComponent(etiquetaHoras)
                     .addComponent(dropMinutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(etiquetaMinutos))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaFrecuencia)
-                    .addComponent(dropFrecuencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dropFrecuencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNuevoHorario)
+                    .addComponent(btnCerrarHorarios))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrearHorario)
-                    .addComponent(btnEditarHorario)
-                    .addComponent(btnCerrarHorarios)
                     .addComponent(btnBorrarHorario))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -144,19 +225,82 @@ public class MenuHorarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNuevoHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoHorarioActionPerformed
+        if (listaHorarios.getSelectedIndex() == -1) {
+            String entrada = dropHoras.getItemAt(dropHoras.getSelectedIndex());
+            entrada += ":" + dropMinutos.getItemAt(dropMinutos.getSelectedIndex());
+            entrada += " Frecuencia: " + dropFrecuencias.getItemAt(dropFrecuencias.getSelectedIndex());
+            modelo.addElement(entrada);
+            
+        } else {
+            String entrada = dropHoras.getItemAt(dropHoras.getSelectedIndex());
+            entrada += ":" + dropMinutos.getItemAt(dropMinutos.getSelectedIndex());
+            entrada += " Frecuencia: " + dropFrecuencias.getItemAt(dropFrecuencias.getSelectedIndex());
+            modelo.set(listaHorarios.getSelectedIndex(), entrada);
+        }
+    }//GEN-LAST:event_btnNuevoHorarioActionPerformed
+
+    private void listaHorariosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaHorariosValueChanged
+        if (listaHorarios.getSelectedIndex() != -1) {
+            btnNuevoHorario.setText("Editar");
+            String entrada = (String) modelo.get(listaHorarios.getSelectedIndex());
+            String[] parsed = entrada.split(" ");
+            for (int i = 0; i < parsed.length; i++) {
+                String[] horas = parsed[0].split(":");
+                dropHoras.setSelectedItem(horas[0]);
+                dropMinutos.setSelectedItem(horas[1]);
+                dropFrecuencias.setSelectedItem(parsed[2]);
+            }
+        }
+    }//GEN-LAST:event_listaHorariosValueChanged
+
+    private void btnCerrarHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarHorariosActionPerformed
+        if (listaHorarios.getSelectedIndex() != -1) {
+            modelo.remove(listaHorarios.getSelectedIndex());
+            btnNuevoHorario.setText("+");
+        }
+    }//GEN-LAST:event_btnCerrarHorariosActionPerformed
+
+    private void listaHorariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaHorariosMouseClicked
+        if (evt.getButton() == 3) {
+            listaHorarios.clearSelection();
+            btnNuevoHorario.setText("+");
+        }
+    }//GEN-LAST:event_listaHorariosMouseClicked
+
+    private void btnBorrarHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarHorarioActionPerformed
+        menuRuta.setVisible(true);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_btnBorrarHorarioActionPerformed
+
+    private void btnCrearHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearHorarioActionPerformed
+        if (horario == null) {
+            horario = new Horario();
+            for (int i = 0; i < modelo.getSize(); i++) {
+                String[] entrada = ((String) modelo.get(i)).split(" ");
+                String[] horas = entrada[0].split(":");
+                horario.nuevoDato(Integer.parseInt(horas[0]),
+                        Integer.parseInt(horas[1]), Integer.parseInt(entrada[2]));
+            }
+            menuRuta.setHorario(horario);
+            this.setVisible(false);
+            menuRuta.setVisible(true);
+        }
+    }//GEN-LAST:event_btnCrearHorarioActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBorrarHorario;
     private javax.swing.JButton btnCerrarHorarios;
     private javax.swing.JButton btnCrearHorario;
-    private javax.swing.JButton btnEditarHorario;
+    private javax.swing.JButton btnNuevoHorario;
     private javax.swing.JComboBox<String> dropFrecuencias;
     private javax.swing.JComboBox<String> dropHoras;
     private javax.swing.JComboBox<String> dropMinutos;
     private javax.swing.JLabel etiquetaFrecuencia;
     private javax.swing.JLabel etiquetaHorarios;
+    private javax.swing.JLabel etiquetaHoras;
     private javax.swing.JLabel etiquetaListHorarios;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel etiquetaMinutos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listaHorarios;
     // End of variables declaration//GEN-END:variables

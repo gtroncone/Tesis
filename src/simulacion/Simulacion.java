@@ -5,10 +5,27 @@
  */
 package simulacion;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author gtroncone
  */
 public class Simulacion {
     
+    private LinkedList<Ruta> rutas;
+    private LinkedList<Camion> camiones;
+    
+    public Simulacion() {
+        rutas = new LinkedList<>();
+        camiones = new LinkedList<>();
+    }
+    
+    public void añadirRuta(Ruta ruta) {
+        rutas.add(ruta);
+    }
+    
+    public LinkedList<Ruta> getRutas() {
+        return rutas;
+    }
 }

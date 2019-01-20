@@ -5,10 +5,13 @@
  */
 package interfaz;
 
+import simulacion.Simulacion;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -31,6 +34,9 @@ public class UI extends javax.swing.JFrame {
     private int ultimoY;
     private int deltaX;
     private int deltaY;
+        
+    private boolean modoDibujo = false;
+    private boolean modoSeleccionCalle = false;
     
     private final Render render;
     private final JLabel mapa;
@@ -39,16 +45,21 @@ public class UI extends javax.swing.JFrame {
     private final MenuPuntosAcum menuPuntosAcum;
     private final MenuBarredores menuBarredores;
     
+    private final Simulacion simulacion;
+    
     private final ScheduledExecutorService autoScroll;
     private static ScheduledFuture<?> t;
 
     /**
      * Creates new form UI
+     * @param simulacion
      * @throws java.io.IOException
      */
-    public UI() throws IOException {
+    public UI(Simulacion simulacion) throws IOException {
         initComponents();
         this.setResizable(false);
+        
+        this.simulacion = simulacion;
         
         menuRuta = new MenuRuta(this);
         menuCamiones = new MenuCamiones(this);
@@ -58,7 +69,7 @@ public class UI extends javax.swing.JFrame {
         ultimoX = -1;
         ultimoY = -1;
 
-        render = new Render();
+        render = new Render(simulacion);
         mapa = new JLabel(new ImageIcon(render.getRender()), JLabel.CENTER);
         mapa.setSize(new Dimension(render.getMetadata().getDimX(),
                 render.getMetadata().getDimY()));
@@ -80,9 +91,20 @@ public class UI extends javax.swing.JFrame {
         btnZoomIn.setFocusPainted(false);
         btnZoomOut.setFocusPainted(false);
     }
+
+    public Simulacion getSimulacion() {
+        return simulacion;
+    }
     
     private void actualizarMapa() {
         mapa.setIcon(new ImageIcon(render.getRender()));
+    }
+    
+    public void iniciarProcesoDeDibujo(LinkedList<Point> puntos) {
+        modoDibujo = true;
+        render.setPuntosDibujados(puntos);
+        render.setModoDeDibujo(true);
+        actualizarMapa();
     }
 
     /**
@@ -108,6 +130,9 @@ public class UI extends javax.swing.JFrame {
         contenedorMapa.setPreferredSize(new java.awt.Dimension(1024, 696));
         contenedorMapa.setRequestFocusEnabled(false);
         contenedorMapa.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                contenedorMapaMouseMoved(evt);
+            }
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 contenedorMapaMouseDragged(evt);
             }
@@ -115,6 +140,9 @@ public class UI extends javax.swing.JFrame {
         contenedorMapa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 contenedorMapaMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                contenedorMapaMouseClicked(evt);
             }
         });
 
@@ -285,6 +313,32 @@ public class UI extends javax.swing.JFrame {
     private void btnBarridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBarridoActionPerformed
         menuBarredores.setVisible(true);
     }//GEN-LAST:event_btnBarridoActionPerformed
+
+    private void contenedorMapaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contenedorMapaMouseClicked
+        t.cancel(true);
+        if (modoDibujo) {
+            if (evt.getButton() == 1) {
+                render.añadirPunto(new Point(evt.getX(), evt.getY()));
+                actualizarMapa();
+            } else if (evt.getButton() == 3) {
+                modoDibujo = false;
+                render.setModoDeDibujo(false);
+                menuRuta.setPuntos(render.getPuntosDibujados());
+                menuRuta.setZoom(render.getZoom());
+                menuRuta.setVisible(true);
+                actualizarMapa();
+            }
+        } else if (modoSeleccionCalle) {
+            
+        }
+    }//GEN-LAST:event_contenedorMapaMouseClicked
+
+    private void contenedorMapaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contenedorMapaMouseMoved
+        if (modoDibujo) {
+            render.cambiarUltimoPunto(new Point(evt.getX(), evt.getY()));
+            actualizarMapa();
+        }
+    }//GEN-LAST:event_contenedorMapaMouseMoved
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBarrido;

@@ -5,12 +5,20 @@
  */
 package interfaz;
 
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JColorChooser;
 import javax.swing.JFrame;
+import simulacion.Calle;
+import simulacion.Horario;
+import simulacion.Ruta;
 
 /**
  *
@@ -20,6 +28,11 @@ public class MenuRuta extends javax.swing.JFrame {
 
     private final UI interfaz;
     private final MenuHorarios menuHorarios;
+    private Ruta rutaSeleccionada;
+    private LinkedList<Calle> listaCalles;
+    private Horario horario;
+    private int zoom;
+    private LinkedList<Point> puntos;
     
     /**
      * Creates new form MenuRuta
@@ -34,7 +47,58 @@ public class MenuRuta extends javax.swing.JFrame {
         
         BufferedImage imagen = ImageIO.read(new File("assets/dibujar-ruta.png"));
         btnDibujarRuta.setIcon(new ImageIcon(imagen));
-        menuHorarios = new MenuHorarios();
+        menuHorarios = new MenuHorarios(this);
+                
+        inicializarDropdowns();
+    }
+    
+    private void inicializarDropdowns() {
+        dropSelRuta.removeAllItems();
+        dropSelRuta.addItem("Nueva Ruta");
+        LinkedList<Ruta> rutas = interfaz.getSimulacion().getRutas();
+        for (int i = 0; i < rutas.size(); i++) {
+            dropSelRuta.addItem(rutas.get(i).getNombre());
+        }
+        
+        dropTipoRec.removeAllItems();
+        dropTipoRec.addItem("Puerta a puerta");
+        dropTipoRec.addItem("Esquina a esquina");
+    }
+    
+    private void modoCreacion() {
+        btnAceptar.setText("Crear");
+        rutaSeleccionada = null;
+        campoDistFlujoPeatonal.setText("");
+        campoNombreRuta.setText("");
+        menuHorarios.setHorario(null);
+        // TODO: Manejo de calles
+        campoDistFlujoPeatonal.setText("");
+        
+    }
+    
+    private void modoEdicion(int index) {
+        btnAceptar.setText("Editar");
+        LinkedList<Ruta> listaRutas = interfaz.getSimulacion().getRutas();
+        this.rutaSeleccionada = listaRutas.get(index);
+        campoNombreRuta.setText(rutaSeleccionada.getNombre());
+        menuHorarios.setHorario(rutaSeleccionada.getHorario());
+        // TODO: Manejo de calles
+        campoDistFlujoPeatonal.setText(rutaSeleccionada.getFlujoPeatonal().getCampo());
+        campoDistDesPorPeaton.setText(rutaSeleccionada.getDesechosPorPeaton().getCampo());
+    }
+    
+    private void editarRuta() {
+        rutaSeleccionada.setNombre(campoNombreRuta.getText());
+        rutaSeleccionada.setCalles(listaCalles);
+        rutaSeleccionada.setHorario(horario);
+        rutaSeleccionada.setZoom(zoom); // Editado durante el proceso de dibujo
+        rutaSeleccionada.setDesechosPorPeaton(campoDistDesPorPeaton.getText());
+        rutaSeleccionada.setFlujoPeatonal(campoDistFlujoPeatonal.getText());
+        rutaSeleccionada.setPuntos(puntos); // Editado durante el proceso de dibujo
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
     }
 
     /**
@@ -51,8 +115,6 @@ public class MenuRuta extends javax.swing.JFrame {
         etiquetaTipoRecol = new javax.swing.JLabel();
         dropTipoRec = new javax.swing.JComboBox<>();
         btnDibujarRuta = new javax.swing.JButton();
-        etiquetaCalles = new javax.swing.JLabel();
-        btnEditarCalles = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         dropSelRuta = new javax.swing.JComboBox<>();
@@ -60,10 +122,20 @@ public class MenuRuta extends javax.swing.JFrame {
         etiquetaSelRuta = new javax.swing.JLabel();
         etiquetaNomRuta = new javax.swing.JLabel();
         campoNombreRuta = new javax.swing.JTextField();
+        etiquetaDistFlujoPeatonal = new javax.swing.JLabel();
+        campoDistFlujoPeatonal = new javax.swing.JTextField();
+        etiquetaDistDesPorPeaton = new javax.swing.JLabel();
+        campoDistDesPorPeaton = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,25 +152,74 @@ public class MenuRuta extends javax.swing.JFrame {
 
         dropTipoRec.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        etiquetaCalles.setText("Calles");
-
-        btnEditarCalles.setText("Editar Calles");
+        btnDibujarRuta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDibujarRutaActionPerformed(evt);
+            }
+        });
 
         btnAceptar.setText("Crear");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         dropSelRuta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        dropSelRuta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dropSelRutaActionPerformed(evt);
+            }
+        });
 
         btnEliminarRuta.setText("Eliminar");
+        btnEliminarRuta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarRutaActionPerformed(evt);
+            }
+        });
 
         etiquetaSelRuta.setText("Seleccionar Ruta");
 
         etiquetaNomRuta.setText("Nombre de Ruta");
 
-        jLabel1.setText("Flujo Peatonal (Dist)");
+        etiquetaDistFlujoPeatonal.setText("Flujo Peatonal (Dist)");
 
-        jLabel2.setText("Desechos por Peatón (Dist)");
+        etiquetaDistDesPorPeaton.setText("Desechos por Peatón (Dist)");
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        jLabel1.setText("Nombre de Calle");
+
+        jLabel2.setText("Velocidad de Recorrido (Dist)");
+
+        jButton1.setText("Escoger Color");
+
+        jButton3.setText("-");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("+");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,10 +231,9 @@ public class MenuRuta extends javax.swing.JFrame {
                     .addComponent(etiquetaSelRuta)
                     .addComponent(etiquetaHorario)
                     .addComponent(etiquetaTipoRecol)
-                    .addComponent(etiquetaCalles)
                     .addComponent(etiquetaNomRuta)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(etiquetaDistFlujoPeatonal)
+                    .addComponent(etiquetaDistDesPorPeaton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dropTipoRec, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -124,19 +244,46 @@ public class MenuRuta extends javax.swing.JFrame {
                             .addComponent(dropSelRuta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(btnEliminarRuta))
-                    .addComponent(btnEditarCalles, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addComponent(campoDistDesPorPeaton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                        .addComponent(campoDistFlujoPeatonal, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addGap(29, 29, 29))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53)
                 .addComponent(btnCancelar)
-                .addGap(51, 51, 51)
+                .addGap(48, 48, 48)
                 .addComponent(btnDibujarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69))
+                .addGap(72, 72, 72))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(64, 64, 64))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,8 +307,25 @@ public class MenuRuta extends javax.swing.JFrame {
                     .addComponent(dropTipoRec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(etiquetaCalles)
-                    .addComponent(btnEditarCalles))
+                    .addComponent(etiquetaDistFlujoPeatonal)
+                    .addComponent(campoDistFlujoPeatonal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiquetaDistDesPorPeaton)
+                    .addComponent(campoDistDesPorPeaton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCancelar)
+                            .addComponent(btnAceptar)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDibujarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -171,15 +335,11 @@ public class MenuRuta extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDibujarRuta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCancelar)
-                            .addComponent(btnAceptar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -187,25 +347,94 @@ public class MenuRuta extends javax.swing.JFrame {
 
     private void btnEditarHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarHorarioActionPerformed
         menuHorarios.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnEditarHorarioActionPerformed
+
+    private void dropSelRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dropSelRutaActionPerformed
+        int index = dropSelRuta.getSelectedIndex();
+        if (index <= 0) {
+            this.modoCreacion();
+        } else {
+            this.modoEdicion(index);
+        }
+    }//GEN-LAST:event_dropSelRutaActionPerformed
+
+    private void btnEliminarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarRutaActionPerformed
+        int index = dropSelRuta.getSelectedIndex() - 1;
+        if (index >= 0) {
+            interfaz.getSimulacion().getRutas().remove(index);
+            inicializarDropdowns();
+            if (index <= 0) {
+                this.modoCreacion();
+            } else {
+                this.modoEdicion(index);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarRutaActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        //TODO: Reiniciar estado del componente
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        if (dropSelRuta.getSelectedIndex() <= 0) {
+            
+        } else {
+            editarRuta();
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnDibujarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDibujarRutaActionPerformed
+        this.setVisible(false);
+        if (dropSelRuta.getSelectedIndex() <= 0) {
+            interfaz.iniciarProcesoDeDibujo(puntos);
+        } else {
+            
+        }
+    }//GEN-LAST:event_btnDibujarRutaActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    public void setZoom(int zoom) {
+        this.zoom = zoom;
+    }
+
+    public void setPuntos(LinkedList<Point> puntos) {
+        this.puntos = puntos;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnDibujarRuta;
-    private javax.swing.JButton btnEditarCalles;
     private javax.swing.JButton btnEditarHorario;
     private javax.swing.JButton btnEliminarRuta;
+    private javax.swing.JTextField campoDistDesPorPeaton;
+    private javax.swing.JTextField campoDistFlujoPeatonal;
     private javax.swing.JTextField campoNombreRuta;
     private javax.swing.JComboBox<String> dropSelRuta;
     private javax.swing.JComboBox<String> dropTipoRec;
-    private javax.swing.JLabel etiquetaCalles;
+    private javax.swing.JLabel etiquetaDistDesPorPeaton;
+    private javax.swing.JLabel etiquetaDistFlujoPeatonal;
     private javax.swing.JLabel etiquetaHorario;
     private javax.swing.JLabel etiquetaNomRuta;
     private javax.swing.JLabel etiquetaSelRuta;
     private javax.swing.JLabel etiquetaTipoRecol;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables

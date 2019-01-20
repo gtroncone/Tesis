@@ -5,11 +5,15 @@
  */
 package logica;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import javax.imageio.ImageIO;
+import simulacion.Simulacion;
 
 /**
  *
@@ -26,22 +30,85 @@ public class Render {
     private int zoom;
     private int pixelX;
     private int pixelY;
+    private LinkedList<Point> puntosDibujados;
+
+    private final Simulacion simulacion;
+    private final static int DIAMETRO_PUNTO = 12;
+    private final static int RADIO_PUNTO = DIAMETRO_PUNTO / 2;
+    private boolean modoDeDibujo = false;
     
-    public Render() {        
+    public Render(Simulacion simulacion) {        
         try {
             metadata = new MetadataMapa();
+            this.simulacion = simulacion;
             zoom = metadata.getMinZoom();
+            puntosDibujados = new LinkedList<>();
             pixelX = 0;
             pixelY = 0;
         } catch (NullPointerException e) {
             throw e;
         }
     }
+
+    public int getZoom() {
+        return zoom;
+    }
+
+    public void setPuntosDibujados(LinkedList<Point> puntosDibujados) {
+        if (puntosDibujados == null) {
+            this.puntosDibujados = new LinkedList<>();
+        } else {
+            this.puntosDibujados = puntosDibujados;            
+        }
+    }
+    
+    public void añadirPunto(Point punto) {
+        punto.translate(pixelX, pixelY);
+        puntosDibujados.add(punto);
+    }
+    
+    public void cambiarUltimoPunto(Point punto) {
+        if (!puntosDibujados.isEmpty()) {
+            punto.translate(pixelX, pixelY);
+            puntosDibujados.getLast().setLocation(punto.getX(), punto.getY());
+        }
+    }
     
     public BufferedImage getRender() {
         mapa = renderizarMapa();
-        // mapa = añadirLoDemas();
+        dibujarRutas();
+        if (modoDeDibujo) {
+            dibujarRutaEnConstruccion();
+        }
         return mapa;
+    }
+
+    public void setModoDeDibujo(boolean modoDeDibujo) {
+        this.modoDeDibujo = modoDeDibujo;
+    }
+    
+    private void dibujarRutas() {
+        
+    }
+    
+    private void dibujarRutaEnConstruccion() {
+        Graphics g2d = mapa.createGraphics();
+        g2d.setColor(new Color(1f, 0f, 0f, 0.5f));
+        for (int i = 0; i < puntosDibujados.size(); i++) {
+            Point punto = puntosDibujados.get(i);
+            g2d.fillOval((int) punto.getX() - pixelX - RADIO_PUNTO,
+                    (int) punto.getY() - pixelY - RADIO_PUNTO,
+                    DIAMETRO_PUNTO, DIAMETRO_PUNTO);
+            if (i + 1 < puntosDibujados.size()) {
+                Point siguientePunto = puntosDibujados.get(i + 1);
+                g2d.drawLine((int) punto.getX() - pixelX, (int) punto.getY() - pixelY,
+                        (int) siguientePunto.getX() - pixelX, (int) siguientePunto.getY() - pixelY);
+            }
+        }
+    }
+
+    public LinkedList<Point> getPuntosDibujados() {
+        return puntosDibujados;
     }
     
     public MetadataMapa getMetadata() {
@@ -131,5 +198,14 @@ public class Render {
         resultado = resultado.getSubimage(pixelX % 256, pixelY % 256, metadata.getDimX(), metadata.getDimY());
         
         return resultado;
+    }
+
+    public Point getPuntoCercano(int x, int y) {
+        for (int i = 0; i < puntosDibujados.size(); i++) {
+            if (puntosDibujados.get(i).distance(x, y) <= RADIO_PUNTO) {
+                return puntosDibujados.get(i);
+            }
+        }
+        return null;
     }
 }

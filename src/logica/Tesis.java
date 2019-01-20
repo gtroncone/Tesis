@@ -5,6 +5,7 @@
  */
 package logica;
 
+import simulacion.Simulacion;
 import interfaz.UI;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -22,17 +23,15 @@ public class Tesis {
      * @param args the command line arguments
      */
     private UI interfaz;
+    private Simulacion simulacion;
 
     public Tesis() {
+        simulacion = new Simulacion();
         try {
-            interfaz = new UI();
+            interfaz = new UI(simulacion);
         } catch (IOException ex) {
             Logger.getLogger(Tesis.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    public void ejecutar() {
-        
     }
 
     public static void main(String args[]) {
@@ -43,7 +42,6 @@ public class Tesis {
             Logger.getLogger(Tesis.class.getName()).log(Level.SEVERE, null, ex);
         }
         Tesis tesis = new Tesis();
-        tesis.ejecutar();
 
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
