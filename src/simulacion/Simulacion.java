@@ -28,4 +28,12 @@ public class Simulacion {
     public LinkedList<Ruta> getRutas() {
         return rutas;
     }
+    
+    public LinkedList<Camion> getCamiones() {
+        return camiones;
+    }
+    
+    public void añadirCamion(Camion camion) {
+        camiones.add(camion);
+    }
 }
