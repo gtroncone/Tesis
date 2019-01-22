@@ -36,7 +36,6 @@ public class UI extends javax.swing.JFrame {
     private int deltaY;
         
     private boolean modoDibujo = false;
-    private boolean modoSeleccionCalle = false;
     
     private final Render render;
     private final JLabel mapa;
@@ -49,6 +48,8 @@ public class UI extends javax.swing.JFrame {
     
     private final ScheduledExecutorService autoScroll;
     private static ScheduledFuture<?> t;
+    
+    private boolean dragMutex = false;
 
     /**
      * Creates new form UI
@@ -260,37 +261,41 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_contenedorMapaMouseDragged
 
     private void contenedorMapaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contenedorMapaMouseReleased
-        t = autoScroll.scheduleAtFixedRate(new Runnable() {
-            int n = 0;
-            int variacion = 0;
-            @Override
-            public void run() {
-                n++;
-                if (deltaX == 0 && deltaY == 0) {
-                    t.cancel(true);
+        if (!dragMutex) {
+            dragMutex = true;
+            t = autoScroll.scheduleAtFixedRate(new Runnable() {
+                int n = 0;
+                int variacion = 0;
+                @Override
+                public void run() {
+                    n++;
+                    if (deltaX == 0 && deltaY == 0) {
+                        dragMutex = false;
+                        t.cancel(true);
+                    }
+                    render.actualizarPosicion((int)(FACTOR_AUTOSCROLL * deltaX), (int)(FACTOR_AUTOSCROLL * deltaY));
+                    actualizarMapa();
+
+                    if (deltaX > 0) {
+                        variacion = deltaX - (int)(n * n * ACELERACION_AUTOSCROLL);
+                    } else if (deltaX < 0) {
+                        variacion = deltaX + (int)(n * n * ACELERACION_AUTOSCROLL);                    
+                    }
+
+                    deltaX = ((deltaX >= 0 && variacion <= 0) || (deltaX <= 0 && variacion >= 0) ? 0 : variacion);
+
+                    if (deltaY > 0) {
+                        variacion = deltaY - (int)(n * n * ACELERACION_AUTOSCROLL);                    
+                    } else if (deltaY < 0) {
+                        variacion = deltaY + (int)(n * n * ACELERACION_AUTOSCROLL);
+                    }
+
+                    deltaY = ((deltaY >= 0 && variacion <= 0) || (deltaY <= 0 && variacion >= 0) ? 0 : variacion);
                 }
-                render.actualizarPosicion((int)(FACTOR_AUTOSCROLL * deltaX), (int)(FACTOR_AUTOSCROLL * deltaY));
-                actualizarMapa();
-                
-                if (deltaX > 0) {
-                    variacion = deltaX - (int)(n * n * ACELERACION_AUTOSCROLL);
-                } else if (deltaX < 0) {
-                    variacion = deltaX + (int)(n * n * ACELERACION_AUTOSCROLL);                    
-                }
-                               
-                deltaX = ((deltaX >= 0 && variacion <= 0) || (deltaX <= 0 && variacion >= 0) ? 0 : variacion);
-                     
-                if (deltaY > 0) {
-                    variacion = deltaY - (int)(n * n * ACELERACION_AUTOSCROLL);                    
-                } else if (deltaY < 0) {
-                    variacion = deltaY + (int)(n * n * ACELERACION_AUTOSCROLL);
-                }
-                
-                deltaY = ((deltaY >= 0 && variacion <= 0) || (deltaY <= 0 && variacion >= 0) ? 0 : variacion);
-            }
-        }, 0, 5, TimeUnit.MILLISECONDS);
-        ultimoX = -1;
-        ultimoY = -1;
+            }, 0, 5, TimeUnit.MILLISECONDS);
+            ultimoX = -1;
+            ultimoY = -1;
+        }
     }//GEN-LAST:event_contenedorMapaMouseReleased
 
     private void btnZoomInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZoomInActionPerformed
@@ -309,6 +314,7 @@ public class UI extends javax.swing.JFrame {
 
     private void btnCamionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCamionesActionPerformed
         menuCamiones.setVisible(true);
+        menuCamiones.setListaCamiones(simulacion.getCamiones());
     }//GEN-LAST:event_btnCamionesActionPerformed
 
     private void btnPtosAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPtosAcumActionPerformed
@@ -317,10 +323,12 @@ public class UI extends javax.swing.JFrame {
 
     private void btnBarridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBarridoActionPerformed
         menuBarredores.setVisible(true);
+        menuBarredores.setRutas(simulacion.getRutas());
     }//GEN-LAST:event_btnBarridoActionPerformed
 
     private void contenedorMapaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contenedorMapaMouseClicked
         t.cancel(true);
+        dragMutex = false;
         if (modoDibujo) {
             if (evt.getButton() == 1) {
                 render.añadirPunto(new Point(evt.getX(), evt.getY()));
@@ -333,8 +341,6 @@ public class UI extends javax.swing.JFrame {
                 menuRuta.setVisible(true);
                 actualizarMapa();
             }
-        } else if (modoSeleccionCalle) {
-            
         }
     }//GEN-LAST:event_contenedorMapaMouseClicked
 

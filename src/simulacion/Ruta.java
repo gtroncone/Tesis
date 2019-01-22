@@ -20,6 +20,7 @@ public class Ruta {
     private Distribucion flujoPeatonal;
     private Distribucion desechosPorPeaton;
     private LinkedList<Point> puntos;
+    private LinkedList<AreaBarrido> listaAreas;
     
     private int tipoDeRecoleccion; // 0 = esquina a esquina, 1 = puerta a puerta
     private int zoom;
@@ -67,6 +68,21 @@ public class Ruta {
 
     public void setPuntos(LinkedList<Point> puntos) {
         this.puntos = puntos;
+    }
+    
+    public LinkedList<AreaBarrido> getListaAreas() {
+        return listaAreas;
+    }
+
+    public void setListaAreas(LinkedList<AreaBarrido> listaAreas) {
+        this.listaAreas = listaAreas;
+    }
+    
+    public void añadirArea(AreaBarrido area) {
+        if (listaAreas == null) {
+            listaAreas = new LinkedList<>();
+        }
+        listaAreas.add(area);
     }
 
     public void setZoom(int zoom) {

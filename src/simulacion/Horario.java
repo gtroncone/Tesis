@@ -19,11 +19,6 @@ public class Horario {
     public Horario() {
         datos = new LinkedList<>();
     }
-    
-    public Horario(Horario horario) {
-        this.datos = horario.getDatos();
-        this.frecuencia = horario.getFrecuencia();
-    }
 
     public LinkedList<int[]> getDatos() {
         return datos;

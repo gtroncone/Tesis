@@ -26,6 +26,7 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
         interfaz = ui;
         initComponents();
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        this.setResizable(false);
     }
 
     /**

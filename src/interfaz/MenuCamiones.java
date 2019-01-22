@@ -20,6 +20,7 @@ public class MenuCamiones extends javax.swing.JFrame {
 
     private final UI interfaz;
     private LinkedList<Camion> listaCamiones;
+
     private LinkedList<Pieza> listaPiezas;
     
     /**
@@ -30,6 +31,7 @@ public class MenuCamiones extends javax.swing.JFrame {
         interfaz = ui;
         initComponents();
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        this.setResizable(false);
         
         dropSelCamion.removeAllItems();
         dropSelCamion.addItem("Nuevo Camión");
@@ -70,6 +72,10 @@ public class MenuCamiones extends javax.swing.JFrame {
         campoCostoPieza.setText("");
         campoDistTiempoVidaPieza.setText("");
         dropCantPorCamion.setSelectedIndex(0);
+    }
+    
+    public void setListaCamiones(LinkedList<Camion> listaCamiones) {
+        this.listaCamiones = listaCamiones;
     }
 
     /**
