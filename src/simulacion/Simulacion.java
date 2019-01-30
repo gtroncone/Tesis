@@ -5,13 +5,14 @@
  */
 package simulacion;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author gtroncone
  */
-public class Simulacion {
+public class Simulacion implements Serializable {
     
     private LinkedList<Ruta> rutas;
     private LinkedList<Camion> camiones;
@@ -35,5 +36,9 @@ public class Simulacion {
     
     public void añadirCamion(Camion camion) {
         camiones.add(camion);
+    }
+
+    public void ejecutar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

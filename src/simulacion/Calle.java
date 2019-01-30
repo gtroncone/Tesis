@@ -6,7 +6,6 @@
 package simulacion;
 
 import java.awt.Color;
-import java.awt.Point;
 
 /**
  *
@@ -16,12 +15,13 @@ public class Calle {
     
     private String nombre;
     private Distribucion velocidad;
-    private Point puntoInicial;
-    private Point puntoFinal;
+    private int puntoInicial;
+    private int puntoFinal;
     private Color color;
-    
+    private PuntosAcumulacion puntosAcum;
+
     public Calle(String nombre, Distribucion velocidad,
-            Point puntoInicial, Point puntoFinal,
+            int puntoInicial, int puntoFinal,
             Color color) {
         this.nombre = nombre;
         this.velocidad = velocidad;
@@ -54,20 +54,27 @@ public class Calle {
         this.velocidad = velocidad;
     }
 
-    public Point getPuntoInicial() {
+    public int getPuntoInicial() {
         return puntoInicial;
     }
 
-    public void setPuntoInicial(Point puntoInicial) {
+    public void setPuntoInicial(int puntoInicial) {
         this.puntoInicial = puntoInicial;
     }
 
-    public Point getPuntoFinal() {
+    public int getPuntoFinal() {
         return puntoFinal;
     }
 
-    public void setPuntoFinal(Point puntoFinal) {
+    public void setPuntoFinal(int puntoFinal) {
         this.puntoFinal = puntoFinal;
     }
     
+    public PuntosAcumulacion getPuntosAcum() {
+        return puntosAcum;
+    }
+    
+    public void setPuntosAcum(PuntosAcumulacion puntosAcum) {
+        this.puntosAcum = puntosAcum;
+    }
 }

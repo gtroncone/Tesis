@@ -17,6 +17,21 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
+    <Container class="javax.swing.JPanel" name="jPanel4">
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+    </Container>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -40,7 +55,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <Component id="tabsConfCiclos" min="-2" pref="431" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
@@ -48,7 +63,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tabsConfCiclos" min="-2" pref="493" max="-2" attributes="0"/>
+          <Component id="tabsConfCiclos" alignment="1" min="-2" pref="493" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -70,52 +85,47 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
-                                      <Component id="btnSelPuntoAcum" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                              <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+                              <Component id="btnCrearPtoAcum" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                              <Component id="btnEditarPtoAcum" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnCancelarPtoAcum" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="etiquetaRutas" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="etiquetaCalles" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="etiquetaCapacidad" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="etiquetaTazaAcum" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="etiquetaTIpoPunAcum" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="etiquetaIDPunAcum" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="etiquetaTazaGen" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="etiquetaTasaAcum" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="etiquetaTasaGen" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="campoIDPunAcum" alignment="0" max="32767" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="campoCapacidad" min="-2" pref="85" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="dropUnidCapacidad" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="dropTipoPunAcum" max="32767" attributes="0"/>
-                                          <Component id="campoTazaAcum" max="32767" attributes="0"/>
-                                          <Component id="campoTazaGen" alignment="0" max="32767" attributes="0"/>
+                                      <EmptySpace pref="41" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="campoTasaAcum" alignment="1" min="-2" pref="170" max="-2" attributes="0"/>
+                                          <Component id="campoTasaGen" alignment="1" min="-2" pref="170" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="btnCrearPtoAcum" min="-2" pref="80" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="etiquetaCantPuntosAcum" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="btnEditarPtoAcum" min="-2" pref="80" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="btnCancelarPtoAcum" min="-2" pref="80" max="-2" attributes="0"/>
+                                      <Component id="etiquetaNumPuntosAcum" min="-2" pref="68" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnNuevoPuntoAcum" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnRestarPuntoAcum" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="btnColocarPtoAcumRuta" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="32" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -123,134 +133,174 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnSelPuntoAcum" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="etiquetaRutas" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="85" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="etiquetaCalles" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="81" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="campoIDPunAcum" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="etiquetaIDPunAcum" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="etiquetaCantPuntosAcum" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="etiquetaNumPuntosAcum" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnNuevoPuntoAcum" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnRestarPuntoAcum" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="dropUnidCapacidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="campoCapacidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="etiquetaCapacidad" alignment="3" min="-2" pref="11" max="-2" attributes="0"/>
+                          <Component id="campoTasaAcum" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="etiquetaTasaAcum" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="dropTipoPunAcum" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="etiquetaTIpoPunAcum" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="etiquetaTasaGen" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="campoTasaGen" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="campoTazaAcum" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="etiquetaTazaAcum" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="etiquetaTazaGen" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="campoTazaGen" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnColocarPtoAcumRuta" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace pref="25" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnCrearPtoAcum" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnEditarPtoAcum" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnCancelarPtoAcum" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="102" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="btnSelPuntoAcum">
+            <Component class="javax.swing.JLabel" name="etiquetaTasaAcum">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Seleccionar Punto de Acumulaci&#xf3;n"/>
+                <Property name="text" type="java.lang.String" value="Tasa de Acumulaci&#xf3;n (Dist)"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="etiquetaIDPunAcum">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="ID del Punto de Acumulaci&#xf3;n"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="etiquetaCapacidad">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Capacidad"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="etiquetaTazaAcum">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Taza de Acumulaci&#xf3;n (Dist)"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="etiquetaTIpoPunAcum">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Tipo"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="dropTipoPunAcum">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
-                </Property>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JTextField" name="campoCapacidad">
-            </Component>
-            <Component class="javax.swing.JComboBox" name="dropUnidCapacidad">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
-                </Property>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JTextField" name="campoIDPunAcum">
-            </Component>
-            <Component class="javax.swing.JTextField" name="campoTazaAcum">
+            <Component class="javax.swing.JTextField" name="campoTasaAcum">
             </Component>
             <Component class="javax.swing.JButton" name="btnCrearPtoAcum">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Crear"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrearPtoAcumActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnEditarPtoAcum">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Editar"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnColocarPtoAcumRuta">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Colocar Punto de Acumulaci&#xf3;n en Ruta"/>
-              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarPtoAcumActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnCancelarPtoAcum">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cancelar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarPtoAcumActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="etiquetaTazaGen">
+            <Component class="javax.swing.JLabel" name="etiquetaTasaGen">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Taza de Generaci&#xf3;n (Dist)"/>
+                <Property name="text" type="java.lang.String" value="Tasa de Generaci&#xf3;n (Dist)"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="campoTazaGen">
+            <Component class="javax.swing.JTextField" name="campoTasaGen">
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JList" name="listaRutas">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                      <StringArray count="5">
+                        <StringItem index="0" value="Item 1"/>
+                        <StringItem index="1" value="Item 2"/>
+                        <StringItem index="2" value="Item 3"/>
+                        <StringItem index="3" value="Item 4"/>
+                        <StringItem index="4" value="Item 5"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="listaRutasMouseClicked"/>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="listaRutasValueChanged"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JLabel" name="etiquetaRutas">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Rutas"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="etiquetaCalles">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Calles"/>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JList" name="listaCalles">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                      <StringArray count="5">
+                        <StringItem index="0" value="Item 1"/>
+                        <StringItem index="1" value="Item 2"/>
+                        <StringItem index="2" value="Item 3"/>
+                        <StringItem index="3" value="Item 4"/>
+                        <StringItem index="4" value="Item 5"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="listaCallesMouseClicked"/>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="listaCallesValueChanged"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JLabel" name="etiquetaCantPuntosAcum">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cantidad Puntos de Acum."/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="etiquetaNumPuntosAcum">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="text" type="java.lang.String" value="0"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnNuevoPuntoAcum">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="+"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevoPuntoAcumActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnRestarPuntoAcum">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRestarPuntoAcumActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

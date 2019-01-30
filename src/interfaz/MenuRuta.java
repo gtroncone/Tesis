@@ -42,6 +42,7 @@ public class MenuRuta extends javax.swing.JFrame {
     private DefaultListModel modeloCalles;
     
     private Color estadoColorPicker;
+    private final int[] rainbowColors;
     
     /**
      * Creates new form MenuRuta
@@ -65,6 +66,13 @@ public class MenuRuta extends javax.swing.JFrame {
         refrescarRutas();
                 
         inicializarDropdowns();
+        rainbowColors = new int[6];
+        rainbowColors[0] = 255 * 1000000;
+        rainbowColors[1] = 255 * 1000000 + 127 * 1000;
+        rainbowColors[2] = 255 * 1000000 + 255 * 1000;
+        rainbowColors[3] = 255 * 1000;
+        rainbowColors[4] = 255;
+        rainbowColors[5] = 139 * 1000000 + 255;
     }
     
     private void inicializarDropdowns() {
@@ -498,30 +506,28 @@ public class MenuRuta extends javax.swing.JFrame {
         if (listaCallesRuta.getSelectedIndex() == -1) {
             if (estadoColorPicker == null) {
                 Random rand = new Random();
-                float r = rand.nextFloat();
-                float g = rand.nextFloat();
-                float b = rand.nextFloat();
-                estadoColorPicker = new Color(r, g, b, 0.5f);
+                estadoColorPicker = new Color(rainbowColors[rand.nextInt(6)]);
             }
             Calle calle = new Calle(campoNombreCalle.getText(), 
             new Distribucion(campoDistVelRecor.getText()),
-            this.puntos.get(Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem())),
-            this.puntos.get(Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem())),
-            estadoColorPicker);
+            Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()),
+            Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()),
+            new Color(estadoColorPicker.getRGB()));
             listaCalles.add(calle);
             modeloCalles.addElement(campoNombreCalle.getText());
+            estadoColorPicker = null;
         } else {
             Calle calle = listaCalles.get(listaCallesRuta.getSelectedIndex());
             modeloCalles.set(listaCallesRuta.getSelectedIndex(), campoNombreCalle.getText());
             calle.setNombre(campoNombreCalle.getText());
             calle.setVelocidad(new Distribucion(campoDistVelRecor.getText()));
-            calle.setPuntoInicial(puntos.get(Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem())));
-            calle.setPuntoFinal(puntos.get(Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem())));
+            calle.setPuntoInicial(Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()));
+            calle.setPuntoFinal(Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()));
         }
     }//GEN-LAST:event_btnAnadirCalleActionPerformed
 
     private void btnEscogerColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscogerColorActionPerformed
-        estadoColorPicker = JColorChooser.showDialog(null, "Choose a color", Color.GRAY);
+        estadoColorPicker = JColorChooser.showDialog(null, "Escoge un color", Color.GRAY);
     }//GEN-LAST:event_btnEscogerColorActionPerformed
 
     private void listaCallesRutaValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaCallesRutaValueChanged
@@ -532,10 +538,10 @@ public class MenuRuta extends javax.swing.JFrame {
             campoNombreCalle.setText(calle.getNombre());
             campoDistVelRecor.setText(calle.getVelocidad().getCampo());
             for (int i = 0; i < puntos.size(); i++) {
-                if (calle.getPuntoInicial().equals(puntos.get(i))) {
+                if (calle.getPuntoInicial() == i) {
                     dropPrimerPuntoCalle.setSelectedItem(Integer.toString(i));
                 }
-                if (calle.getPuntoFinal().equals(puntos.get(i))) {
+                if (calle.getPuntoFinal() == i) {
                     dropSegundoPuntoCalle.setSelectedItem(Integer.toString(i));
                 }
             }

@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import javax.imageio.ImageIO;
+import simulacion.Calle;
+import simulacion.Ruta;
 import simulacion.Simulacion;
 
 /**
@@ -82,7 +84,38 @@ public class Render {
     }
     
     private void dibujarRutas() {
-        
+        Graphics g2d = mapa.createGraphics();
+        g2d.setColor(new Color(1f, 0f, 0f, 0.5f));
+        LinkedList<Ruta> rutas = simulacion.getRutas();
+        for (int i = 0; i < rutas.size(); i++) {
+            Ruta ruta = rutas.get(i);
+            LinkedList<Point> puntos = ruta.getPuntos();
+            for (int j = 0; j < puntos.size(); j++) {
+                Point punto = puntos.get(j);
+                Calle calle = getCalle(ruta, j);
+                g2d.setColor(calle.getColor());
+                g2d.fillOval((int) punto.getX() - pixelX - RADIO_PUNTO,
+                    (int) punto.getY() - pixelY - RADIO_PUNTO,
+                    DIAMETRO_PUNTO, DIAMETRO_PUNTO);
+                if (j + 1 < puntos.size()) {
+                    Point siguientePunto = puntos.get(j + 1);
+                    g2d.drawLine((int) punto.getX() - pixelX, (int) punto.getY() - pixelY,
+                        (int) siguientePunto.getX() - pixelX, (int) siguientePunto.getY() - pixelY);
+                }
+            }
+        }
+    }
+    
+    private Calle getCalle(Ruta ruta, int index) {
+        LinkedList<Calle> calles = ruta.getCalles();
+        for (int i = 0; i < calles.size(); i++) {
+            Calle calle = calles.get(i);
+            if (calle.getPuntoInicial() <= index &&
+                    calle.getPuntoFinal() >= index) {
+                return calle;
+            }
+        }
+        return null;
     }
     
     private void dibujarRutaEnConstruccion() {

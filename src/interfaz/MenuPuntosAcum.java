@@ -5,10 +5,15 @@
  */
 package interfaz;
 
-import java.awt.LayoutManager;
-import javax.swing.JComboBox;
+import java.awt.event.WindowEvent;
+import java.util.LinkedList;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JSlider;
+import simulacion.Calle;
+import simulacion.Distribucion;
+import simulacion.PuntosAcumulacion;
+import simulacion.Ruta;
 
 /**
  *
@@ -17,6 +22,15 @@ import javax.swing.JPanel;
 public class MenuPuntosAcum extends javax.swing.JFrame {
     
     private final UI interfaz;
+    
+    private LinkedList<Ruta> rutas;
+    private LinkedList<Calle> calles;
+    
+    private DefaultListModel modeloRutas;
+    private DefaultListModel modeloCalles;
+    
+    private JSlider[] sliderDiario;
+    private JSlider[] sliderSemanal;
 
     /**
      * Creates new form MenuPuntosAcum
@@ -27,6 +41,73 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
         initComponents();
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setResizable(false);
+        
+        modeloRutas = new DefaultListModel();
+        listaRutas.setModel(modeloRutas);
+        
+        modeloCalles = new DefaultListModel();
+        listaCalles.setModel(modeloCalles);
+        
+        rutas = interfaz.getSimulacion().getRutas();
+        
+        sliderDiario = new JSlider[24];
+        sliderSemanal = new JSlider[7];
+        
+        sliderDiario[0] = slider12AM;
+        sliderDiario[1] = slider1AM;
+        sliderDiario[2] = slider2AM;
+        sliderDiario[3] = slider3AM;
+        sliderDiario[4] = slider4AM;
+        sliderDiario[5] = slider5AM;
+        sliderDiario[6] = slider6AM;
+        sliderDiario[7] = slider7AM;
+        sliderDiario[8] = slider8AM;
+        sliderDiario[9] = slider9AM;
+        sliderDiario[10] = slider10AM;
+        sliderDiario[11] = slider11AM;
+        sliderDiario[12] = slider12PM;
+        sliderDiario[13] = slider1PM;
+        sliderDiario[14] = slider2PM;
+        sliderDiario[15] = slider3PM;
+        sliderDiario[16] = slider4PM;
+        sliderDiario[17] = slider5PM;
+        sliderDiario[18] = slider6PM;
+        sliderDiario[19] = slider7PM;
+        sliderDiario[20] = slider8PM;
+        sliderDiario[21] = slider9PM;
+        sliderDiario[22] = slider10PM;
+        sliderDiario[23] = slider11PM;
+        
+        sliderSemanal[0] = sliderLunes;
+        sliderSemanal[1] = sliderMartes;
+        sliderSemanal[2] = sliderMiercoles;
+        sliderSemanal[3] = sliderJueves;
+        sliderSemanal[4] = sliderViernes;
+        sliderSemanal[5] = sliderSabado;
+        sliderSemanal[6] = sliderDomingo;
+    }
+    
+    public void setRutas(LinkedList<Ruta> rutas) {
+        this.rutas = rutas;
+        if (this.rutas != null) {
+            modeloRutas.clear();
+            for (int i = 0; i < this.rutas.size(); i++) {
+                modeloRutas.addElement(this.rutas.get(i).getNombre());
+            }
+        }
+        reiniciarMenu();
+    }
+    
+    public void reiniciarMenu() {
+        etiquetaNumPuntosAcum.setText("0");
+        campoTasaAcum.setText("");
+        campoTasaGen.setText("");
+        for (int i = 0; i < sliderDiario.length; i++) {
+            sliderDiario[i].setValue(0);
+        }
+        for (int i = 0; i < sliderSemanal.length; i++) {
+            sliderSemanal[i].setValue(0);
+        }
     }
 
     /**
@@ -39,24 +120,26 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
     private void initComponents() {
 
         jComboBox8 = new javax.swing.JComboBox<>();
+        jPanel4 = new javax.swing.JPanel();
         tabsConfCiclos = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        btnSelPuntoAcum = new javax.swing.JButton();
-        etiquetaIDPunAcum = new javax.swing.JLabel();
-        etiquetaCapacidad = new javax.swing.JLabel();
-        etiquetaTazaAcum = new javax.swing.JLabel();
-        etiquetaTIpoPunAcum = new javax.swing.JLabel();
-        dropTipoPunAcum = new javax.swing.JComboBox<>();
-        campoCapacidad = new javax.swing.JTextField();
-        dropUnidCapacidad = new javax.swing.JComboBox<>();
-        campoIDPunAcum = new javax.swing.JTextField();
-        campoTazaAcum = new javax.swing.JTextField();
+        etiquetaTasaAcum = new javax.swing.JLabel();
+        campoTasaAcum = new javax.swing.JTextField();
         btnCrearPtoAcum = new javax.swing.JButton();
         btnEditarPtoAcum = new javax.swing.JButton();
-        btnColocarPtoAcumRuta = new javax.swing.JButton();
         btnCancelarPtoAcum = new javax.swing.JButton();
-        etiquetaTazaGen = new javax.swing.JLabel();
-        campoTazaGen = new javax.swing.JTextField();
+        etiquetaTasaGen = new javax.swing.JLabel();
+        campoTasaGen = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaRutas = new javax.swing.JList<>();
+        etiquetaRutas = new javax.swing.JLabel();
+        etiquetaCalles = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listaCalles = new javax.swing.JList<>();
+        etiquetaCantPuntosAcum = new javax.swing.JLabel();
+        etiquetaNumPuntosAcum = new javax.swing.JLabel();
+        btnNuevoPuntoAcum = new javax.swing.JButton();
+        btnRestarPuntoAcum = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         etiquetaCicloDiario = new javax.swing.JLabel();
@@ -132,107 +215,171 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
 
         jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnSelPuntoAcum.setText("Seleccionar Punto de Acumulación");
-
-        etiquetaIDPunAcum.setText("ID del Punto de Acumulación");
-
-        etiquetaCapacidad.setText("Capacidad");
-
-        etiquetaTazaAcum.setText("Taza de Acumulación (Dist)");
-
-        etiquetaTIpoPunAcum.setText("Tipo");
-
-        dropTipoPunAcum.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        dropUnidCapacidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        etiquetaTasaAcum.setText("Tasa de Acumulación (Dist)");
 
         btnCrearPtoAcum.setText("Crear");
+        btnCrearPtoAcum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearPtoAcumActionPerformed(evt);
+            }
+        });
 
         btnEditarPtoAcum.setText("Editar");
-
-        btnColocarPtoAcumRuta.setText("Colocar Punto de Acumulación en Ruta");
+        btnEditarPtoAcum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarPtoAcumActionPerformed(evt);
+            }
+        });
 
         btnCancelarPtoAcum.setText("Cancelar");
+        btnCancelarPtoAcum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarPtoAcumActionPerformed(evt);
+            }
+        });
 
-        etiquetaTazaGen.setText("Taza de Generación (Dist)");
+        etiquetaTasaGen.setText("Tasa de Generación (Dist)");
+
+        listaRutas.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        listaRutas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaRutasMouseClicked(evt);
+            }
+        });
+        listaRutas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaRutasValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(listaRutas);
+
+        etiquetaRutas.setText("Rutas");
+
+        etiquetaCalles.setText("Calles");
+
+        listaCalles.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        listaCalles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaCallesMouseClicked(evt);
+            }
+        });
+        listaCalles.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaCallesValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(listaCalles);
+
+        etiquetaCantPuntosAcum.setText("Cantidad Puntos de Acum.");
+
+        etiquetaNumPuntosAcum.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        etiquetaNumPuntosAcum.setText("0");
+
+        btnNuevoPuntoAcum.setText("+");
+        btnNuevoPuntoAcum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoPuntoAcumActionPerformed(evt);
+            }
+        });
+
+        btnRestarPuntoAcum.setText("-");
+        btnRestarPuntoAcum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRestarPuntoAcumActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(67, 67, 67)
-                                .addComponent(btnSelPuntoAcum))
+                        .addGap(66, 66, 66)
+                        .addComponent(btnCrearPtoAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(btnEditarPtoAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelarPtoAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1)
+                            .addComponent(etiquetaRutas)
+                            .addComponent(etiquetaCalles)
+                            .addComponent(jScrollPane2)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(etiquetaCapacidad)
-                                    .addComponent(etiquetaTazaAcum)
-                                    .addComponent(etiquetaTIpoPunAcum)
-                                    .addComponent(etiquetaIDPunAcum)
-                                    .addComponent(etiquetaTazaGen))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(campoIDPunAcum)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(campoCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dropUnidCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(dropTipoPunAcum, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(campoTazaAcum)
-                                    .addComponent(campoTazaGen)))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(etiquetaTasaAcum)
+                                    .addComponent(etiquetaTasaGen))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(campoTasaAcum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(campoTasaGen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnCrearPtoAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(etiquetaCantPuntosAcum)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnEditarPtoAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCancelarPtoAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnColocarPtoAcumRuta))))
-                .addContainerGap(32, Short.MAX_VALUE))
+                                .addComponent(etiquetaNumPuntosAcum, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnNuevoPuntoAcum)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRestarPuntoAcum)))
+                        .addGap(0, 15, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnSelPuntoAcum)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoIDPunAcum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(etiquetaIDPunAcum))
+                .addComponent(etiquetaRutas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(etiquetaCalles)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dropUnidCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(etiquetaCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(etiquetaCantPuntosAcum)
+                    .addComponent(etiquetaNumPuntosAcum)
+                    .addComponent(btnNuevoPuntoAcum)
+                    .addComponent(btnRestarPuntoAcum))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dropTipoPunAcum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(etiquetaTIpoPunAcum))
+                    .addComponent(campoTasaAcum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaTasaAcum))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoTazaAcum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(etiquetaTazaAcum))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(etiquetaTazaGen)
-                    .addComponent(campoTazaGen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnColocarPtoAcumRuta)
-                .addGap(18, 18, 18)
+                    .addComponent(etiquetaTasaGen)
+                    .addComponent(campoTasaGen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrearPtoAcum)
                     .addComponent(btnEditarPtoAcum)
                     .addComponent(btnCancelarPtoAcum))
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addGap(23, 23, 23))
         );
 
         tabsConfCiclos.addTab("Punto de Acumulación", jPanel1);
@@ -913,30 +1060,143 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(tabsConfCiclos, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabsConfCiclos, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(tabsConfCiclos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNuevoPuntoAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoPuntoAcumActionPerformed
+        etiquetaNumPuntosAcum.setText(String.valueOf(
+            Integer.parseInt(etiquetaNumPuntosAcum.getText()) + 1));
+    }//GEN-LAST:event_btnNuevoPuntoAcumActionPerformed
+
+    private void btnRestarPuntoAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestarPuntoAcumActionPerformed
+        if (Integer.parseInt(etiquetaNumPuntosAcum.getText()) > 0) {
+            etiquetaNumPuntosAcum.setText(String.valueOf(
+                Integer.parseInt(etiquetaNumPuntosAcum.getText()) - 1));
+        }
+    }//GEN-LAST:event_btnRestarPuntoAcumActionPerformed
+
+    private void listaRutasValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaRutasValueChanged
+        Ruta ruta = rutas.get(listaRutas.getSelectedIndex());
+        modeloCalles.clear();
+        if (ruta.getCalles() != null) {
+            for (int i = 0; i < ruta.getCalles().size(); i++) {
+                modeloCalles.addElement(this.rutas.get(
+                        listaRutas.getSelectedIndex()).getCalles().get(i).getNombre());
+            }
+        }
+        reiniciarMenu();
+    }//GEN-LAST:event_listaRutasValueChanged
+
+    private void listaCallesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaCallesValueChanged
+        if (listaCalles.getSelectedIndex() > -1) {
+            reiniciarMenu();
+            Calle calle = rutas.get(listaRutas.getSelectedIndex())
+                    .getCalles().get(listaCalles.getSelectedIndex());
+            if (calle.getPuntosAcum() != null) {
+                etiquetaNumPuntosAcum.setText(String.valueOf(calle.getPuntosAcum().getNumeroPuntos()));
+                campoTasaAcum.setText(calle.getPuntosAcum().getTasaAcumulacion().getCampo());
+                campoTasaGen.setText(calle.getPuntosAcum().getTasaGeneracion().getCampo());
+                int[] arraySemanal = calle.getPuntosAcum().getFactorSemanal();
+                int[] arrayDiario = calle.getPuntosAcum().getFactorHora();
+
+                for (int i = 0; i < arraySemanal.length; i++) {
+                    sliderSemanal[i].setValue(arraySemanal[i]);
+                }
+
+                for (int i = 0; i < arrayDiario.length; i++) {
+                    sliderDiario[i].setValue(arrayDiario[i]);
+                }
+            }
+        }
+    }//GEN-LAST:event_listaCallesValueChanged
+
+    private void listaRutasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaRutasMouseClicked
+        if (evt.getButton() == 3) {
+            listaRutas.clearSelection();
+            listaCalles.clearSelection();
+            reiniciarMenu();
+        }
+    }//GEN-LAST:event_listaRutasMouseClicked
+
+    private void listaCallesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaCallesMouseClicked
+        if (evt.getButton() == 3) {
+            listaCalles.clearSelection();
+            reiniciarMenu();
+        }
+    }//GEN-LAST:event_listaCallesMouseClicked
+
+    private void btnCrearPtoAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPtoAcumActionPerformed
+        if (listaRutas.getSelectedIndex() > -1 &&
+                listaCalles.getSelectedIndex() > -1) {
+            int[] arraySemanal = new int[7];
+            int[] arrayDiario = new int[24];
+            
+            for (int i = 0; i < sliderSemanal.length; i++) {
+                arraySemanal[i] = sliderSemanal[i].getValue();
+            }
+            
+            for (int i = 0; i < sliderDiario.length; i++) {
+                arrayDiario[i] = sliderDiario[i].getValue();
+            }
+            
+            PuntosAcumulacion puntosAcum = new PuntosAcumulacion(
+                    new Distribucion(campoTasaAcum.getText()),
+                    new Distribucion(campoTasaGen.getText()), arrayDiario,
+                    arraySemanal, Integer.parseInt(etiquetaNumPuntosAcum.getText()));
+            
+            rutas.get(listaRutas.getSelectedIndex()).getCalles()
+                    .get(listaCalles.getSelectedIndex())
+                    .setPuntosAcum(puntosAcum);
+        }
+    }//GEN-LAST:event_btnCrearPtoAcumActionPerformed
+
+    private void btnEditarPtoAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPtoAcumActionPerformed
+        if (listaRutas.getSelectedIndex() > -1
+                && listaCalles.getSelectedIndex() > -1) {
+            PuntosAcumulacion puntosAcum = rutas.get(listaRutas.getSelectedIndex())
+                    .getCalles().get(listaCalles.getSelectedIndex()).getPuntosAcum();
+            puntosAcum.setNumeroPuntos(Integer.parseInt(etiquetaNumPuntosAcum.getText()));
+            puntosAcum.setTasaAcumulacion(new Distribucion(campoTasaAcum.getText()));
+            puntosAcum.setTasaGeneracion(new Distribucion(campoTasaGen.getText()));
+            
+            int[] arraySemanal = new int[7];
+            int[] arrayDiario = new int[24];
+            
+            for (int i = 0; i < sliderSemanal.length; i++) {
+                arraySemanal[i] = sliderSemanal[i].getValue();
+            }
+            
+            for (int i = 0; i < sliderDiario.length; i++) {
+                arrayDiario[i] = sliderDiario[i].getValue();
+            }
+            
+            puntosAcum.setFactorSemanal(arraySemanal);
+            puntosAcum.setFactorHora(arrayDiario);
+        }
+    }//GEN-LAST:event_btnEditarPtoAcumActionPerformed
+
+    private void btnCancelarPtoAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPtoAcumActionPerformed
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        reiniciarMenu();
+    }//GEN-LAST:event_btnCancelarPtoAcumActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelarPtoAcum;
-    private javax.swing.JButton btnColocarPtoAcumRuta;
     private javax.swing.JButton btnCrearPtoAcum;
     private javax.swing.JButton btnEditarPtoAcum;
-    private javax.swing.JButton btnSelPuntoAcum;
-    private javax.swing.JTextField campoCapacidad;
-    private javax.swing.JTextField campoIDPunAcum;
-    private javax.swing.JTextField campoTazaAcum;
-    private javax.swing.JTextField campoTazaGen;
-    private javax.swing.JComboBox<String> dropTipoPunAcum;
-    private javax.swing.JComboBox<String> dropUnidCapacidad;
+    private javax.swing.JButton btnNuevoPuntoAcum;
+    private javax.swing.JButton btnRestarPuntoAcum;
+    private javax.swing.JTextField campoTasaAcum;
+    private javax.swing.JTextField campoTasaGen;
     private javax.swing.JLabel etiqueta10AM;
     private javax.swing.JLabel etiqueta10PM;
     private javax.swing.JLabel etiqueta11AM;
@@ -961,19 +1221,20 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
     private javax.swing.JLabel etiqueta8PM;
     private javax.swing.JLabel etiqueta9AM;
     private javax.swing.JLabel etiqueta9PM;
-    private javax.swing.JLabel etiquetaCapacidad;
+    private javax.swing.JLabel etiquetaCalles;
+    private javax.swing.JLabel etiquetaCantPuntosAcum;
     private javax.swing.JLabel etiquetaCicloDiario;
     private javax.swing.JLabel etiquetaCicloSemanal;
     private javax.swing.JLabel etiquetaDoming;
-    private javax.swing.JLabel etiquetaIDPunAcum;
     private javax.swing.JLabel etiquetaJueves;
     private javax.swing.JLabel etiquetaLunes;
     private javax.swing.JLabel etiquetaMartes;
     private javax.swing.JLabel etiquetaMiercoles;
+    private javax.swing.JLabel etiquetaNumPuntosAcum;
+    private javax.swing.JLabel etiquetaRutas;
     private javax.swing.JLabel etiquetaSabado;
-    private javax.swing.JLabel etiquetaTIpoPunAcum;
-    private javax.swing.JLabel etiquetaTazaAcum;
-    private javax.swing.JLabel etiquetaTazaGen;
+    private javax.swing.JLabel etiquetaTasaAcum;
+    private javax.swing.JLabel etiquetaTasaGen;
     private javax.swing.JLabel etiquetaViernes;
     private javax.swing.JComboBox<String> jComboBox8;
     private javax.swing.JPanel jPanel1;
@@ -982,8 +1243,13 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> listaCalles;
+    private javax.swing.JList<String> listaRutas;
     private javax.swing.JSlider slider10AM;
     private javax.swing.JSlider slider10PM;
     private javax.swing.JSlider slider11AM;
