@@ -8,6 +8,7 @@ package interfaz;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import simulacion.Camion;
 import simulacion.Distribucion;
 import simulacion.Pieza;
@@ -58,6 +59,7 @@ public class MenuCamiones extends javax.swing.JFrame {
         campoModeloCamion.setText("");
         dropCapacidadCamion.setSelectedIndex(0);
         campoIDCamion.setText("");
+        campoCostoCamion.setText("");
         listaPiezas = null;
         dropSelPieza.removeAllItems();
         dropSelPieza.addItem("Nueva Pieza");
@@ -76,6 +78,58 @@ public class MenuCamiones extends javax.swing.JFrame {
     
     public void setListaCamiones(LinkedList<Camion> listaCamiones) {
         this.listaCamiones = listaCamiones;
+    }
+    
+    private boolean camionEsValido() {
+        if (campoModeloCamion.getText().length() <= 0) {
+            alerta("El campo de modelo del camión no puede estar vacío");
+            return false;
+        } else if (campoIDCamion.getText().length() <= 0) {
+            alerta("El campo de ID del camión no puede estar vacío");
+            return false;
+        } else if (!campoIDEsUnico()) {
+            alerta("El campo de ID del camión debe ser único");
+            return false;
+        }
+        try {
+            Double.parseDouble(campoCostoCamion.getText());
+        } catch (NumberFormatException e) {
+            alerta("El campo de precio del camión no contiene un número válido");
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean campoIDEsUnico() {
+        if (listaCamiones != null) {
+            for (int i = 0; i < listaCamiones.size(); i++) {
+                if (listaCamiones.get(i).getId().equals(campoIDCamion.getText())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    private boolean piezaEsValida() {
+        if (campoNomPieza.getText().length() <= 0) {
+            alerta("El campo de nombre de la pieza no puede estar vacío");
+            return false;
+        } else if (Distribucion.esDistValida(campoDistTiempoVidaPieza.getText())) {
+            alerta("La notación de distribución en el campo de tiempo de vida es incorrecta");
+            return false;
+        }
+        try {
+            Double.parseDouble(campoCostoPieza.getText());
+        } catch (NumberFormatException e) {
+            alerta("El campo de costo de la pieza no contiene un número válido");
+            return false;
+        }
+        return true;
+    }
+    
+    private void alerta(String s) {
+        JOptionPane.showMessageDialog(null, s);
     }
 
     /**
@@ -308,20 +362,23 @@ public class MenuCamiones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoCamionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCamionActionPerformed
-        if (dropSelCamion.getSelectedIndex() == 0) {
-            Camion camion = new Camion(campoModeloCamion.getText(),
-                dropCapacidadCamion.getSelectedIndex(), campoIDCamion.getText(),
-            listaPiezas);
-            interfaz.getSimulacion().añadirCamion(camion);
-            reiniciarMenu();
-            campoModeloCamion.setText("");
-            dropSelCamion.addItem(camion.getId());
-            listaCamiones.add(camion);
-        } else {
-            Camion camion = listaCamiones.get(dropSelCamion.getSelectedIndex() - 1);
-            camion.setModelo(campoModeloCamion.getText());
-            camion.setCapacidad(dropCapacidadCamion.getSelectedIndex());
-            camion.setId(campoIDCamion.getText());
+        if (camionEsValido()) {
+            if (dropSelCamion.getSelectedIndex() == 0) {
+                Camion camion = new Camion(campoModeloCamion.getText(),
+                    dropCapacidadCamion.getSelectedIndex(), campoIDCamion.getText(),
+                listaPiezas, Double.parseDouble(campoCostoCamion.getText()));
+                interfaz.getSimulacion().añadirCamion(camion);
+                reiniciarMenu();
+                campoModeloCamion.setText("");
+                dropSelCamion.addItem(camion.getId());
+                listaCamiones.add(camion);
+            } else {
+                Camion camion = listaCamiones.get(dropSelCamion.getSelectedIndex() - 1);
+                camion.setModelo(campoModeloCamion.getText());
+                camion.setCapacidad(dropCapacidadCamion.getSelectedIndex());
+                camion.setId(campoIDCamion.getText());
+                camion.setPrecio(Double.parseDouble(campoCostoCamion.getText()));
+            }
         }
     }//GEN-LAST:event_btnNuevoCamionActionPerformed
 
@@ -345,24 +402,26 @@ public class MenuCamiones extends javax.swing.JFrame {
     }//GEN-LAST:event_dropSelCamionActionPerformed
 
     private void btnAnadirPiezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirPiezaActionPerformed
-        if (dropSelPieza.getSelectedIndex() == 0) {
-            Pieza pieza = new Pieza(campoNomPieza.getText(),
-                    Double.parseDouble(campoCostoPieza.getText()),
-                    new Distribucion(campoDistTiempoVidaPieza.getText()),
-                    dropCantPorCamion.getSelectedIndex());
-            if (listaPiezas == null) {
-                listaPiezas = new LinkedList<>();
-                listaCamiones.get(dropSelCamion.getSelectedIndex() - 1).setPiezas(listaPiezas);
+        if (piezaEsValida()) {
+            if (dropSelPieza.getSelectedIndex() == 0) {
+                Pieza pieza = new Pieza(campoNomPieza.getText(),
+                        Double.parseDouble(campoCostoPieza.getText()),
+                        new Distribucion(campoDistTiempoVidaPieza.getText()),
+                        dropCantPorCamion.getSelectedIndex());
+                if (listaPiezas == null) {
+                    listaPiezas = new LinkedList<>();
+                    listaCamiones.get(dropSelCamion.getSelectedIndex() - 1).setPiezas(listaPiezas);
+                }
+                listaPiezas.add(pieza);
+                dropSelPieza.addItem(pieza.getNombre());
+                reiniciarMenuPieza();
+            } else {
+                Pieza pieza = listaPiezas.get(dropSelPieza.getSelectedIndex() - 1);
+                pieza.setNombre(campoNomPieza.getText());
+                pieza.setCosto(Double.parseDouble(campoCostoPieza.getText()));
+                pieza.setTiempoDeVida(new Distribucion(campoDistTiempoVidaPieza.getText()));
+                pieza.setCantidadPorCamion(dropCantPorCamion.getSelectedIndex());
             }
-            listaPiezas.add(pieza);
-            dropSelPieza.addItem(pieza.getNombre());
-            reiniciarMenuPieza();
-        } else {
-            Pieza pieza = listaPiezas.get(dropSelPieza.getSelectedIndex() - 1);
-            pieza.setNombre(campoNomPieza.getText());
-            pieza.setCosto(Double.parseDouble(campoCostoPieza.getText()));
-            pieza.setTiempoDeVida(new Distribucion(campoDistTiempoVidaPieza.getText()));
-            pieza.setCantidadPorCamion(dropCantPorCamion.getSelectedIndex());
         }
     }//GEN-LAST:event_btnAnadirPiezaActionPerformed
 

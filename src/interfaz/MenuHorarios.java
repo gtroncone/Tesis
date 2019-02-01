@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import simulacion.Horario;
 
 /**
@@ -59,12 +60,50 @@ public class MenuHorarios extends javax.swing.JFrame {
         
         modelo = new DefaultListModel();
         listaHorarios.setModel(modelo);
-        
-
     }
     
     public void setHorario(Horario horario) {
         this.horario = horario;
+        if (this.horario != null) {
+            modelo.clear();
+            for (int i = 0; i < horario.getDatos().size(); i++) {
+                int[] datos = horario.getDatos().get(i);
+                String entrada = "";
+                if (datos[0] < 10) {
+                    entrada += "0";
+                }
+                entrada += String.valueOf(datos[0]);
+                entrada += ":";
+                if (datos[1] < 10) {
+                    entrada += "0";
+                }
+                entrada += String.valueOf(datos[1]);
+                entrada += " Frecuencia: ";
+                entrada += datos[2] == 0 ? "Diaria" : "Interdiaria";
+                modelo.addElement(entrada);
+            }
+        } else {
+            modelo.clear();
+            dropHoras.setSelectedItem("00");
+            dropMinutos.setSelectedItem("00");
+            dropFrecuencias.setSelectedIndex(0);
+        }
+    }
+    
+    private void alerta(String s) {
+        JOptionPane.showMessageDialog(null, s);
+    }
+    
+    private boolean horarioEsUnico() {
+        String entrada = dropHoras.getItemAt(dropHoras.getSelectedIndex());
+        entrada += ":" + dropMinutos.getItemAt(dropMinutos.getSelectedIndex());
+        entrada += " Frecuencia: " + dropFrecuencias.getItemAt(dropFrecuencias.getSelectedIndex());
+        for (int i = 0; i < modelo.getSize(); i++) {
+            if (modelo.getElementAt(i).equals(entrada)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -226,17 +265,29 @@ public class MenuHorarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoHorarioActionPerformed
-        if (listaHorarios.getSelectedIndex() == -1) {
-            String entrada = dropHoras.getItemAt(dropHoras.getSelectedIndex());
-            entrada += ":" + dropMinutos.getItemAt(dropMinutos.getSelectedIndex());
-            entrada += " Frecuencia: " + dropFrecuencias.getItemAt(dropFrecuencias.getSelectedIndex());
-            modelo.addElement(entrada);
-            
+        if (horarioEsUnico()) {
+            if (listaHorarios.getSelectedIndex() == -1) {
+                String entrada = dropHoras.getItemAt(dropHoras.getSelectedIndex());
+                entrada += ":" + dropMinutos.getItemAt(dropMinutos.getSelectedIndex());
+                entrada += " Frecuencia: " + dropFrecuencias.getItemAt(dropFrecuencias.getSelectedIndex());
+                modelo.addElement(entrada);
+                if (horario != null) {
+                    horario.nuevoDato(dropHoras.getSelectedIndex(), dropMinutos.getSelectedIndex(),
+                            dropFrecuencias.getSelectedIndex());
+                }
+            } else {
+                String entrada = dropHoras.getItemAt(dropHoras.getSelectedIndex());
+                entrada += ":" + dropMinutos.getItemAt(dropMinutos.getSelectedIndex());
+                entrada += " Frecuencia: " + dropFrecuencias.getItemAt(dropFrecuencias.getSelectedIndex());
+                modelo.set(listaHorarios.getSelectedIndex(), entrada);
+                if (horario != null) {
+                    horario.editarDato(listaHorarios.getSelectedIndex(),
+                    dropHoras.getSelectedIndex(), dropMinutos.getSelectedIndex(),
+                    dropFrecuencias.getSelectedIndex()); 
+                }
+            }
         } else {
-            String entrada = dropHoras.getItemAt(dropHoras.getSelectedIndex());
-            entrada += ":" + dropMinutos.getItemAt(dropMinutos.getSelectedIndex());
-            entrada += " Frecuencia: " + dropFrecuencias.getItemAt(dropFrecuencias.getSelectedIndex());
-            modelo.set(listaHorarios.getSelectedIndex(), entrada);
+            alerta("No pueden haber dos horarios exactamente iguales");
         }
     }//GEN-LAST:event_btnNuevoHorarioActionPerformed
 
@@ -256,6 +307,7 @@ public class MenuHorarios extends javax.swing.JFrame {
 
     private void btnCerrarHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarHorariosActionPerformed
         if (listaHorarios.getSelectedIndex() != -1) {
+            horario.eliminarDato(listaHorarios.getSelectedIndex());
             modelo.remove(listaHorarios.getSelectedIndex());
             btnNuevoHorario.setText("+");
         }
@@ -274,17 +326,22 @@ public class MenuHorarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBorrarHorarioActionPerformed
 
     private void btnCrearHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearHorarioActionPerformed
-        if (horario == null) {
-            horario = new Horario();
-            for (int i = 0; i < modelo.getSize(); i++) {
-                String[] entrada = ((String) modelo.get(i)).split(" ");
-                String[] horas = entrada[0].split(":");
-                horario.nuevoDato(Integer.parseInt(horas[0]),
-                        Integer.parseInt(horas[1]), entrada[2]);
+        if (horarioEsUnico()) {
+            if (horario == null) {
+                horario = new Horario();
+                for (int i = 0; i < modelo.getSize(); i++) {
+                    String[] entrada = ((String) modelo.get(i)).split(" ");
+                    String[] horas = entrada[0].split(":");
+                    horario.nuevoDato(Integer.parseInt(horas[0]),
+                            Integer.parseInt(horas[1]),
+                            "Diaria".equals(entrada[2]) ? 0 : 1);
+                }
+                menuRuta.setHorario(horario);
+                this.setVisible(false);
+                menuRuta.setVisible(true);
             }
-            menuRuta.setHorario(horario);
-            this.setVisible(false);
-            menuRuta.setVisible(true);
+        } else {
+            alerta("No pueden haber dos horarios exactamente iguales");
         }
     }//GEN-LAST:event_btnCrearHorarioActionPerformed
 

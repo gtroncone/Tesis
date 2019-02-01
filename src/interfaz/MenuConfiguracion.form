@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="btnGroup">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -36,17 +40,17 @@
                   <Component id="etiquetaNumMecanicos" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="etiquetaIntervaloASim" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="checkCompleto" min="-2" max="-2" attributes="0"/>
-                          </Group>
                           <Component id="etiquetaNumRepeticiones" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="etiquetaSalarioBarredores" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="etiquetaSalarioEquipoRec" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="etiquetaSalarioMecanicos" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="etiquetaIntervaloASim" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                              <Component id="checkCompleto" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="dropHoraInicial" min="-2" max="-2" attributes="0"/>
@@ -56,6 +60,7 @@
                               <Component id="dropHoraFinal" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="dropNumRepeticiones" alignment="0" max="32767" attributes="0"/>
                               <Component id="campoSalarioMecanicos" alignment="0" max="32767" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                   <Group type="102" attributes="0">
@@ -66,22 +71,15 @@
                                       <Component id="btnRemoverMecanico" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="campoEquipoRec" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="campoEquipoRec" alignment="0" pref="124" max="32767" attributes="0"/>
                                       <Component id="campoSalarioBarredores" alignment="0" max="32767" attributes="0"/>
-                                      <Group type="102" attributes="0">
-                                          <Component id="etiquetaDigNumRepeticiones" min="-2" pref="68" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="btnNuevaRepeticion" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="btnRemoverRepeticion" min="-2" max="-2" attributes="0"/>
-                                      </Group>
                                   </Group>
                               </Group>
                           </Group>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="21" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -89,19 +87,19 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="etiquetaIntervaloASim" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="checkCompleto" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="dropHoraInicial" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="etiquetaIntervaloA" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="dropHoraFinal" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="etiquetaIntervaloASim" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="dropHoraInicial" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="etiquetaIntervaloA" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="dropHoraFinal" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="checkCompleto" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="etiquetaNumRepeticiones" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="etiquetaDigNumRepeticiones" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnNuevaRepeticion" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnRemoverRepeticion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dropNumRepeticiones" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -125,7 +123,7 @@
                   <Component id="etiquetaSalarioMecanicos" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="campoSalarioMecanicos" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="20" max="32767" attributes="0"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -139,11 +137,6 @@
     <Component class="javax.swing.JLabel" name="etiquetaIntervaloASim">
       <Properties>
         <Property name="text" type="java.lang.String" value="Intervalo a Simular"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkCompleto">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Completo"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="dropHoraInicial">
@@ -185,28 +178,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="N&#xfa;mero de Repeticiones"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="etiquetaDigNumRepeticiones">
-      <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="0"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnNuevaRepeticion">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="+"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevaRepeticionActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnRemoverRepeticion">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="-"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoverRepeticionActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="etiquetaSalarioBarredores">
       <Properties>
@@ -271,6 +242,29 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="campoSalarioMecanicos">
+    </Component>
+    <Component class="java.awt.Checkbox" name="checkCompleto">
+      <Properties>
+        <Property name="label" type="java.lang.String" value="Completo"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="checkCompletoMouseClicked"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="dropNumRepeticiones">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

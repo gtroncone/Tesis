@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import simulacion.AreaBarrido;
 import simulacion.Distribucion;
 import simulacion.Ruta;
@@ -68,6 +69,24 @@ public class MenuBarredores extends javax.swing.JFrame {
         etiquetaDigNumCuadras.setText("0");
         campoCapacidad.setText("");
         campoDistVelAcopio.setText("");
+    }
+    
+    private void alerta(String s) {
+        JOptionPane.showMessageDialog(null, s);
+    }
+    
+    private boolean esValido() {
+        try {
+            Float.parseFloat(campoCapacidad.getText());
+        } catch (NumberFormatException e) {
+            alerta("El campo capacidad no tiene un número válido");
+            return false;
+        }
+        if (Distribucion.esDistValida(campoDistVelAcopio.getText())) {
+            alerta("La notación de distribución en el campo de velocidad de acopio es incorrecta");
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -386,25 +405,29 @@ public class MenuBarredores extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRestarCuadraActionPerformed
 
     private void btnCrearAreaBarridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearAreaBarridoActionPerformed
-        if (listaRutas.getSelectedIndex() > -1) {
-            AreaBarrido area = new AreaBarrido(
-                    Integer.parseInt(etiquetaDigNumBarredores.getText()),
-                    Integer.parseInt(etiquetaDigNumCuadras.getText()), 
-                    Float.parseFloat(campoCapacidad.getText()), 
-                    new Distribucion(campoDistVelAcopio.getText()));
-            rutas.get(listaRutas.getSelectedIndex()).añadirArea(area);
-            modeloAreas.addElement("Area " + modeloAreas.getSize());
+        if (esValido()) {
+            if (listaRutas.getSelectedIndex() > -1) {
+                AreaBarrido area = new AreaBarrido(
+                        Integer.parseInt(etiquetaDigNumBarredores.getText()),
+                        Integer.parseInt(etiquetaDigNumCuadras.getText()), 
+                        Float.parseFloat(campoCapacidad.getText()), 
+                        new Distribucion(campoDistVelAcopio.getText()));
+                rutas.get(listaRutas.getSelectedIndex()).añadirArea(area);
+                modeloAreas.addElement("Area " + modeloAreas.getSize());
+            }
         }
     }//GEN-LAST:event_btnCrearAreaBarridoActionPerformed
 
     private void btnEditarAreaBarridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarAreaBarridoActionPerformed
-        if (listaRutas.getSelectedIndex() > -1 &&
-                listaAreaBarrido.getSelectedIndex() > -1) {
-            AreaBarrido area = rutas.get(listaRutas.getSelectedIndex()).getListaAreas().get(listaAreaBarrido.getSelectedIndex());
-            area.setNumeroBarredores(Integer.parseInt(etiquetaDigNumBarredores.getText()));
-            area.setNumeroCuadras(Integer.parseInt(etiquetaDigNumCuadras.getText()));
-            area.setCapacidad(Float.parseFloat(campoCapacidad.getText()));
-            area.setVelocidadAcopio(new Distribucion(campoDistVelAcopio.getText()));
+        if (esValido()) {
+            if (listaRutas.getSelectedIndex() > -1 &&
+                    listaAreaBarrido.getSelectedIndex() > -1) {
+                AreaBarrido area = rutas.get(listaRutas.getSelectedIndex()).getListaAreas().get(listaAreaBarrido.getSelectedIndex());
+                area.setNumeroBarredores(Integer.parseInt(etiquetaDigNumBarredores.getText()));
+                area.setNumeroCuadras(Integer.parseInt(etiquetaDigNumCuadras.getText()));
+                area.setCapacidad(Float.parseFloat(campoCapacidad.getText()));
+                area.setVelocidadAcopio(new Distribucion(campoDistVelAcopio.getText()));
+            }
         }
     }//GEN-LAST:event_btnEditarAreaBarridoActionPerformed
 

@@ -21,4 +21,9 @@ public class Distribucion {
         return campo;
     }
     
+    static public boolean esDistValida(String campo) {
+        //TODO: Validación
+        return true;
+    }
+    
 }

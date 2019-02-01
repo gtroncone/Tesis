@@ -14,31 +14,51 @@ import java.util.LinkedList;
 public class Horario {
     
     private final LinkedList<int[]> datos;
-    private String frecuencia;
+    private LinkedList<Camion> camionesAsignados;
     
     public Horario() {
         datos = new LinkedList<>();
+        camionesAsignados = new LinkedList<>();
     }
 
     public LinkedList<int[]> getDatos() {
         return datos;
     }
 
-    public String getFrecuencia() {
-        return frecuencia;
+    public LinkedList<Camion> getCamionesAsignados() {
+        return camionesAsignados;
+    }
+
+    public void setCamionesAsignados(LinkedList<Camion> camionesAsignados) {
+        this.camionesAsignados = camionesAsignados;
     }
     
-    public void nuevoDato(int hora, int minuto, String frecuencia) {
+    public void nuevoDato(int hora, int minuto, int frecuencia) {
         int[] entrada = new int[3];
         entrada[0] = hora;
         entrada[1] = minuto;
-        this.frecuencia = frecuencia;
+        entrada[2] = frecuencia;
         datos.add(entrada);
     }
     
     public int[] getDato(int index) {
         if (!datos.isEmpty()) {
             return datos.get(index);
+        }
+        return null;
+    }
+    
+    public void asignarCamion(Camion camion) {
+        camionesAsignados.add(camion);
+    }
+    
+    public void eliminarCamion(int index) {
+        camionesAsignados.remove(index);
+    }
+    
+    public Camion getCamion(int index) {
+        if (!camionesAsignados.isEmpty()) {
+            return camionesAsignados.get(index);
         }
         return null;
     }
@@ -53,5 +73,9 @@ public class Horario {
             return true;
         }
         return false;
+    }
+
+    public void eliminarDato(int selectedIndex) {
+        datos.remove(selectedIndex);
     }
 }

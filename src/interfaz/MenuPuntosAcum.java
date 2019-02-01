@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import simulacion.Calle;
 import simulacion.Distribucion;
@@ -108,6 +109,21 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
         for (int i = 0; i < sliderSemanal.length; i++) {
             sliderSemanal[i].setValue(0);
         }
+    }
+    
+    private void alerta(String s) {
+        JOptionPane.showMessageDialog(null, s);
+    }
+    
+    private boolean esValido() {
+        if (!Distribucion.esDistValida(campoTasaAcum.getText())) {
+            alerta("La notación de distribución en el campo de tasa de acumulación es incorrecta");
+            return false;
+        } else if (!Distribucion.esDistValida(campoTasaGen.getText())) {
+            alerta("La notación de distribución en el campo de tasa de generación es incorrecta");
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -1135,52 +1151,56 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
     }//GEN-LAST:event_listaCallesMouseClicked
 
     private void btnCrearPtoAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPtoAcumActionPerformed
-        if (listaRutas.getSelectedIndex() > -1 &&
-                listaCalles.getSelectedIndex() > -1) {
-            int[] arraySemanal = new int[7];
-            int[] arrayDiario = new int[24];
-            
-            for (int i = 0; i < sliderSemanal.length; i++) {
-                arraySemanal[i] = sliderSemanal[i].getValue();
+        if (esValido()) { 
+            if (listaRutas.getSelectedIndex() > -1 &&
+                    listaCalles.getSelectedIndex() > -1) {
+                int[] arraySemanal = new int[7];
+                int[] arrayDiario = new int[24];
+
+                for (int i = 0; i < sliderSemanal.length; i++) {
+                    arraySemanal[i] = sliderSemanal[i].getValue();
+                }
+
+                for (int i = 0; i < sliderDiario.length; i++) {
+                    arrayDiario[i] = sliderDiario[i].getValue();
+                }
+
+                PuntosAcumulacion puntosAcum = new PuntosAcumulacion(
+                        new Distribucion(campoTasaAcum.getText()),
+                        new Distribucion(campoTasaGen.getText()), arrayDiario,
+                        arraySemanal, Integer.parseInt(etiquetaNumPuntosAcum.getText()));
+
+                rutas.get(listaRutas.getSelectedIndex()).getCalles()
+                        .get(listaCalles.getSelectedIndex())
+                        .setPuntosAcum(puntosAcum);
             }
-            
-            for (int i = 0; i < sliderDiario.length; i++) {
-                arrayDiario[i] = sliderDiario[i].getValue();
-            }
-            
-            PuntosAcumulacion puntosAcum = new PuntosAcumulacion(
-                    new Distribucion(campoTasaAcum.getText()),
-                    new Distribucion(campoTasaGen.getText()), arrayDiario,
-                    arraySemanal, Integer.parseInt(etiquetaNumPuntosAcum.getText()));
-            
-            rutas.get(listaRutas.getSelectedIndex()).getCalles()
-                    .get(listaCalles.getSelectedIndex())
-                    .setPuntosAcum(puntosAcum);
         }
     }//GEN-LAST:event_btnCrearPtoAcumActionPerformed
 
     private void btnEditarPtoAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPtoAcumActionPerformed
-        if (listaRutas.getSelectedIndex() > -1
-                && listaCalles.getSelectedIndex() > -1) {
-            PuntosAcumulacion puntosAcum = rutas.get(listaRutas.getSelectedIndex())
-                    .getCalles().get(listaCalles.getSelectedIndex()).getPuntosAcum();
-            puntosAcum.setNumeroPuntos(Integer.parseInt(etiquetaNumPuntosAcum.getText()));
-            puntosAcum.setTasaAcumulacion(new Distribucion(campoTasaAcum.getText()));
-            puntosAcum.setTasaGeneracion(new Distribucion(campoTasaGen.getText()));
-            
-            int[] arraySemanal = new int[7];
-            int[] arrayDiario = new int[24];
-            
-            for (int i = 0; i < sliderSemanal.length; i++) {
-                arraySemanal[i] = sliderSemanal[i].getValue();
+        if (esValido()) {
+            if (listaRutas.getSelectedIndex() > -1
+                    && listaCalles.getSelectedIndex() > -1) {
+                PuntosAcumulacion puntosAcum = rutas.get(listaRutas.getSelectedIndex())
+                        .getCalles().get(listaCalles.getSelectedIndex()).getPuntosAcum();
+                puntosAcum.setNumeroPuntos(Integer.parseInt(etiquetaNumPuntosAcum.getText()));
+                puntosAcum.setTasaAcumulacion(new Distribucion(campoTasaAcum.getText()));
+                puntosAcum.setTasaGeneracion(new Distribucion(campoTasaGen.getText()));
+
+                int[] arraySemanal = new int[7];
+                int[] arrayDiario = new int[24];
+
+                for (int i = 0; i < sliderSemanal.length; i++) {
+                    arraySemanal[i] = sliderSemanal[i].getValue();
+                }
+
+                for (int i = 0; i < sliderDiario.length; i++) {
+                    arrayDiario[i] = sliderDiario[i].getValue();
+                }
+
+                puntosAcum.setFactorSemanal(arraySemanal);
+                puntosAcum.setFactorHora(arrayDiario);
             }
-            
-            for (int i = 0; i < sliderDiario.length; i++) {
-                arrayDiario[i] = sliderDiario[i].getValue();
-            }
-            
-            puntosAcum.setFactorSemanal(arraySemanal);
-            puntosAcum.setFactorHora(arrayDiario);
         }
     }//GEN-LAST:event_btnEditarPtoAcumActionPerformed
 

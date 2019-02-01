@@ -58,6 +58,7 @@ public class UI extends javax.swing.JFrame {
      * @param simulacion
      * @throws java.io.IOException
      */
+    
     public UI(Simulacion simulacion) throws IOException {
         initComponents();
         this.setResizable(false);
@@ -124,6 +125,13 @@ public class UI extends javax.swing.JFrame {
         render.setModoDeDibujo(true);
         render.setLeadingPoint(new Point(0, 0));
         actualizarMapa();
+    }
+    
+    private boolean hayOtrosMenusVisibles() {
+        return (menuRuta.isVisible() || menuCamiones.isVisible() ||
+                menuPuntosAcum.isVisible() || menuBarredores.isVisible() ||
+                menuConfiguracion.isVisible() || menuAsignacion.isVisible() ||
+                menuRuta.isMenuHorariosVisible());
     }
 
     /**
@@ -386,22 +394,30 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnZoomOutActionPerformed
 
     private void btnRutasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRutasActionPerformed
-        menuRuta.setVisible(true);
+        if (!hayOtrosMenusVisibles()) {
+            menuRuta.setVisible(true);   
+        }
     }//GEN-LAST:event_btnRutasActionPerformed
 
     private void btnCamionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCamionesActionPerformed
-        menuCamiones.setVisible(true);
-        menuCamiones.setListaCamiones(simulacion.getCamiones());
+        if (!hayOtrosMenusVisibles()) {
+            menuCamiones.setVisible(true);
+            menuCamiones.setListaCamiones(simulacion.getCamiones());
+        }
     }//GEN-LAST:event_btnCamionesActionPerformed
 
     private void btnPtosAcumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPtosAcumActionPerformed
-        menuPuntosAcum.setVisible(true);
-        menuPuntosAcum.setRutas(simulacion.getRutas());
+        if (!hayOtrosMenusVisibles()) {
+            menuPuntosAcum.setVisible(true);
+            menuPuntosAcum.setRutas(simulacion.getRutas());
+        }
     }//GEN-LAST:event_btnPtosAcumActionPerformed
 
     private void btnBarridoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBarridoActionPerformed
-        menuBarredores.setVisible(true);
-        menuBarredores.setRutas(simulacion.getRutas());
+        if (!hayOtrosMenusVisibles()) {
+            menuBarredores.setVisible(true);
+            menuBarredores.setRutas(simulacion.getRutas());
+        }
     }//GEN-LAST:event_btnBarridoActionPerformed
 
     private void contenedorMapaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contenedorMapaMouseClicked
@@ -430,13 +446,18 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_contenedorMapaMouseMoved
 
     private void btnAsignarCamionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarCamionesActionPerformed
-        menuAsignacion.setVisible(true);
-        menuAsignacion.setCamiones(simulacion.getCamiones());
-        menuAsignacion.setRutas(simulacion.getRutas());
+        if (!hayOtrosMenusVisibles()) {
+            menuAsignacion.setVisible(true);
+            menuAsignacion.setCamiones(simulacion.getCamiones());
+            menuAsignacion.setRutas(simulacion.getRutas());
+        }
     }//GEN-LAST:event_btnAsignarCamionesActionPerformed
 
     private void btnConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracionActionPerformed
-        menuConfiguracion.setVisible(true);
+        if (!hayOtrosMenusVisibles()) {
+            menuConfiguracion.setVisible(true);
+            menuConfiguracion.setConfiguracion();
+        }
     }//GEN-LAST:event_btnConfiguracionActionPerformed
 
     private void btnZoomInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZoomInActionPerformed

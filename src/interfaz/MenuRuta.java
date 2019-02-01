@@ -18,6 +18,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import simulacion.Calle;
 import simulacion.Distribucion;
 import simulacion.Horario;
@@ -146,6 +147,87 @@ public class MenuRuta extends javax.swing.JFrame {
         for (int i = 0; i < listaRutas.size(); i++) {
             dropSelRuta.addItem(listaRutas.get(i).getNombre());
         }
+    }
+    
+    public boolean isMenuHorariosVisible() {
+        return menuHorarios.isVisible();
+    }
+    
+    private boolean camposRutaSonValidos() {
+        if (campoNombreRuta.getText().length() <= 0) {
+            alerta("El campo de nombre de ruta está vacío");
+            return false;
+        } else if (!nombreRutaEsUnico()) {
+            alerta("El nombre de la ruta a crear o editar no es único");
+            return false;
+        } else if (!Distribucion.esDistValida(campoDistFlujoPeatonal.getText())) {
+            alerta("La notación de distribución en el campo del flujo peatonal es incorrecta");
+            return false;
+        } else if (!Distribucion.esDistValida(campoDistDesPorPeaton.getText())) {
+            alerta("La notación de distribución en el campo de desechos por peatón es incorrecta");
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean nombreRutaEsUnico() {
+        if (listaRutas != null) {
+            for (int i = 0; i < listaRutas.size(); i++) {
+                String nombreRuta = listaRutas.get(i).getNombre();
+                if (nombreRuta.equals(campoNombreRuta.getText())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    private void alerta(String s) {
+        JOptionPane.showMessageDialog(null, s);
+    }
+    
+    private boolean camposCalleSonValidos() {
+        if (campoNombreCalle.getText().length() <= 0) {
+            alerta("Campo nombre de calle está vacío");
+            return false;
+        }else if (!nombreCalleEsUnico()) {
+            alerta("El nombre de la calle a editar o crear no es único");
+            return false;
+        } else if (!Distribucion.esDistValida(campoDistVelRecor.getText())) {
+            alerta("La notación de distribución en el campo de velocidad de recorrido es inválida");
+            return false;
+        } else if (!esAsignacionDePuntosValida()) {
+            alerta("La asignación de puntos a la calle es inválida");
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean esAsignacionDePuntosValida() {
+        if (dropPrimerPuntoCalle.getSelectedIndex() >= dropSegundoPuntoCalle.getSelectedIndex() + 1) {
+            return false;
+        }
+        for (int i = 0; i < listaCalles.size(); i++) {
+            Calle calle = listaCalles.get(i);
+            if (calle.getPuntoFinal() >= dropPrimerPuntoCalle.getSelectedIndex()) {
+                return false;
+            } else if (calle.getPuntoInicial() <= dropSegundoPuntoCalle.getSelectedIndex() + 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean nombreCalleEsUnico() {
+        if (listaCalles != null) {
+            for (int i = 0; i < listaCalles.size(); i++) {
+                String nombreCalle = listaCalles.get(i).getNombre();
+                if (nombreCalle.equals(campoNombreCalle.getText())) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -442,6 +524,12 @@ public class MenuRuta extends javax.swing.JFrame {
     private void btnEditarHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarHorarioActionPerformed
         menuHorarios.setVisible(true);
         this.setVisible(false);
+        if (dropSelRuta.getSelectedIndex() > 0) {
+            menuHorarios.setHorario(listaRutas
+                    .get(dropSelRuta.getSelectedIndex() - 1).getHorario());
+        } else {
+            menuHorarios.setHorario(null);
+        }
     }//GEN-LAST:event_btnEditarHorarioActionPerformed
 
     private void dropSelRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dropSelRutaActionPerformed
@@ -472,16 +560,18 @@ public class MenuRuta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        if (dropSelRuta.getSelectedIndex() <= 0) {
-            Ruta ruta = new Ruta(campoNombreRuta.getText(),
-            horario, listaCalles, new Distribucion(campoDistFlujoPeatonal.getText()),
-            new Distribucion(campoDistDesPorPeaton.getText()),
-            puntos, interfaz.getZoom(), dropTipoRec.getSelectedIndex());
-            interfaz.getSimulacion().añadirRuta(ruta);
-            modoCreacion();
-            refrescarRutas();
-        } else {
-            editarRuta();
+        if (camposRutaSonValidos()) {
+            if (dropSelRuta.getSelectedIndex() <= 0) {
+                Ruta ruta = new Ruta(campoNombreRuta.getText(),
+                horario, listaCalles, new Distribucion(campoDistFlujoPeatonal.getText()),
+                new Distribucion(campoDistDesPorPeaton.getText()),
+                puntos, interfaz.getZoom(), dropTipoRec.getSelectedIndex());
+                interfaz.getSimulacion().añadirRuta(ruta);
+                modoCreacion();
+                refrescarRutas();
+            } else {
+                editarRuta();
+            }
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
@@ -503,26 +593,28 @@ public class MenuRuta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarCalleActionPerformed
 
     private void btnAnadirCalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirCalleActionPerformed
-        if (listaCallesRuta.getSelectedIndex() == -1) {
-            if (estadoColorPicker == null) {
-                Random rand = new Random();
-                estadoColorPicker = new Color(rainbowColors[rand.nextInt(6)]);
+        if (camposCalleSonValidos()) {
+            if (listaCallesRuta.getSelectedIndex() == -1) {
+                if (estadoColorPicker == null) {
+                    Random rand = new Random();
+                    estadoColorPicker = new Color(rainbowColors[rand.nextInt(6)]);
+                }
+                Calle calle = new Calle(campoNombreCalle.getText(), 
+                new Distribucion(campoDistVelRecor.getText()),
+                Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()),
+                Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()),
+                new Color(estadoColorPicker.getRGB()));
+                listaCalles.add(calle);
+                modeloCalles.addElement(campoNombreCalle.getText());
+                estadoColorPicker = null;
+            } else {
+                Calle calle = listaCalles.get(listaCallesRuta.getSelectedIndex());
+                modeloCalles.set(listaCallesRuta.getSelectedIndex(), campoNombreCalle.getText());
+                calle.setNombre(campoNombreCalle.getText());
+                calle.setVelocidad(new Distribucion(campoDistVelRecor.getText()));
+                calle.setPuntoInicial(Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()));
+                calle.setPuntoFinal(Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()));
             }
-            Calle calle = new Calle(campoNombreCalle.getText(), 
-            new Distribucion(campoDistVelRecor.getText()),
-            Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()),
-            Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()),
-            new Color(estadoColorPicker.getRGB()));
-            listaCalles.add(calle);
-            modeloCalles.addElement(campoNombreCalle.getText());
-            estadoColorPicker = null;
-        } else {
-            Calle calle = listaCalles.get(listaCallesRuta.getSelectedIndex());
-            modeloCalles.set(listaCallesRuta.getSelectedIndex(), campoNombreCalle.getText());
-            calle.setNombre(campoNombreCalle.getText());
-            calle.setVelocidad(new Distribucion(campoDistVelRecor.getText()));
-            calle.setPuntoInicial(Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()));
-            calle.setPuntoFinal(Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()));
         }
     }//GEN-LAST:event_btnAnadirCalleActionPerformed
 

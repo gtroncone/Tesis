@@ -16,15 +16,17 @@ public class Camion {
     private String modelo;
     private int capacidad; // 0 = 15yd3, 1 = 25yd3
     private String id;
+    private double precio;
     
     private LinkedList<Pieza> piezas;
     
     public Camion(String modelo, int capacidad, String id,
-            LinkedList<Pieza> piezas) {
+            LinkedList<Pieza> piezas, double precio) {
         this.modelo = modelo;
         this.capacidad = capacidad;
         this.id = id;
         this.piezas = piezas;
+        this.precio = precio;
     }
 
     public String getModelo() {
@@ -57,6 +59,14 @@ public class Camion {
 
     public void setPiezas(LinkedList<Pieza> piezas) {
         this.piezas = piezas;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
     
 }

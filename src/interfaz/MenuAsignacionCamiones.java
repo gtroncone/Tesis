@@ -6,8 +6,10 @@
 package interfaz;
 
 import java.util.LinkedList;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import simulacion.Camion;
+import simulacion.Horario;
 import simulacion.Ruta;
 
 /**
@@ -20,14 +22,32 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
     private LinkedList<Camion> camiones;
     private LinkedList<Ruta> rutas;
     
+    private DefaultListModel modeloRutas;
+    private DefaultListModel modeloCamiones;
+    private DefaultListModel modeloHorarios;
+    private DefaultListModel modeloAsignados;
+    
     /**
      * Creates new form MenuAsignacionCamiones
+     * @param interfaz
      */
     public MenuAsignacionCamiones(UI interfaz) {
         this.interfaz = interfaz;
         initComponents();
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setResizable(false);
+        
+        modeloRutas = new DefaultListModel();
+        listaRutas.setModel(modeloRutas);
+        
+        modeloCamiones = new DefaultListModel();
+        listaPiscinaCamiones.setModel(modeloCamiones);
+        
+        modeloHorarios = new DefaultListModel();
+        listaHorarios.setModel(modeloHorarios);
+        
+        modeloAsignados = new DefaultListModel();
+        listaCamionesAsignados.setModel(modeloAsignados);
     }
 
     public LinkedList<Camion> getCamiones() {
@@ -36,6 +56,12 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
 
     public void setCamiones(LinkedList<Camion> camiones) {
         this.camiones = camiones;
+        if (this.camiones != null) {
+            modeloCamiones.clear();
+            for (int i = 0; i < this.camiones.size(); i++) {
+                modeloCamiones.addElement(this.camiones.get(i).getId());
+            }
+        }
     }
 
     public LinkedList<Ruta> getRutas() {
@@ -44,6 +70,30 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
 
     public void setRutas(LinkedList<Ruta> rutas) {
         this.rutas = rutas;
+        if (this.rutas != null) {
+            modeloRutas.clear();
+            for (int i = 0; i < this.rutas.size(); i++) {
+                modeloRutas.addElement(this.rutas.get(i).getNombre());
+            }
+        }
+        reiniciarHorariosYAsignaciones();
+    }
+    
+    private void reiniciarHorariosYAsignaciones() {
+        modeloHorarios.clear();
+        modeloAsignados.clear();
+    }
+    
+    private boolean camionYaFueAsignado() {
+        if (listaPiscinaCamiones.getSelectedIndex() > -1) {
+            for (int i = 0; i < modeloAsignados.getSize(); i++) {
+                if (modeloAsignados.getElementAt(i).equals(modeloCamiones
+                        .getElementAt(listaPiscinaCamiones.getSelectedIndex()))) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -79,6 +129,11 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        listaRutas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaRutasValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(listaRutas);
 
         etiquetaHorarios.setText("Horarios");
@@ -87,6 +142,11 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        listaHorarios.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaHorariosValueChanged(evt);
+            }
         });
         jScrollPane2.setViewportView(listaHorarios);
 
@@ -109,65 +169,134 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
         jScrollPane4.setViewportView(listaPiscinaCamiones);
 
         btnAsignarCamion.setText("↑");
+        btnAsignarCamion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAsignarCamionActionPerformed(evt);
+            }
+        });
 
         btnRemoverCamion.setText("↓");
+        btnRemoverCamion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverCamionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(272, 272, 272)
+                .addComponent(btnAsignarCamion)
+                .addGap(66, 66, 66)
+                .addComponent(btnRemoverCamion)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(etiquetaPiscinaCamiones)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(etiquetaRutas)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(etiquetaPiscinaCamiones)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(etiquetaHorarios, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(etiquetaCamiones)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(209, 209, 209)
-                        .addComponent(btnAsignarCamion)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnRemoverCamion)))
+                                .addComponent(etiquetaCamiones)
+                                .addGap(59, 59, 59))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(etiquetaHorarios)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(etiquetaRutas)
-                    .addComponent(etiquetaHorarios)
-                    .addComponent(etiquetaCamiones))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(26, 26, 26)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(etiquetaRutas)
+                            .addComponent(etiquetaHorarios))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(etiquetaCamiones)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAsignarCamion)
                     .addComponent(btnRemoverCamion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(etiquetaPiscinaCamiones, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAsignarCamionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarCamionActionPerformed
+        if (!camionYaFueAsignado()) {
+            if (listaPiscinaCamiones.getSelectedIndex() > -1) {
+                Horario horario = rutas.get(listaRutas.getSelectedIndex()).getHorario();
+                horario.asignarCamion(camiones.get(listaPiscinaCamiones.getSelectedIndex()));
+                modeloAsignados.addElement(camiones.get(listaPiscinaCamiones.getSelectedIndex()));
+            }
+        }
+    }//GEN-LAST:event_btnAsignarCamionActionPerformed
+
+    private void btnRemoverCamionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverCamionActionPerformed
+        if (listaCamionesAsignados.getSelectedIndex() > -1) {
+            Horario horario = rutas.get(listaRutas.getSelectedIndex()).getHorario();
+            horario.eliminarCamion(listaCamionesAsignados.getSelectedIndex());
+            modeloAsignados.remove(listaCamionesAsignados.getSelectedIndex());
+        }
+    }//GEN-LAST:event_btnRemoverCamionActionPerformed
+
+    private void listaRutasValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaRutasValueChanged
+        if (listaRutas.getSelectedIndex() > -1) {
+            Horario horario = rutas.get(listaRutas.getSelectedIndex()).getHorario();
+            modeloHorarios.clear();
+            for (int i = 0; i < horario.getDatos().size(); i++) {
+                int[] datos = horario.getDato(i);
+                String cadena = "";
+                if (datos[0] < 10) {
+                    cadena += "0";
+                }
+                cadena += String.valueOf(datos[0]);
+                cadena += ":";
+                if (datos[1] < 10) {
+                    cadena += "0";
+                }
+                cadena += String.valueOf(datos[1]);
+                cadena += " Frecuencia: " + (datos[2] == 0 ? "Diaria" : "Interdiaria");
+                modeloHorarios.addElement(cadena);
+            }
+        }
+    }//GEN-LAST:event_listaRutasValueChanged
+
+    private void listaHorariosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaHorariosValueChanged
+        if (listaHorarios.getSelectedIndex() > -1) {
+            LinkedList<Camion> camionesAux = rutas.get(listaRutas.getSelectedIndex())
+                    .getHorario().getCamionesAsignados();
+            modeloAsignados.clear();
+            for (int i = 0; i < camionesAux.size(); i++) {
+                Camion camion = camionesAux.get(i);
+                modeloAsignados.addElement(camion.getId());
+            }
+        }
+    }//GEN-LAST:event_listaHorariosValueChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignarCamion;
     private javax.swing.JButton btnRemoverCamion;
