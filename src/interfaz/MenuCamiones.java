@@ -74,6 +74,7 @@ public class MenuCamiones extends javax.swing.JFrame {
         campoCostoPieza.setText("");
         campoDistTiempoVidaPieza.setText("");
         dropCantPorCamion.setSelectedIndex(0);
+        checkFallaCritica.setState(false);
     }
     
     public void setListaCamiones(LinkedList<Camion> listaCamiones) {
@@ -115,7 +116,7 @@ public class MenuCamiones extends javax.swing.JFrame {
         if (campoNomPieza.getText().length() <= 0) {
             alerta("El campo de nombre de la pieza no puede estar vacío");
             return false;
-        } else if (Distribucion.esDistValida(campoDistTiempoVidaPieza.getText())) {
+        } else if (!Distribucion.esDistValida(campoDistTiempoVidaPieza.getText())) {
             alerta("La notación de distribución en el campo de tiempo de vida es incorrecta");
             return false;
         }
@@ -168,6 +169,7 @@ public class MenuCamiones extends javax.swing.JFrame {
         dropCantPorCamion = new javax.swing.JComboBox<>();
         etiquetaCostoCamion = new javax.swing.JLabel();
         campoCostoCamion = new javax.swing.JTextField();
+        checkFallaCritica = new java.awt.Checkbox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -244,42 +246,46 @@ public class MenuCamiones extends javax.swing.JFrame {
 
         etiquetaCostoCamion.setText("Costo del Camión");
 
+        checkFallaCritica.setLabel("¿Falla Crítica?");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(184, 184, 184)
+                .addComponent(btnAnadirPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(etiquetaSelCamion)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(etiquetaIDCamion)
-                            .addComponent(etiquetaCostoCamion))
-                        .addGap(43, 43, 43)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(dropSelCamion, 0, 128, Short.MAX_VALUE)
-                            .addComponent(campoModeloCamion)
-                            .addComponent(dropCapacidadCamion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(campoIDCamion)
-                            .addComponent(campoCostoCamion))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminarCamion)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(separador)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
+                                .addGap(29, 29, 29)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(etiquetaSelCamion)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(etiquetaIDCamion)
+                                    .addComponent(etiquetaCostoCamion))
+                                .addGap(43, 43, 43)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(dropSelCamion, 0, 128, Short.MAX_VALUE)
+                                    .addComponent(campoModeloCamion)
+                                    .addComponent(dropCapacidadCamion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(campoIDCamion)
+                                    .addComponent(campoCostoCamion))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEliminarCamion))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(etiquetaSelPieza)
                                     .addComponent(etiquetaNomPieza)
                                     .addComponent(etiquetaCostoPieza)
                                     .addComponent(etiquetaDistTVidaPieza)
-                                    .addComponent(etiquetaCantPorCamion))
+                                    .addComponent(etiquetaCantPorCamion)
+                                    .addComponent(checkFallaCritica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(49, 49, 49)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(dropSelPieza, 0, 128, Short.MAX_VALUE)
@@ -288,19 +294,19 @@ public class MenuCamiones extends javax.swing.JFrame {
                                     .addComponent(campoDistTiempoVidaPieza)
                                     .addComponent(dropCantPorCamion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(btnEliminarPieza)
-                                .addGap(0, 12, Short.MAX_VALUE)))))
+                                .addComponent(btnEliminarPieza)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(separador)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnNuevoCamion, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(69, 69, 69)
+                                .addComponent(btnCerrarCamion, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(96, 96, 96)))))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(184, 184, 184)
-                .addComponent(btnAnadirPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNuevoCamion, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69)
-                .addComponent(btnCerrarCamion, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(108, 108, 108))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,7 +332,7 @@ public class MenuCamiones extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaCostoCamion)
                     .addComponent(campoCostoCamion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNuevoCamion)
                     .addComponent(btnCerrarCamion))
@@ -353,7 +359,9 @@ public class MenuCamiones extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaCantPorCamion)
                     .addComponent(dropCantPorCamion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkFallaCritica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAnadirPieza)
                 .addContainerGap())
         );
@@ -407,7 +415,8 @@ public class MenuCamiones extends javax.swing.JFrame {
                 Pieza pieza = new Pieza(campoNomPieza.getText(),
                         Double.parseDouble(campoCostoPieza.getText()),
                         new Distribucion(campoDistTiempoVidaPieza.getText()),
-                        dropCantPorCamion.getSelectedIndex());
+                        dropCantPorCamion.getSelectedIndex(),
+                        checkFallaCritica.getState());
                 if (listaPiezas == null) {
                     listaPiezas = new LinkedList<>();
                     listaCamiones.get(dropSelCamion.getSelectedIndex() - 1).setPiezas(listaPiezas);
@@ -421,6 +430,7 @@ public class MenuCamiones extends javax.swing.JFrame {
                 pieza.setCosto(Double.parseDouble(campoCostoPieza.getText()));
                 pieza.setTiempoDeVida(new Distribucion(campoDistTiempoVidaPieza.getText()));
                 pieza.setCantidadPorCamion(dropCantPorCamion.getSelectedIndex());
+                pieza.setOcasionaFallaCritica(checkFallaCritica.getState());
             }
         }
     }//GEN-LAST:event_btnAnadirPiezaActionPerformed
@@ -433,6 +443,7 @@ public class MenuCamiones extends javax.swing.JFrame {
             campoCostoPieza.setText(String.valueOf(pieza.getCosto()));
             campoDistTiempoVidaPieza.setText(pieza.getTiempoDeVida().getCampo());
             dropCantPorCamion.setSelectedIndex(pieza.getCantidadPorCamion());
+            checkFallaCritica.setState(pieza.isOcasionaFallaCritica());
         } else {
             btnAnadirPieza.setText("Crear");
             reiniciarMenuPieza();
@@ -473,6 +484,7 @@ public class MenuCamiones extends javax.swing.JFrame {
     private javax.swing.JTextField campoIDCamion;
     private javax.swing.JTextField campoModeloCamion;
     private javax.swing.JTextField campoNomPieza;
+    private java.awt.Checkbox checkFallaCritica;
     private javax.swing.JComboBox<String> dropCantPorCamion;
     private javax.swing.JComboBox<String> dropCapacidadCamion;
     private javax.swing.JComboBox<String> dropSelCamion;

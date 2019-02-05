@@ -31,41 +31,44 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="184" max="-2" attributes="0"/>
+              <Component id="btnAnadirPieza" min="-2" pref="80" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="etiquetaSelCamion" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="etiquetaIDCamion" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="etiquetaCostoCamion" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="dropSelCamion" pref="128" max="32767" attributes="0"/>
-                          <Component id="campoModeloCamion" max="32767" attributes="0"/>
-                          <Component id="dropCapacidadCamion" max="32767" attributes="0"/>
-                          <Component id="campoIDCamion" max="32767" attributes="0"/>
-                          <Component id="campoCostoCamion" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnEliminarCamion" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="separador" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="etiquetaSelCamion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="etiquetaIDCamion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="etiquetaCostoCamion" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="dropSelCamion" pref="128" max="32767" attributes="0"/>
+                                  <Component id="campoModeloCamion" max="32767" attributes="0"/>
+                                  <Component id="dropCapacidadCamion" max="32767" attributes="0"/>
+                                  <Component id="campoIDCamion" max="32767" attributes="0"/>
+                                  <Component id="campoCostoCamion" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnEliminarCamion" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="etiquetaSelPieza" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="etiquetaNomPieza" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="etiquetaCostoPieza" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="etiquetaDistTVidaPieza" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="etiquetaCantPorCamion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="checkFallaCritica" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -77,24 +80,25 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnEliminarPieza" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="separador" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace pref="106" max="-2" attributes="0"/>
+                              <Component id="btnNuevoCamion" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                              <Component id="btnCerrarCamion" min="-2" pref="80" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="184" max="-2" attributes="0"/>
-              <Component id="btnAnadirPieza" min="-2" pref="80" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnNuevoCamion" min="-2" pref="80" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-              <Component id="btnCerrarCamion" min="-2" pref="80" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -127,7 +131,7 @@
                   <Component id="etiquetaCostoCamion" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="campoCostoCamion" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="20" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnNuevoCamion" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnCerrarCamion" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -160,7 +164,9 @@
                   <Component id="etiquetaCantPorCamion" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="dropCantPorCamion" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="checkFallaCritica" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="btnAnadirPieza" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -337,6 +343,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="campoCostoCamion">
+    </Component>
+    <Component class="java.awt.Checkbox" name="checkFallaCritica">
+      <Properties>
+        <Property name="label" type="java.lang.String" value="&#xbf;Falla Cr&#xed;tica?"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

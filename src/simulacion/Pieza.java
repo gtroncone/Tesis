@@ -15,13 +15,15 @@ public class Pieza {
     private double costo;
     private Distribucion tiempoDeVida;
     private int cantidadPorCamion;
+    private boolean ocasionaFallaCritica;
     
     public Pieza(String nombre, double costo, Distribucion tiempoDeVida,
-            int cantidadPorCamion) {
+            int cantidadPorCamion, boolean ocasionaFallaCritica) {
         this.nombre = nombre;
         this.costo = costo;
         this.tiempoDeVida = tiempoDeVida;
         this.cantidadPorCamion = cantidadPorCamion;
+        this.ocasionaFallaCritica = ocasionaFallaCritica;
     }
 
     public String getNombre() {
@@ -54,6 +56,14 @@ public class Pieza {
 
     public void setCantidadPorCamion(int cantidadPorCamion) {
         this.cantidadPorCamion = cantidadPorCamion;
+    }
+
+    public boolean isOcasionaFallaCritica() {
+        return ocasionaFallaCritica;
+    }
+
+    public void setOcasionaFallaCritica(boolean ocasionaFallaCritica) {
+        this.ocasionaFallaCritica = ocasionaFallaCritica;
     }
     
 }
