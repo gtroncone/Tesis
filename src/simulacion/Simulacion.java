@@ -23,6 +23,9 @@ public class Simulacion implements Serializable {
     private double salarioEquipoRecoleccion = 0;
     private int numMecanicos = 0;
     private double salarioMecanicos = 0;
+    private int tipoDeMantenimiento;
+    private int numeroDeDias = 1;
+    private int diaInicial = 1;
     
     public Simulacion() {
         rutas = new LinkedList<>();
@@ -96,7 +99,70 @@ public class Simulacion implements Serializable {
         this.salarioMecanicos = salarioMecanicos;
     }
 
+    public int getTipoDeMantenimiento() {
+        return tipoDeMantenimiento;
+    }
+
+    public void setTipoDeMantenimiento(int tipoDeMantenimiento) {
+        this.tipoDeMantenimiento = tipoDeMantenimiento;
+    }
+
+    public int getNumeroDeDias() {
+        return numeroDeDias;
+    }
+
+    public void setNumeroDeDias(int numeroDeDias) {
+        this.numeroDeDias = numeroDeDias;
+    }
+
+    public int getDiaInicial() {
+        return diaInicial;
+    }
+
+    public void setDiaInicial(int diaInicial) {
+        this.diaInicial = diaInicial;
+    }
+    
+    public void iniciarSimulacion() {
+        ContextoSimulacion[] instancias = new ContextoSimulacion[numRepeticiones];
+        int numTicks = determinarNumTicks();
+        for (int i = 0; i < instancias.length; i++) {
+            instancias[i] = new ContextoSimulacion(numTicks);
+        }
+        cicloPrincipal(instancias);
+    }
+    
+    private int determinarNumTicks() {
+        if (horarioASimular[0].toLowerCase().equals("x") ||
+                horarioASimular[1].toLowerCase().equals("x")) {
+            return 60 * 24 * numeroDeDias;
+        }
+        int horaInicial = Integer.parseInt(horarioASimular[0]);
+        int horaFinal = Integer.parseInt(horarioASimular[1]);
+        if (horaInicial < horaFinal) {
+            return (horaFinal - horaInicial) * 60 * numeroDeDias;
+        } else {
+            return (24 - (horaInicial - horaFinal)) * 60 * numeroDeDias;
+        }
+    }
+    
+    public void cicloPrincipal(ContextoSimulacion[] contextos) {
+        for (int i = 0; i < contextos.length; i++) {
+            ContextoSimulacion contexto = contextos[i];
+            for (int j = 0; j < contexto.getNumeroTicks(); j++) {
+                contexto.incrementarTick();
+                
+            }
+        }
+    }
+
     public void ejecutar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (estadoEsValido()) {
+            iniciarSimulacion();
+        }
+    }
+    
+    private boolean estadoEsValido() {
+        return true;
     }
 }

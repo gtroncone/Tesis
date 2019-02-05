@@ -51,6 +51,25 @@ public class MenuConfiguracion extends javax.swing.JFrame {
         for (int i = 5; i <= 1000; i += 5) {
             dropNumRepeticiones.addItem(String.valueOf(i));
         }
+        
+        dropNumDias.removeAllItems();
+        for (int i = 0; i < 30; i++) {
+            dropNumDias.addItem(String.valueOf(i + 1));
+        }
+        
+        dropDiaInicial.removeAllItems();
+        dropDiaInicial.addItem("Lunes");
+        dropDiaInicial.addItem("Martes");
+        dropDiaInicial.addItem("Miércoles");
+        dropDiaInicial.addItem("Jueves");
+        dropDiaInicial.addItem("Viernes");
+        dropDiaInicial.addItem("Sábado");
+        dropDiaInicial.addItem("Domingo");
+        
+        dropTipoMantenimiento.removeAllItems();
+        dropTipoMantenimiento.addItem("Alt. Preventivo");
+        dropTipoMantenimiento.addItem("Preventivo");
+        dropTipoMantenimiento.addItem("Reactivo");
     }
     
     private boolean configuracionEsValida() {
@@ -167,6 +186,12 @@ public class MenuConfiguracion extends javax.swing.JFrame {
         campoSalarioMecanicos = new javax.swing.JTextField();
         checkCompleto = new java.awt.Checkbox();
         dropNumRepeticiones = new javax.swing.JComboBox<>();
+        etiquetaTipoMantenimiento = new javax.swing.JLabel();
+        dropTipoMantenimiento = new javax.swing.JComboBox<>();
+        etiquetaNumDias = new javax.swing.JLabel();
+        dropNumDias = new javax.swing.JComboBox<>();
+        etiquetaDiaInicial = new javax.swing.JLabel();
+        dropDiaInicial = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -228,6 +253,18 @@ public class MenuConfiguracion extends javax.swing.JFrame {
 
         dropNumRepeticiones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        etiquetaTipoMantenimiento.setText("Tipo de Mantenimiento");
+
+        dropTipoMantenimiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        etiquetaNumDias.setText("Número de Días");
+
+        dropNumDias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        etiquetaDiaInicial.setText("Día Inicial");
+
+        dropDiaInicial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -251,7 +288,10 @@ public class MenuConfiguracion extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(etiquetaIntervaloASim)
                                 .addGap(19, 19, 19)
-                                .addComponent(checkCompleto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(checkCompleto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(etiquetaTipoMantenimiento)
+                            .addComponent(etiquetaNumDias)
+                            .addComponent(etiquetaDiaInicial))
                         .addGap(19, 19, 19)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -261,6 +301,9 @@ public class MenuConfiguracion extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(dropHoraFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(dropDiaInicial, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dropNumDias, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dropTipoMantenimiento, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(dropNumRepeticiones, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(campoSalarioMecanicos, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -291,6 +334,14 @@ public class MenuConfiguracion extends javax.swing.JFrame {
                     .addComponent(etiquetaNumRepeticiones)
                     .addComponent(dropNumRepeticiones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(etiquetaNumDias)
+                    .addComponent(dropNumDias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(etiquetaDiaInicial)
+                    .addComponent(dropDiaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaSalarioBarredores)
                     .addComponent(campoSalarioBarredores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -308,7 +359,11 @@ public class MenuConfiguracion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaSalarioMecanicos)
                     .addComponent(campoSalarioMecanicos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(etiquetaTipoMantenimiento)
+                    .addComponent(dropTipoMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnGuardar))
@@ -336,6 +391,9 @@ public class MenuConfiguracion extends javax.swing.JFrame {
             sim.setSalarioEquipoRecoleccion(Double.parseDouble(campoEquipoRec.getText()));
             sim.setNumMecanicos(Integer.parseInt(etiquetaDigNumMecanicos.getText()));
             sim.setSalarioMecanicos(Double.parseDouble(campoSalarioMecanicos.getText()));
+            sim.setTipoDeMantenimiento(dropTipoMantenimiento.getSelectedIndex());
+            sim.setDiaInicial(dropDiaInicial.getSelectedIndex() + 1);
+            sim.setNumeroDeDias(dropNumDias.getSelectedIndex() + 1);
             alerta("Configuración almacenada exitosamente.");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -372,16 +430,22 @@ public class MenuConfiguracion extends javax.swing.JFrame {
     private javax.swing.JTextField campoSalarioBarredores;
     private javax.swing.JTextField campoSalarioMecanicos;
     private java.awt.Checkbox checkCompleto;
+    private javax.swing.JComboBox<String> dropDiaInicial;
     private javax.swing.JComboBox<String> dropHoraFinal;
     private javax.swing.JComboBox<String> dropHoraInicial;
+    private javax.swing.JComboBox<String> dropNumDias;
     private javax.swing.JComboBox<String> dropNumRepeticiones;
+    private javax.swing.JComboBox<String> dropTipoMantenimiento;
+    private javax.swing.JLabel etiquetaDiaInicial;
     private javax.swing.JLabel etiquetaDigNumMecanicos;
     private javax.swing.JLabel etiquetaIntervaloA;
     private javax.swing.JLabel etiquetaIntervaloASim;
+    private javax.swing.JLabel etiquetaNumDias;
     private javax.swing.JLabel etiquetaNumMecanicos;
     private javax.swing.JLabel etiquetaNumRepeticiones;
     private javax.swing.JLabel etiquetaSalarioBarredores;
     private javax.swing.JLabel etiquetaSalarioEquipoRec;
     private javax.swing.JLabel etiquetaSalarioMecanicos;
+    private javax.swing.JLabel etiquetaTipoMantenimiento;
     // End of variables declaration//GEN-END:variables
 }

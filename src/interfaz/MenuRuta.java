@@ -166,6 +166,9 @@ public class MenuRuta extends javax.swing.JFrame {
         } else if (!Distribucion.esDistValida(campoDistDesPorPeaton.getText())) {
             alerta("La notación de distribución en el campo de desechos por peatón es incorrecta");
             return false;
+        } else if (horario == null) {
+            alerta("La ruta no tiene horario asignado");
+            return false;
         }
         return true;
     }

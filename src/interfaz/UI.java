@@ -121,6 +121,9 @@ public class UI extends javax.swing.JFrame {
     
     public void iniciarProcesoDeDibujo(LinkedList<Point> puntos) {
         modoDibujo = true;
+        btnPlay.setEnabled(true);
+        btnZoomIn.setEnabled(false);
+        btnZoomOut.setEnabled(false);
         render.setPuntosDibujados(puntos);
         render.setModoDeDibujo(true);
         render.setLeadingPoint(new Point(0, 0));
@@ -429,6 +432,9 @@ public class UI extends javax.swing.JFrame {
                 actualizarMapa();
             } else if (evt.getButton() == 3) {
                 modoDibujo = false;
+                btnPlay.setEnabled(true);
+                btnZoomIn.setEnabled(true);
+                btnZoomOut.setEnabled(true);
                 render.setModoDeDibujo(false);
                 menuRuta.setPuntos(render.getPuntosDibujados());
                 menuRuta.setZoom(render.getZoom());

@@ -14,11 +14,13 @@ import java.util.ArrayList;
 public class MetadataMapa {
 
     private final ArrayList<int[]> zooms;
+    private final double[] escalas;
     private final int maxZoom;
     private final int minZoom;
     private final int dimX;
     private final int dimY;
     private final int dimTile;
+    private final int distanciaPromedioATransferencia;
 
     public MetadataMapa() throws NullPointerException {
         maxZoom = 19;
@@ -62,10 +64,23 @@ public class MetadataMapa {
         zoom19[2] = 64;
         zoom19[3] = 64;
         zooms.add(zoom19);
+        
+        distanciaPromedioATransferencia = (14700 + 12500) / 2;
+        
+        escalas = new double[zooms.size()];
+        for (int i = 0; i < escalas.length; i++) {
+            escalas[i] = 156543.03392 * Math.cos(10.4806 * Math.PI / 180) / Math.pow(2, minZoom + i);
+            // metersPerPx = 156543.03392 * Math.cos(latLng.lat() * Math.PI / 180) / Math.pow(2, zoom)
+            // https://groups.google.com/forum/#!topic/google-maps-js-api-v3/hDRO4oHVSeM
+        }
 
         if (!verificacionDeMetadatos()) {
             throw new NullPointerException();
         }
+    }
+
+    public int getDistanciaPromedioATransferencia() {
+        return distanciaPromedioATransferencia;
     }
 
     private boolean verificacionDeMetadatos() {
@@ -81,6 +96,14 @@ public class MetadataMapa {
             }
         }
         return true;
+    }
+
+    public double[] getEscalas() {
+        return escalas;
+    }
+    
+    public double getEscala(int index) {
+        return escalas[index];
     }
 
     public int getMaxZoom() {

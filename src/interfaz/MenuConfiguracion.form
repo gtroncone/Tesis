@@ -49,6 +49,9 @@
                               <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                               <Component id="checkCompleto" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="etiquetaTipoMantenimiento" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="etiquetaNumDias" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="etiquetaDiaInicial" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -60,6 +63,9 @@
                               <Component id="dropHoraFinal" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="dropDiaInicial" alignment="0" max="32767" attributes="0"/>
+                              <Component id="dropNumDias" alignment="0" max="32767" attributes="0"/>
+                              <Component id="dropTipoMantenimiento" alignment="0" max="32767" attributes="0"/>
                               <Component id="dropNumRepeticiones" alignment="0" max="32767" attributes="0"/>
                               <Component id="campoSalarioMecanicos" alignment="0" max="32767" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
@@ -102,6 +108,16 @@
                   <Component id="dropNumRepeticiones" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="etiquetaNumDias" min="-2" max="-2" attributes="0"/>
+                  <Component id="dropNumDias" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="etiquetaDiaInicial" min="-2" max="-2" attributes="0"/>
+                  <Component id="dropDiaInicial" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="17" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="etiquetaSalarioBarredores" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="campoSalarioBarredores" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -123,7 +139,12 @@
                   <Component id="etiquetaSalarioMecanicos" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="campoSalarioMecanicos" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="22" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="etiquetaTipoMantenimiento" min="-2" max="-2" attributes="0"/>
+                  <Component id="dropTipoMantenimiento" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -252,6 +273,66 @@
       </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="dropNumRepeticiones">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="etiquetaTipoMantenimiento">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tipo de Mantenimiento"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="dropTipoMantenimiento">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="etiquetaNumDias">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="N&#xfa;mero de D&#xed;as"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="dropNumDias">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="etiquetaDiaInicial">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="D&#xed;a Inicial"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="dropDiaInicial">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">

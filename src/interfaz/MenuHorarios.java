@@ -100,8 +100,17 @@ public class MenuHorarios extends javax.swing.JFrame {
         entrada += " Frecuencia: " + dropFrecuencias.getItemAt(dropFrecuencias.getSelectedIndex());
         for (int i = 0; i < modelo.getSize(); i++) {
             if (modelo.getElementAt(i).equals(entrada)) {
+                alerta("No pueden haber dos horarios exactamente iguales");
                 return false;
             }
+        }
+        return true;
+    }
+    
+    private boolean hayHorario() {
+        if (modelo.getSize() <= 0) {
+            alerta("No hay horarios asignados");
+            return false;
         }
         return true;
     }
@@ -286,8 +295,6 @@ public class MenuHorarios extends javax.swing.JFrame {
                     dropFrecuencias.getSelectedIndex()); 
                 }
             }
-        } else {
-            alerta("No pueden haber dos horarios exactamente iguales");
         }
     }//GEN-LAST:event_btnNuevoHorarioActionPerformed
 
@@ -326,7 +333,7 @@ public class MenuHorarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBorrarHorarioActionPerformed
 
     private void btnCrearHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearHorarioActionPerformed
-        if (horarioEsUnico()) {
+        if (hayHorario()) {
             if (horario == null) {
                 horario = new Horario();
                 for (int i = 0; i < modelo.getSize(); i++) {

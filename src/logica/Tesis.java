@@ -40,6 +40,7 @@ public class Tesis {
                     UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Tesis.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
         }
         Tesis tesis = new Tesis();
 
