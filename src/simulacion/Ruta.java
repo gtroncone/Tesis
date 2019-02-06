@@ -37,6 +37,35 @@ public class Ruta {
         this.zoom = zoom;
         this.tipoDeRecoleccion = tipoDeRecoleccion;
     }
+    
+    public Ruta(Ruta ruta) {
+        this.nombre = ruta.getNombre();
+        this.horario = new Horario(ruta.getHorario());
+        
+        this.calles = new LinkedList<>();
+        
+        for (int i = 0; i < ruta.getCalles().size(); i++) {
+            this.calles.add(new Calle(ruta.getCalles().get(i)));
+        }
+        
+        this.flujoPeatonal = new Distribucion(ruta.getFlujoPeatonal().getCampo());
+        this.desechosPorPeaton = new Distribucion(ruta.getDesechosPorPeaton().getCampo());
+        
+        this.puntos = new LinkedList<>();
+        
+        for (int i = 0; i < ruta.getPuntos().size(); i++) {
+            this.puntos.add(new Point(ruta.getPuntos().get(i)));
+        }
+        
+        this.listaAreas = new LinkedList<>();
+        
+        for (int i = 0; i < ruta.getListaAreas().size(); i++) {
+            this.listaAreas.add(new AreaBarrido(ruta.getListaAreas().get(i)));
+        }
+        
+        this.tipoDeRecoleccion = ruta.getTipoDeRecoleccion();
+        this.zoom = ruta.getZoom();
+    }
 
     public int getTipoDeRecoleccion() {
         return tipoDeRecoleccion;

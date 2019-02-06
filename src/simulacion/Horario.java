@@ -20,6 +20,18 @@ public class Horario {
         datos = new LinkedList<>();
         camionesAsignados = new LinkedList<>();
     }
+    
+    public Horario(Horario horario) {
+        this.datos = new LinkedList<>();
+        
+        for (int i = 0; i < horario.getDatos().size(); i++) {
+            int[] dato = new int[horario.getDatos().get(i).length];
+            for (int j = 0; j < horario.getDatos().get(i).length; i++) {
+                dato[j] = horario.getDatos().get(i)[j];
+            }
+            this.datos.add(dato);
+        }
+    }
 
     public LinkedList<int[]> getDatos() {
         return datos;
@@ -77,5 +89,24 @@ public class Horario {
 
     public void eliminarDato(int selectedIndex) {
         datos.remove(selectedIndex);
+    }
+    
+    public void reconciliarCamiones(Ruta ruta, LinkedList<Camion> nuevosCamiones) {
+        LinkedList<Camion> viejosCamionesAsignados = ruta.getHorario().getCamionesAsignados();
+        for (int i = 0; i < viejosCamionesAsignados.size(); i++) {
+            Camion aux = encontrarCamion(viejosCamionesAsignados.get(i), nuevosCamiones);
+            if (aux != null) {
+                this.asignarCamion(aux);
+            }
+        }
+    }
+    
+    private Camion encontrarCamion(Camion camion, LinkedList<Camion> listaCamiones) {
+        for (int i = 0; i < listaCamiones.size(); i++) {
+            if (listaCamiones.get(i).getId().equals(camion.getId())) {
+                return listaCamiones.get(i);
+            }
+        }
+        return null;
     }
 }

@@ -25,6 +25,14 @@ public class Pieza {
         this.cantidadPorCamion = cantidadPorCamion;
         this.ocasionaFallaCritica = ocasionaFallaCritica;
     }
+    
+    public Pieza(Pieza pieza) {
+        this.nombre = pieza.getNombre();
+        this.costo = pieza.getCosto();
+        this.tiempoDeVida = new Distribucion(pieza.getTiempoDeVida().getCampo());
+        this.cantidadPorCamion = pieza.getCantidadPorCamion();
+        this.ocasionaFallaCritica = pieza.isOcasionaFallaCritica();
+    }
 
     public String getNombre() {
         return nombre;

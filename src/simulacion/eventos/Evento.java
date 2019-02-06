@@ -5,10 +5,23 @@
  */
 package simulacion.eventos;
 
+import simulacion.ContextoSimulacion;
+
 /**
  *
  * @author gtroncone
  */
 public abstract class Evento {
     
+    private int tick;
+    
+    public Evento(int tick) {
+        this.tick = tick;
+    }
+
+    public int getTick() {
+        return tick;
+    }
+    
+    public abstract void modificarEstado();
 }

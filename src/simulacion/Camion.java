@@ -28,6 +28,18 @@ public class Camion {
         this.piezas = piezas;
         this.precio = precio;
     }
+    
+    public Camion(Camion camion) {
+        this.modelo = camion.getModelo();
+        this.capacidad = camion.getCapacidad();
+        this.id = camion.getId();
+        this.precio = camion.getPrecio();
+        
+        this.piezas = new LinkedList<>();
+        for (int i = 0; i < camion.getPiezas().size(); i++) {
+            this.piezas.add(new Pieza(camion.getPiezas().get(i)));
+        }
+    }
 
     public String getModelo() {
         return modelo;

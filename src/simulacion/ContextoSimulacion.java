@@ -5,30 +5,49 @@
  */
 package simulacion;
 
-import java.util.Queue;
+import java.util.LinkedList;
+import simulacion.eventos.Evento;
 
 /**
  *
  * @author gtroncone
  */
 public class ContextoSimulacion {
+
+    private LinkedList<Ruta> rutas;
+    private LinkedList<Camion> camiones;
     
-    private final int numeroTicks;
-    private int tick;
+    private LinkedList<Evento> eventosAcumulacion;
     
-    public ContextoSimulacion(int numeroTicks) {
-        this.numeroTicks = numeroTicks;
+    public ContextoSimulacion(LinkedList<Ruta> rutas, LinkedList<Camion> camiones) {
+        this.rutas = new LinkedList<>();
+        this.camiones = new LinkedList<>();        
+        eventosAcumulacion = new LinkedList<>();
+        for (int i = 0; i < camiones.size(); i++) {
+            this.camiones.add(new Camion(camiones.get(i)));
+        }
+        
+        for (int i = 0; i < rutas.size(); i++) {
+            this.rutas.add(new Ruta(rutas.get(i)));
+            this.rutas.get(i).getHorario().reconciliarCamiones(rutas.get(i), this.camiones);
+        }        
+    }
+    
+    public void añadirEventoAcumulacion(Evento evento) {
+        eventosAcumulacion.add(evento);
     }
 
-    public int getTick() {
-        return tick;
+    public LinkedList<Ruta> getRutas() {
+        return rutas;
+    }
+
+    public LinkedList<Camion> getCamiones() {
+        return camiones;
+    }
+
+    public LinkedList<Evento> getEventosAcumulacion() {
+        return eventosAcumulacion;
     }
     
-    public void incrementarTick() {
-        this.tick++;
-    }
     
-    public int getNumeroTicks() {
-        return numeroTicks;
-    }
 }

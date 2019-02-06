@@ -29,6 +29,15 @@ public class Calle {
         this.puntoFinal = puntoFinal;
         this.color = color;
     }
+    
+    public Calle(Calle calle) {
+        this.nombre = calle.getNombre();
+        this.velocidad = new Distribucion(calle.getVelocidad().getCampo());
+        this.puntoInicial = calle.getPuntoInicial();
+        this.puntoFinal = calle.getPuntoFinal();
+        this.color = new Color(calle.getColor().getGreen());
+        this.puntosAcum = new PuntosAcumulacion(calle.getPuntosAcum());
+    }
 
     public Color getColor() {
         return color;

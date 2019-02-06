@@ -15,6 +15,7 @@ public class AreaBarrido {
     private int numeroCuadras;
     private float capacidad;
     private Distribucion velocidadAcopio;
+    private double[] cantidadBasura;
     
     public AreaBarrido(int numeroBarredores, int numeroCuadras,
             float capacidad, Distribucion velocidadAcopio) {
@@ -22,6 +23,15 @@ public class AreaBarrido {
         this.numeroCuadras = numeroCuadras;
         this.capacidad = capacidad;
         this.velocidadAcopio = velocidadAcopio;
+        this.cantidadBasura = new double[numeroCuadras];
+    }
+    
+    public AreaBarrido(AreaBarrido areaBarrido) {
+        this.numeroBarredores = areaBarrido.getNumeroBarredores();
+        this.numeroCuadras = areaBarrido.getNumeroCuadras();
+        this.capacidad = areaBarrido.getCapacidad();
+        this.velocidadAcopio = new Distribucion(areaBarrido.getVelocidadAcopio().getCampo());
+        this.cantidadBasura = new double[areaBarrido.getNumeroCuadras()];
     }
 
     public int getNumeroBarredores() {
@@ -55,5 +65,12 @@ public class AreaBarrido {
     public void setVelocidadAcopio(Distribucion velocidadAcopio) {
         this.velocidadAcopio = velocidadAcopio;
     }
+
+    public double[] getCantidadBasura() {
+        return cantidadBasura;
+    }
     
+    public void añadirBasuraArea(int index, double basura) {
+        this.cantidadBasura[index] = basura;
+    }
 }

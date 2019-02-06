@@ -19,6 +19,7 @@ public class PuntosAcumulacion {
     private int[] factorHora;
     private int[] factorSemanal;
     private int numeroPuntos;
+    private double[] cantidadBasura;
     
     public PuntosAcumulacion(Distribucion tasaAcumulacion, Distribucion tasaGeneracion,
             int[] factorHora, int[] factorSemanal, int numeroPuntos) {
@@ -28,6 +29,26 @@ public class PuntosAcumulacion {
         this.factorSemanal = factorSemanal;
         this.numeroPuntos = numeroPuntos;
         color = new Color(128 * 1000000 + 128);
+        this.cantidadBasura = new double[this.numeroPuntos];
+    }
+    
+    public PuntosAcumulacion(PuntosAcumulacion puntosAcumulacion) {
+        this.color = new Color(puntosAcumulacion.getColor().getRGB());
+        this.tasaAcumulacion = new Distribucion(puntosAcumulacion.getTasaAcumulacion().getCampo());
+        this.tasaGeneracion = new Distribucion(puntosAcumulacion.getTasaGeneracion().getCampo());
+        
+        this.factorHora = new int[puntosAcumulacion.getFactorHora().length];
+        for (int i = 0; i < puntosAcumulacion.getFactorHora().length; i++) {
+            this.factorHora[i] = puntosAcumulacion.getFactorHora()[i];
+        }
+        
+        this.factorSemanal = new int[puntosAcumulacion.getFactorSemanal().length];
+        for (int i = 0; i < puntosAcumulacion.getFactorSemanal().length; i++) {
+            this.factorSemanal[i] = puntosAcumulacion.getFactorSemanal()[i];
+        }
+        
+        this.numeroPuntos = puntosAcumulacion.getNumeroPuntos();
+        this.cantidadBasura = new double[this.numeroPuntos];
     }
 
     public Color getColor() {
@@ -72,5 +93,13 @@ public class PuntosAcumulacion {
 
     public void setNumeroPuntos(int numeroPuntos) {
         this.numeroPuntos = numeroPuntos;
+    }
+
+    public double[] getCantidadBasura() {
+        return cantidadBasura;
+    }
+    
+    public void setCantidadBasuraPunto(int index, double cantidad) {
+        this.cantidadBasura[index] = cantidad;
     }
 }
