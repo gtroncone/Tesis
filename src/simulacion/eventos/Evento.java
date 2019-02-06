@@ -5,8 +5,6 @@
  */
 package simulacion.eventos;
 
-import simulacion.ContextoSimulacion;
-
 /**
  *
  * @author gtroncone
