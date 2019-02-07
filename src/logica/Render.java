@@ -115,7 +115,7 @@ public class Render {
         for (int i = 0; i < calles.size(); i++) {
             Calle calle = calles.get(i);
             if (calle.getPuntoInicial() <= index &&
-                    calle.getPuntoFinal() >= index) {
+                    calle.getPuntoFinal() > index) {
                 return calle;
             }
         }

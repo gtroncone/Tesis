@@ -18,11 +18,13 @@ public class ContextoSimulacion {
     private LinkedList<Camion> camiones;
     
     private LinkedList<Evento> eventosAcumulacion;
+    private LinkedList<Evento> eventosEntradaUnidades;
     
     public ContextoSimulacion(LinkedList<Ruta> rutas, LinkedList<Camion> camiones) {
         this.rutas = new LinkedList<>();
         this.camiones = new LinkedList<>();        
         eventosAcumulacion = new LinkedList<>();
+        eventosEntradaUnidades = new LinkedList<>();
         for (int i = 0; i < camiones.size(); i++) {
             this.camiones.add(new Camion(camiones.get(i)));
         }
@@ -35,6 +37,10 @@ public class ContextoSimulacion {
     
     public void añadirEventoAcumulacion(Evento evento) {
         eventosAcumulacion.add(evento);
+    }
+    
+    public void añadirEventoEntradaUnidad(Evento evento) {
+        eventosEntradaUnidades.add(evento);
     }
 
     public LinkedList<Ruta> getRutas() {

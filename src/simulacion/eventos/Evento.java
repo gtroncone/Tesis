@@ -11,7 +11,7 @@ package simulacion.eventos;
  */
 public abstract class Evento {
     
-    private int tick;
+    private final int tick;
     
     public Evento(int tick) {
         this.tick = tick;
@@ -19,6 +19,10 @@ public abstract class Evento {
 
     public int getTick() {
         return tick;
+    }
+    
+    public boolean isTick(int tick) {
+        return this.tick == tick;
     }
     
     public abstract void modificarEstado();

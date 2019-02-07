@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import simulacion.eventos.AcumulacionDesechoPeatonal;
 import simulacion.eventos.DepositoDesechoEnPuntoAcumulacion;
+import simulacion.eventos.EntradaARuta;
 
 /**
  *
@@ -126,7 +127,7 @@ public class Simulacion implements Serializable {
         this.diaInicial = diaInicial;
     }
 
-    public void iniciarSimulacion() {
+    private void iniciarSimulacion() {
         ContextoSimulacion[] instancias = new ContextoSimulacion[numRepeticiones];
         for (int i = 0; i < instancias.length; i++) {
             instancias[i] = new ContextoSimulacion(rutas, camiones);
@@ -148,11 +149,12 @@ public class Simulacion implements Serializable {
         }
     }
 
-    public void cicloPrincipal(ContextoSimulacion[] contextos) {
+    private void cicloPrincipal(ContextoSimulacion[] contextos) {
         int numTicks = determinarNumTicks();
         for (ContextoSimulacion contexto : contextos) {
             listarEventosAcumulacionDesechos(contexto, numTicks);
             listarEventosAcumulacionDesechoPeatonal(contexto, numTicks);
+            listarEventosEntradaARuta(contexto);
             //ejecutarEventos(contexto);
         }
     }
@@ -216,9 +218,59 @@ public class Simulacion implements Serializable {
         }
     }
     
+    /**
+     * Si la simulación no incluye el horario de entrada de los camiones, no se simula la recolección
+     * @param contexto 
+     */
+    private void listarEventosEntradaARuta(ContextoSimulacion contexto) {
+        for (int i = 0; i < contexto.getRutas().size(); i++) {
+            Ruta ruta = contexto.getRutas().get(i);
+            Horario horario = ruta.getHorario();
+            
+            LinkedList<Camion> camionesAsignados = horario.getCamionesAsignados();
+            LinkedList<Integer> mapaCamionesAHorarios = horario.getMapaCamionHorarios();
+            for (int j = 0; j < camionesAsignados.size(); j++) {
+                Camion camion = camionesAsignados.get(j);
+                int[] datosHorario = horario.getDatos().get(mapaCamionesAHorarios.get(j));
+                if (horarioEstaIncluido(datosHorario)) {
+                    int paridadDiaInicial = diaInicial % 2;
+                    for (int dia = 0; dia < numeroDeDias; dia++) {
+                        if (datosHorario[2] == 0 || dia % 2 == paridadDiaInicial) {
+                            int tick = 0;
+                            if (horarioASimular[0].equals("x") || horarioASimular[1].equals("x")) {
+                                tick += dia * 24 * 60;
+                                tick += (datosHorario[0] * 60) + datosHorario[1];
+                            } else {
+                                int horaInicial = Integer.parseInt(horarioASimular[0]);
+                                int horaFinal = Integer.parseInt(horarioASimular[1]);
+                                tick += (dia * ((horaFinal - horaInicial) * 60));
+                                tick += (datosHorario[0] - horaInicial) * 60;
+                                tick += (datosHorario[1]);
+                            }
+                            contexto.añadirEventoEntradaUnidad(new EntradaARuta(tick, camion, ruta));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     public void ejecutar() {
         if (estadoEsValido()) {
             iniciarSimulacion();
+        }
+    }
+    
+    private boolean horarioEstaIncluido(int[] datosHorario) {
+        if (horarioASimular[0].equals("x")
+            || horarioASimular[1].toLowerCase().equals("x")) {
+            return true;
+        } else {
+            String[] parsedHora = horarioASimular[0].split(":");
+            int horaInicialSim = Integer.parseInt(parsedHora[0]);
+            int horaFinalSim = Integer.parseInt(parsedHora[1]);
+            return (datosHorario[0] >= horaInicialSim &&
+                    datosHorario[0] < horaFinalSim);
         }
     }
     

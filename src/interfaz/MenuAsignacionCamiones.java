@@ -247,9 +247,10 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
 
     private void btnAsignarCamionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarCamionActionPerformed
         if (!camionYaFueAsignado()) {
-            if (listaPiscinaCamiones.getSelectedIndex() > -1) {
+            if (listaPiscinaCamiones.getSelectedIndex() > -1 && listaHorarios.getSelectedIndex() > -1) {
                 Horario horario = rutas.get(listaRutas.getSelectedIndex()).getHorario();
-                horario.asignarCamion(camiones.get(listaPiscinaCamiones.getSelectedIndex()));
+                horario.asignarCamion(camiones.get(listaPiscinaCamiones.getSelectedIndex()),
+                    listaHorarios.getSelectedIndex());
                 modeloAsignados.addElement(camiones.get(listaPiscinaCamiones.getSelectedIndex()));
             }
         }

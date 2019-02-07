@@ -169,6 +169,32 @@ public class MenuRuta extends javax.swing.JFrame {
         } else if (horario == null) {
             alerta("La ruta no tiene horario asignado");
             return false;
+        } else if (!callesFueronAsignadasCorrectamente()) {
+            alerta("Algunos nodos en la ruta no tienen calle asignada o no fueron asignadas correctamente");
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean callesFueronAsignadasCorrectamente() {
+        if (listaCalles.isEmpty()) {
+            return false;
+        }
+        for (int i = 0; i < listaCalles.size(); i++) {
+            Calle calle = listaCalles.get(i);
+            if (i == 0 && calle.getPuntoInicial() != 0) {
+                return false;
+            } else {
+                if (i + 1 == listaCalles.size()) {
+                    if (calle.getPuntoFinal() != puntos.size() - 1) {
+                        return false;
+                    }
+                } else {
+                    if (calle.getPuntoFinal() != listaCalles.get(i + 1).getPuntoInicial()) {
+                        return false;
+                    }
+                }
+            }
         }
         return true;
     }
@@ -194,13 +220,19 @@ public class MenuRuta extends javax.swing.JFrame {
             alerta("Campo nombre de calle está vacío");
             return false;
         }else if (!nombreCalleEsUnico()) {
-            alerta("El nombre de la calle a editar o crear no es único");
-            return false;
+            if (dropSelRuta.getSelectedIndex() <= 0) {
+                alerta("El nombre de la calle a editar o crear no es único");
+                return false;
+            }
         } else if (!Distribucion.esDistValida(campoDistVelRecor.getText())) {
             alerta("La notación de distribución en el campo de velocidad de recorrido es inválida");
             return false;
         } else if (!esAsignacionDePuntosValida()) {
             alerta("La asignación de puntos a la calle es inválida");
+            return false;
+        } else if (dropPrimerPuntoCalle.getSelectedItem() == null ||
+            dropSegundoPuntoCalle.getSelectedItem() == null) {
+            alerta("No se han seleccionado puntos");
             return false;
         }
         return true;
@@ -212,11 +244,12 @@ public class MenuRuta extends javax.swing.JFrame {
         }
         for (int i = 0; i < listaCalles.size(); i++) {
             Calle calle = listaCalles.get(i);
-            if (calle.getPuntoFinal() >= dropPrimerPuntoCalle.getSelectedIndex()) {
-                return false;
-            } else if (calle.getPuntoInicial() <= dropSegundoPuntoCalle.getSelectedIndex() + 1) {
+            if (calle.getPuntoFinal() > dropPrimerPuntoCalle.getSelectedIndex()) {
                 return false;
             }
+        }
+        if (!listaCalles.isEmpty() && listaCalles.getLast().getPuntoFinal() != dropPrimerPuntoCalle.getSelectedIndex()) {
+            return false;
         }
         return true;
     }
@@ -558,7 +591,6 @@ public class MenuRuta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarRutaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        //TODO: Reiniciar estado del componente
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -617,6 +649,7 @@ public class MenuRuta extends javax.swing.JFrame {
                 calle.setVelocidad(new Distribucion(campoDistVelRecor.getText()));
                 calle.setPuntoInicial(Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()));
                 calle.setPuntoFinal(Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()));
+                calle.setColor(estadoColorPicker);
             }
         }
     }//GEN-LAST:event_btnAnadirCalleActionPerformed

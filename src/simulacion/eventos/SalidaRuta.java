@@ -9,9 +9,9 @@ package simulacion.eventos;
  *
  * @author gtroncone
  */
-public class CaminoATransferencia extends Evento {
+public class SalidaRuta extends Evento {
 
-    public CaminoATransferencia(int tick) {
+    public SalidaRuta(int tick) {
         super(tick);
     }
 

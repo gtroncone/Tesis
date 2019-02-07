@@ -6,6 +6,7 @@
 package simulacion;
 
 import java.awt.Color;
+import java.util.LinkedList;
 
 /**
  *
@@ -19,6 +20,8 @@ public class Calle {
     private int puntoFinal;
     private Color color;
     private PuntosAcumulacion puntosAcum;
+    
+    private LinkedList<Camion> camiones;
 
     public Calle(String nombre, Distribucion velocidad,
             int puntoInicial, int puntoFinal,
@@ -28,6 +31,7 @@ public class Calle {
         this.puntoInicial = puntoInicial;
         this.puntoFinal = puntoFinal;
         this.color = color;
+        this.camiones = new LinkedList<>();
     }
     
     public Calle(Calle calle) {
@@ -37,6 +41,19 @@ public class Calle {
         this.puntoFinal = calle.getPuntoFinal();
         this.color = new Color(calle.getColor().getGreen());
         this.puntosAcum = new PuntosAcumulacion(calle.getPuntosAcum());
+        this.camiones = new LinkedList<>();
+    }
+
+    public LinkedList<Camion> getCamiones() {
+        return camiones;
+    }
+    
+    public void camionEntra(Camion camion) {
+        this.camiones.add(camion);
+    }
+    
+    public void camionSale(Camion camion) {
+        this.camiones.remove(camion);
     }
 
     public Color getColor() {

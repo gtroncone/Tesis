@@ -15,10 +15,12 @@ public class Horario {
     
     private final LinkedList<int[]> datos;
     private LinkedList<Camion> camionesAsignados;
+    private LinkedList<Integer> mapaCamionHorarios; //0: indice camion, 1: indice horario
     
     public Horario() {
         datos = new LinkedList<>();
         camionesAsignados = new LinkedList<>();
+        mapaCamionHorarios = new LinkedList<>();
     }
     
     public Horario(Horario horario) {
@@ -31,6 +33,7 @@ public class Horario {
             }
             this.datos.add(dato);
         }
+        this.mapaCamionHorarios = new LinkedList<>();
     }
 
     public LinkedList<int[]> getDatos() {
@@ -49,7 +52,7 @@ public class Horario {
         int[] entrada = new int[3];
         entrada[0] = hora;
         entrada[1] = minuto;
-        entrada[2] = frecuencia;
+        entrada[2] = frecuencia; // 0: Diario, 1: Interdiario
         datos.add(entrada);
     }
     
@@ -60,12 +63,14 @@ public class Horario {
         return null;
     }
     
-    public void asignarCamion(Camion camion) {
+    public void asignarCamion(Camion camion, int indexHorario) {
         camionesAsignados.add(camion);
+        mapaCamionHorarios.add(indexHorario);
     }
     
     public void eliminarCamion(int index) {
         camionesAsignados.remove(index);
+        mapaCamionHorarios.remove(index);
     }
     
     public Camion getCamion(int index) {
@@ -73,6 +78,10 @@ public class Horario {
             return camionesAsignados.get(index);
         }
         return null;
+    }
+
+    public LinkedList<Integer> getMapaCamionHorarios() {
+        return mapaCamionHorarios;
     }
     
     public boolean editarDato(int index, int hora, int minuto, int frecuencia) {
@@ -93,20 +102,20 @@ public class Horario {
     
     public void reconciliarCamiones(Ruta ruta, LinkedList<Camion> nuevosCamiones) {
         LinkedList<Camion> viejosCamionesAsignados = ruta.getHorario().getCamionesAsignados();
+        LinkedList<Integer> viejoMapaCamionesAHorario = ruta.getHorario().getMapaCamionHorarios();
         for (int i = 0; i < viejosCamionesAsignados.size(); i++) {
-            Camion aux = encontrarCamion(viejosCamionesAsignados.get(i), nuevosCamiones);
-            if (aux != null) {
-                this.asignarCamion(aux);
-            }
+            encontrarCamion(viejosCamionesAsignados.get(i), i, nuevosCamiones,
+                viejoMapaCamionesAHorario);
         }
     }
     
-    private Camion encontrarCamion(Camion camion, LinkedList<Camion> listaCamiones) {
+    private void encontrarCamion(Camion camion, int indiceCamion, LinkedList<Camion> listaCamiones,
+            LinkedList<Integer> viejoMapaCamionesAHorario) {
         for (int i = 0; i < listaCamiones.size(); i++) {
             if (listaCamiones.get(i).getId().equals(camion.getId())) {
-                return listaCamiones.get(i);
+                this.mapaCamionHorarios.add(viejoMapaCamionesAHorario.get(indiceCamion));
+                this.camionesAsignados.add(camion);
             }
         }
-        return null;
     }
 }

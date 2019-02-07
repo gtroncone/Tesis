@@ -5,19 +5,28 @@
  */
 package simulacion.eventos;
 
+import simulacion.Camion;
+import simulacion.Ruta;
+
 /**
  *
  * @author gtroncone
  */
 public class EntradaARuta extends Evento {
+    
+    private Camion camion;
+    private Ruta ruta;
 
-    public EntradaARuta(int tick) {
+    public EntradaARuta(int tick, Camion camion, Ruta ruta) {
         super(tick);
+        this.camion = camion;
+        this.ruta = ruta;
     }
 
     @Override
     public void modificarEstado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ruta.getCalles().getFirst().camionEntra(camion);
+        camion.setActivo(true);
     }
     
 }

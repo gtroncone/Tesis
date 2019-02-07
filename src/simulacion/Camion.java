@@ -17,6 +17,8 @@ public class Camion {
     private int capacidad; // 0 = 15yd3, 1 = 25yd3
     private String id;
     private double precio;
+    private boolean activo = false;
+    private boolean averiado = false;
     
     private LinkedList<Pieza> piezas;
     
@@ -39,6 +41,22 @@ public class Camion {
         for (int i = 0; i < camion.getPiezas().size(); i++) {
             this.piezas.add(new Pieza(camion.getPiezas().get(i)));
         }
+    }
+
+    public boolean isAveriado() {
+        return averiado;
+    }
+
+    public void setAveriado(boolean averiado) {
+        this.averiado = averiado;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     public String getModelo() {
