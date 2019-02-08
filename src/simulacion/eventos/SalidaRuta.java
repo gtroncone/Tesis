@@ -5,19 +5,28 @@
  */
 package simulacion.eventos;
 
+import simulacion.Calle;
+import simulacion.Camion;
+
 /**
  *
  * @author gtroncone
  */
 public class SalidaRuta extends Evento {
 
-    public SalidaRuta(int tick) {
+    private Calle calle;
+    private Camion camion;
+    
+    public SalidaRuta(int tick, Calle calle, Camion camion) {
         super(tick);
+        this.calle = calle;
+        this.camion = camion;
     }
 
     @Override
     public void modificarEstado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        calle.camionSale(camion);
+        camion.setActivo(false);
     }
     
 }

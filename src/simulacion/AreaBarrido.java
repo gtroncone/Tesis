@@ -71,6 +71,6 @@ public class AreaBarrido {
     }
     
     public void añadirBasuraArea(int index, double basura) {
-        this.cantidadBasura[index] = basura;
+        this.cantidadBasura[index] += basura;
     }
 }

@@ -22,6 +22,7 @@ public class Calle {
     private PuntosAcumulacion puntosAcum;
     
     private LinkedList<Camion> camiones;
+    private LinkedList<Integer> mapaCamionesPuntos;
 
     public Calle(String nombre, Distribucion velocidad,
             int puntoInicial, int puntoFinal,
@@ -32,6 +33,7 @@ public class Calle {
         this.puntoFinal = puntoFinal;
         this.color = color;
         this.camiones = new LinkedList<>();
+        this.mapaCamionesPuntos = new LinkedList<>();
     }
     
     public Calle(Calle calle) {
@@ -42,6 +44,7 @@ public class Calle {
         this.color = new Color(calle.getColor().getGreen());
         this.puntosAcum = new PuntosAcumulacion(calle.getPuntosAcum());
         this.camiones = new LinkedList<>();
+        this.mapaCamionesPuntos = new LinkedList<>();
     }
 
     public LinkedList<Camion> getCamiones() {
@@ -50,9 +53,11 @@ public class Calle {
     
     public void camionEntra(Camion camion) {
         this.camiones.add(camion);
+        this.mapaCamionesPuntos.add(0);
     }
     
     public void camionSale(Camion camion) {
+        this.mapaCamionesPuntos.remove(this.camiones.indexOf(camion));
         this.camiones.remove(camion);
     }
 
@@ -102,5 +107,14 @@ public class Calle {
     
     public void setPuntosAcum(PuntosAcumulacion puntosAcum) {
         this.puntosAcum = puntosAcum;
+    }
+
+    public LinkedList<Integer> getMapaCamionesPuntos() {
+        return mapaCamionesPuntos;
+    }
+    
+    public void camionAvanzaASiguientePunto(Camion camion) {
+        int index = this.camiones.indexOf(camion);
+        this.mapaCamionesPuntos.set(index, this.mapaCamionesPuntos.get(index) + 1);
     }
 }

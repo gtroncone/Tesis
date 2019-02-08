@@ -5,12 +5,16 @@
  */
 package simulacion;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
+import logica.MetadataMapa;
 import simulacion.eventos.AcumulacionDesechoPeatonal;
 import simulacion.eventos.DepositoDesechoEnPuntoAcumulacion;
 import simulacion.eventos.EntradaARuta;
+import simulacion.eventos.SalidaRuta;
+import simulacion.eventos.UnidadAvanza;
 
 /**
  *
@@ -18,10 +22,9 @@ import simulacion.eventos.EntradaARuta;
  */
 public class Simulacion implements Serializable {
 
-    private LinkedList<Ruta> rutas;
-    private LinkedList<Camion> camiones;
+    private final LinkedList<Ruta> rutas;
+    private final LinkedList<Camion> camiones;
 
-    private String[] horarioASimular;
     private int numRepeticiones = 5;
     private double salarioBarredores = 0;
     private double salarioEquipoRecoleccion = 0;
@@ -30,13 +33,17 @@ public class Simulacion implements Serializable {
     private int tipoDeMantenimiento;
     private int numeroDeDias = 1;
     private int diaInicial = 1;
+    
+    private final int NUMERO_MINUTOS_RECOLECCION_PROMEDIO = 5;
+    private final double DISTANCIA_PROMEDIO_A_TRANSFERENCIA;
+    private final double[] escalas;
 
     public Simulacion() {
         rutas = new LinkedList<>();
         camiones = new LinkedList<>();
-        horarioASimular = new String[2];
-        horarioASimular[0] = "x";
-        horarioASimular[1] = "x";
+        MetadataMapa aux = new MetadataMapa();
+        escalas = aux.getEscalas();
+        DISTANCIA_PROMEDIO_A_TRANSFERENCIA = aux.getDistanciaPromedioATransferencia();
     }
 
     public void añadirRuta(Ruta ruta) {
@@ -53,14 +60,6 @@ public class Simulacion implements Serializable {
 
     public void añadirCamion(Camion camion) {
         camiones.add(camion);
-    }
-
-    public String[] getHorarioASimular() {
-        return horarioASimular;
-    }
-
-    public void setHorarioASimular(String[] horarioASimular) {
-        this.horarioASimular = horarioASimular;
     }
 
     public int getNumRepeticiones() {
@@ -136,17 +135,7 @@ public class Simulacion implements Serializable {
     }
 
     private int determinarNumTicks() {
-        if (horarioASimular[0].toLowerCase().equals("x")
-                || horarioASimular[1].toLowerCase().equals("x")) {
-            return 60 * 24 * numeroDeDias;
-        }
-        int horaInicial = Integer.parseInt(horarioASimular[0]);
-        int horaFinal = Integer.parseInt(horarioASimular[1]);
-        if (horaInicial < horaFinal) {
-            return (horaFinal - horaInicial) * 60 * numeroDeDias;
-        } else {
-            return (24 - (horaInicial - horaFinal)) * 60 * numeroDeDias;
-        }
+        return 60 * 24 * numeroDeDias;
     }
 
     private void cicloPrincipal(ContextoSimulacion[] contextos) {
@@ -154,7 +143,8 @@ public class Simulacion implements Serializable {
         for (ContextoSimulacion contexto : contextos) {
             listarEventosAcumulacionDesechos(contexto, numTicks);
             listarEventosAcumulacionDesechoPeatonal(contexto, numTicks);
-            listarEventosEntradaARuta(contexto);
+            listarEventosEntradaARuta(contexto, numTicks);
+            // listarEventosAveria(contexto, numTicks);
             //ejecutarEventos(contexto);
         }
     }
@@ -199,7 +189,7 @@ public class Simulacion implements Serializable {
                             tiempoEvento = puntos.getTasaAcumulacion().getDistribucionDiscreta().inverseCumulativeProbability(aleatorio);
                             if (tiempoEvento + auxTicks < numTicks) {
                                 auxTicks += (int) Math.floor(tiempoEvento);
-                                contexto.añadirEventoAcumulacion(new DepositoDesechoEnPuntoAcumulacion(auxTicks, calle, k, diaInicial, horarioASimular));
+                                contexto.añadirEventoAcumulacion(new DepositoDesechoEnPuntoAcumulacion(auxTicks, calle, k, diaInicial));
                             } else {
                                 break;
                             }
@@ -207,7 +197,7 @@ public class Simulacion implements Serializable {
                             tiempoEvento = puntos.getTasaAcumulacion().getDistribucionReal().inverseCumulativeProbability(aleatorio);
                             if (Math.floor(tiempoEvento) + auxTicks < numTicks) {
                                 auxTicks += (int) Math.floor(tiempoEvento);
-                                contexto.añadirEventoAcumulacion(new DepositoDesechoEnPuntoAcumulacion(auxTicks, calle, k, diaInicial, horarioASimular));
+                                contexto.añadirEventoAcumulacion(new DepositoDesechoEnPuntoAcumulacion(auxTicks, calle, k, diaInicial));
                             } else {
                                 break;
                             }
@@ -218,11 +208,7 @@ public class Simulacion implements Serializable {
         }
     }
     
-    /**
-     * Si la simulación no incluye el horario de entrada de los camiones, no se simula la recolección
-     * @param contexto 
-     */
-    private void listarEventosEntradaARuta(ContextoSimulacion contexto) {
+    private void listarEventosEntradaARuta(ContextoSimulacion contexto, int numTicks) {
         for (int i = 0; i < contexto.getRutas().size(); i++) {
             Ruta ruta = contexto.getRutas().get(i);
             Horario horario = ruta.getHorario();
@@ -232,45 +218,75 @@ public class Simulacion implements Serializable {
             for (int j = 0; j < camionesAsignados.size(); j++) {
                 Camion camion = camionesAsignados.get(j);
                 int[] datosHorario = horario.getDatos().get(mapaCamionesAHorarios.get(j));
-                if (horarioEstaIncluido(datosHorario)) {
-                    int paridadDiaInicial = diaInicial % 2;
-                    for (int dia = 0; dia < numeroDeDias; dia++) {
-                        if (datosHorario[2] == 0 || dia % 2 == paridadDiaInicial) {
-                            int tick = 0;
-                            if (horarioASimular[0].equals("x") || horarioASimular[1].equals("x")) {
-                                tick += dia * 24 * 60;
-                                tick += (datosHorario[0] * 60) + datosHorario[1];
-                            } else {
-                                int horaInicial = Integer.parseInt(horarioASimular[0]);
-                                int horaFinal = Integer.parseInt(horarioASimular[1]);
-                                tick += (dia * ((horaFinal - horaInicial) * 60));
-                                tick += (datosHorario[0] - horaInicial) * 60;
-                                tick += (datosHorario[1]);
-                            }
-                            contexto.añadirEventoEntradaUnidad(new EntradaARuta(tick, camion, ruta));
-                        }
+                int paridadDiaInicial = diaInicial % 2;
+                for (int dia = 0; dia < numeroDeDias; dia++) {
+                    if (datosHorario[2] == 0 || dia % 2 == paridadDiaInicial) {
+                        int tick = 0;
+                        tick += dia * 24 * 60;
+                        tick += (datosHorario[0] * 60) + datosHorario[1];
+                        contexto.añadirEventoEntradaUnidad(new EntradaARuta(tick, camion, ruta));
+                        listarEventosAvanceUnidad(tick, camion, ruta, numTicks, contexto);
                     }
                 }
             }
         }
     }
     
-    public void ejecutar() {
-        if (estadoEsValido()) {
-            iniciarSimulacion();
+    private void listarEventosAvanceUnidad(int tickInicial, Camion camionAvanza,
+            Ruta ruta, int numTicks, ContextoSimulacion contexto) {
+        
+        Random rand = new Random();
+        int ticksAcum = tickInicial;
+        
+        // El camión debe estar en la calle inicial
+        for (int i = 0; i < ruta.getCalles().size(); i++) {
+            Calle calle = ruta.getCalles().get(i);
+            int ticksParaAvanzar = 0;
+            
+            double velocidad = 1;
+            if (calle.getVelocidad().getTipoDistribucion().equals("Discreta")) {
+                velocidad = calle.getVelocidad().getDistribucionDiscreta().inverseCumulativeProbability(rand.nextDouble());
+            } else if (calle.getVelocidad().getTipoDistribucion().equals("Continua")) {
+                velocidad = calle.getVelocidad().getDistribucionReal().inverseCumulativeProbability(rand.nextDouble());
+            }
+            
+            double distancia = calcularDistanciaEntrePuntos(calle.getPuntoFinal(), calle.getPuntoFinal(), ruta);
+            distancia /= (calle.getPuntosAcum().getNumeroPuntos() + 1);
+
+            ticksParaAvanzar = (int) Math.floor(distancia / velocidad);
+            
+            // En este caso hay que avanzar a la siguiente calle
+            if (ticksAcum + ticksParaAvanzar < numTicks) {
+                ticksAcum += ticksParaAvanzar;
+                if (calle.getMapaCamionesPuntos().get(calle.getCamiones().indexOf(camionAvanza))
+                        == calle.getPuntosAcum().getNumeroPuntos()) {
+                    if (ruta.getCalles().getLast().equals(calle)) {
+                        // En este caso se abandona la ruta y se va al centro de transferencia
+                        contexto.añadirEventoAvanceUnidades(new SalidaRuta(ticksAcum, calle, camionAvanza));
+                    } else {
+                        // En este caso se va a la siguiente calle en la ruta
+                        contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksParaAvanzar,
+                            camionAvanza, ruta, calle, true));
+                    }
+                } else {
+                    // En este caso hay que avanzar al siguiente punto de acumulación
+                    contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksParaAvanzar,
+                        camionAvanza, ruta, calle, false));
+                    // -> Manejar aquí el listado de eventos de recolección de camión <-
+                }
+            }
         }
     }
     
-    private boolean horarioEstaIncluido(int[] datosHorario) {
-        if (horarioASimular[0].equals("x")
-            || horarioASimular[1].toLowerCase().equals("x")) {
-            return true;
-        } else {
-            String[] parsedHora = horarioASimular[0].split(":");
-            int horaInicialSim = Integer.parseInt(parsedHora[0]);
-            int horaFinalSim = Integer.parseInt(parsedHora[1]);
-            return (datosHorario[0] >= horaInicialSim &&
-                    datosHorario[0] < horaFinalSim);
+    private double calcularDistanciaEntrePuntos(int puntoI, int puntoF, Ruta ruta) {
+        Point puntoInicial = ruta.getPuntos().get(puntoI);
+        Point puntoFinal = ruta.getPuntos().get(puntoF);
+        return (puntoFinal.distance(puntoInicial) * escalas[ruta.getZoom()]);
+    }
+    
+    public void ejecutar() {
+        if (estadoEsValido()) {
+            iniciarSimulacion();
         }
     }
     

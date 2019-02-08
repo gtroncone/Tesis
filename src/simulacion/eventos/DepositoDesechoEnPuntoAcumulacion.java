@@ -17,11 +17,13 @@ public class DepositoDesechoEnPuntoAcumulacion extends Evento {
     
     private final Calle callePuntoAcumulacion;
     private final int numeroPuntoAcumulacion;
+    private final int diaInicial;
     
-    public DepositoDesechoEnPuntoAcumulacion(int tick, Calle calle, int k, int diaInicial, String[] rangoHorario) {
+    public DepositoDesechoEnPuntoAcumulacion(int tick, Calle calle, int k, int diaInicial) {
         super(tick);
         this.callePuntoAcumulacion = calle;
         this.numeroPuntoAcumulacion = k;
+        this.diaInicial = diaInicial;
     }
 
     public Calle getCallePuntoAcumulacion() {
@@ -37,10 +39,10 @@ public class DepositoDesechoEnPuntoAcumulacion extends Evento {
         Random rand = new Random();
         Distribucion dist = callePuntoAcumulacion.getPuntosAcum().getTasaGeneracion();
         if (dist.getTipoDistribucion().equals("Discreta")) {
-            callePuntoAcumulacion.getPuntosAcum().setCantidadBasuraPunto(numeroPuntoAcumulacion,
+            callePuntoAcumulacion.getPuntosAcum().acumularCantidadBasuraPunto(numeroPuntoAcumulacion,
                 dist.getDistribucionDiscreta().inverseCumulativeProbability(rand.nextDouble()));
         } else if (dist.getTipoDistribucion().equals("Continua")) {
-            callePuntoAcumulacion.getPuntosAcum().setCantidadBasuraPunto(numeroPuntoAcumulacion,
+            callePuntoAcumulacion.getPuntosAcum().acumularCantidadBasuraPunto(numeroPuntoAcumulacion,
                 dist.getDistribucionReal().inverseCumulativeProbability(rand.nextDouble()));
         }
     }

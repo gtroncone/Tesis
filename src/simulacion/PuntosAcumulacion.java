@@ -99,7 +99,7 @@ public class PuntosAcumulacion {
         return cantidadBasura;
     }
     
-    public void setCantidadBasuraPunto(int index, double cantidad) {
-        this.cantidadBasura[index] = cantidad;
+    public void acumularCantidadBasuraPunto(int index, double cantidad) {
+        this.cantidadBasura[index] += cantidad;
     }
 }

@@ -22,12 +22,11 @@ public class Ruta {
     private LinkedList<Point> puntos;
     private LinkedList<AreaBarrido> listaAreas;
     
-    private int tipoDeRecoleccion; // 0 = esquina a esquina, 1 = puerta a puerta
     private int zoom;
     
     public Ruta(String nombre, Horario horario, LinkedList<Calle> calles,
             Distribucion flujoPeatonal, Distribucion desechosPorPeaton,
-            LinkedList<Point> puntos, int zoom, int tipoDeRecoleccion) {
+            LinkedList<Point> puntos, int zoom) {
         this.nombre = nombre;
         this.horario = horario;
         this.calles = calles;
@@ -35,7 +34,6 @@ public class Ruta {
         this.desechosPorPeaton = desechosPorPeaton;
         this.puntos = puntos;
         this.zoom = zoom;
-        this.tipoDeRecoleccion = tipoDeRecoleccion;
     }
     
     public Ruta(Ruta ruta) {
@@ -63,16 +61,7 @@ public class Ruta {
             this.listaAreas.add(new AreaBarrido(ruta.getListaAreas().get(i)));
         }
         
-        this.tipoDeRecoleccion = ruta.getTipoDeRecoleccion();
         this.zoom = ruta.getZoom();
-    }
-
-    public int getTipoDeRecoleccion() {
-        return tipoDeRecoleccion;
-    }
-
-    public void setTipoDeRecoleccion(int tipoDeRecoleccion) {
-        this.tipoDeRecoleccion = tipoDeRecoleccion;
     }
 
     public void setNombre(String nombre) {
