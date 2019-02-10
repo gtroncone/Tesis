@@ -102,4 +102,12 @@ public class PuntosAcumulacion {
     public void acumularCantidadBasuraPunto(int index, double cantidad) {
         this.cantidadBasura[index] += cantidad;
     }
+    
+    public double getCantidadBasuraPunto(int index) {
+        return this.cantidadBasura[index];
+    }
+    
+    public void disminuirCantidadBasuraPunto(int index, double cantidad) {
+        this.cantidadBasura[index] -= cantidad;
+    }
 }

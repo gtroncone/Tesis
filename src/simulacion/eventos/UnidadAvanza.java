@@ -30,6 +30,7 @@ public class UnidadAvanza extends Evento {
 
     @Override
     public void modificarEstado() {
+        this.camion.setActivo(true);
         if (cambioDeCalle) {
             // Pasa a la siguiente calle
             int indexCalle = ruta.getCalles().indexOf(calle);

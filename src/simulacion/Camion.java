@@ -19,6 +19,10 @@ public class Camion {
     private double precio;
     private boolean activo = false;
     private boolean averiado = false;
+    private final double TASA_COMPACTACION = 650;
+    private final double TASA_LIBRAS_A_KG = 0.453592;
+    private double carga = 0;
+    
     
     private LinkedList<Pieza> piezas;
     
@@ -66,9 +70,17 @@ public class Camion {
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
-
+    
     public int getCapacidad() {
-        return capacidad;
+        return this.capacidad;
+    }
+
+    public double getCapacidadEnKg() {
+        if (this.capacidad == 0) {
+            return (15 * TASA_COMPACTACION * TASA_LIBRAS_A_KG);
+        } else {
+            return (25 * TASA_COMPACTACION * TASA_LIBRAS_A_KG);
+        }
     }
 
     public void setCapacidad(int capacidad) {
@@ -98,5 +110,20 @@ public class Camion {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+
+    public double getCarga() {
+        return carga;
+    }
+
+    public void setCarga(double carga) {
+        this.carga = carga;
+    }
     
+    public void añadirCarga(double carga) {
+        this.carga += carga;
+    }
+    
+    public void disminuirCarga(double carga) {
+        this.carga -= carga;
+    }
 }

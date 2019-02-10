@@ -29,6 +29,7 @@ public class AcumulacionDesechoPeatonal extends Evento {
     }
 
     @Override
+    // BUG: Hay que sacar el for de aquí, se debe ejecutar sólo una vez por área
     public void modificarEstado() {
         Random rand = new Random();
         for (int i = 0; i < areasBarrido.size(); i++) {

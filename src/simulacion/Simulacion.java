@@ -13,6 +13,7 @@ import logica.MetadataMapa;
 import simulacion.eventos.AcumulacionDesechoPeatonal;
 import simulacion.eventos.DepositoDesechoEnPuntoAcumulacion;
 import simulacion.eventos.EntradaARuta;
+import simulacion.eventos.RecoleccionConCamion;
 import simulacion.eventos.SalidaRuta;
 import simulacion.eventos.UnidadAvanza;
 
@@ -35,7 +36,7 @@ public class Simulacion implements Serializable {
     private int diaInicial = 1;
     
     private final int NUMERO_MINUTOS_RECOLECCION_PROMEDIO = 5;
-    private final double DISTANCIA_PROMEDIO_A_TRANSFERENCIA;
+    private final int MINUTOS_PROMEDIO_A_TRANSFERENCIA;
     private final double[] escalas;
 
     public Simulacion() {
@@ -43,7 +44,7 @@ public class Simulacion implements Serializable {
         camiones = new LinkedList<>();
         MetadataMapa aux = new MetadataMapa();
         escalas = aux.getEscalas();
-        DISTANCIA_PROMEDIO_A_TRANSFERENCIA = aux.getDistanciaPromedioATransferencia();
+        MINUTOS_PROMEDIO_A_TRANSFERENCIA = aux.getMinutosPromedioATransferencia();
     }
 
     public void añadirRuta(Ruta ruta) {
@@ -144,11 +145,28 @@ public class Simulacion implements Serializable {
             listarEventosAcumulacionDesechos(contexto, numTicks);
             listarEventosAcumulacionDesechoPeatonal(contexto, numTicks);
             listarEventosEntradaARuta(contexto, numTicks);
-            // listarEventosAveria(contexto, numTicks);
-            //ejecutarEventos(contexto);
+            listarEventosAcopioDesechoPeatonal(contexto, numTicks);
+            // ordenarEventos(context0);
+            // ejecutarEventos(contexto);
         }
     }
+    
+    /**
+     * Para cada ruta, para cada área acumulación, para cada barredor, se simula
+     * cuando el barredor llega a su capacidad (se debe tomar en cuenta que es
+     * es necesario verificar si hay menos basura acumulada en el área que la acopiada,
+     * luego se añade un evento de acopio, en este evento se debe colocar los desechos 
+     * acopiados en un punto de acumulación aleatorio en la ruta
+     * @param contexto
+     * @param numTicks 
+     */
+    private void listarEventosAcopioDesechoPeatonal(ContextoSimulacion contexto,
+        int numTicks) {
+        
+    }
 
+    // BUG: REVISAR ACUMULACIONDESECHOPEATONAL.JAVA
+    // ES NECESARIO MOVER EL FOR POR AREA DE ACUMULACIÓN A ESTA FUNCIÓN
     private void listarEventosAcumulacionDesechoPeatonal(ContextoSimulacion contexto,
         int numTicks) {
         Random rand = new Random();
@@ -220,6 +238,7 @@ public class Simulacion implements Serializable {
                 int[] datosHorario = horario.getDatos().get(mapaCamionesAHorarios.get(j));
                 int paridadDiaInicial = diaInicial % 2;
                 for (int dia = 0; dia < numeroDeDias; dia++) {
+                    // -> Aquí deben incluirse los eventos de mantenimiento <-
                     if (datosHorario[2] == 0 || dia % 2 == paridadDiaInicial) {
                         int tick = 0;
                         tick += dia * 24 * 60;
@@ -242,38 +261,47 @@ public class Simulacion implements Serializable {
         for (int i = 0; i < ruta.getCalles().size(); i++) {
             Calle calle = ruta.getCalles().get(i);
             int ticksParaAvanzar = 0;
-            
-            double velocidad = 1;
-            if (calle.getVelocidad().getTipoDistribucion().equals("Discreta")) {
-                velocidad = calle.getVelocidad().getDistribucionDiscreta().inverseCumulativeProbability(rand.nextDouble());
-            } else if (calle.getVelocidad().getTipoDistribucion().equals("Continua")) {
-                velocidad = calle.getVelocidad().getDistribucionReal().inverseCumulativeProbability(rand.nextDouble());
-            }
-            
-            double distancia = calcularDistanciaEntrePuntos(calle.getPuntoFinal(), calle.getPuntoFinal(), ruta);
-            distancia /= (calle.getPuntosAcum().getNumeroPuntos() + 1);
-
-            ticksParaAvanzar = (int) Math.floor(distancia / velocidad);
-            
-            // En este caso hay que avanzar a la siguiente calle
-            if (ticksAcum + ticksParaAvanzar < numTicks) {
-                ticksAcum += ticksParaAvanzar;
-                if (calle.getMapaCamionesPuntos().get(calle.getCamiones().indexOf(camionAvanza))
-                        == calle.getPuntosAcum().getNumeroPuntos()) {
-                    if (ruta.getCalles().getLast().equals(calle)) {
-                        // En este caso se abandona la ruta y se va al centro de transferencia
-                        contexto.añadirEventoAvanceUnidades(new SalidaRuta(ticksAcum, calle, camionAvanza));
-                    } else {
-                        // En este caso se va a la siguiente calle en la ruta
-                        contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksParaAvanzar,
-                            camionAvanza, ruta, calle, true));
-                    }
-                } else {
-                    // En este caso hay que avanzar al siguiente punto de acumulación
-                    contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksParaAvanzar,
-                        camionAvanza, ruta, calle, false));
-                    // -> Manejar aquí el listado de eventos de recolección de camión <-
+            for (int j = 0; j <= calle.getPuntosAcum().getNumeroPuntos(); j++) {
+                // -> Aquí deben manejarse los eventos de avería y de reparación <-
+                double velocidad = 1;
+                if (calle.getVelocidad().getTipoDistribucion().equals("Discreta")) {
+                    velocidad = calle.getVelocidad().getDistribucionDiscreta().inverseCumulativeProbability(rand.nextDouble());
+                } else if (calle.getVelocidad().getTipoDistribucion().equals("Continua")) {
+                    velocidad = calle.getVelocidad().getDistribucionReal().inverseCumulativeProbability(rand.nextDouble());
                 }
+
+                double distancia = calcularDistanciaEntrePuntos(calle.getPuntoFinal(), calle.getPuntoFinal(), ruta);
+                distancia /= (calle.getPuntosAcum().getNumeroPuntos() + 1);
+
+                ticksParaAvanzar = (int) Math.floor(distancia / velocidad);
+
+                // En este caso hay que avanzar a la siguiente calle
+                if (ticksAcum + ticksParaAvanzar < numTicks) {
+                    ticksAcum += ticksParaAvanzar;
+                    if (j == calle.getPuntosAcum().getNumeroPuntos()) {
+                        if (ruta.getCalles().getLast().equals(calle)) {
+                            // En este caso se abandona la ruta y se va al centro de transferencia
+                            contexto.añadirEventoAvanceUnidades(new SalidaRuta(ticksAcum, calle, camionAvanza));
+                        } else {
+                            // En este caso se va a la siguiente calle en la ruta
+                            contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksParaAvanzar,
+                                camionAvanza, ruta, calle, true));
+                        }
+                    } else {
+                        // En este caso hay que avanzar al siguiente punto de acumulación
+                        contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksParaAvanzar,
+                            camionAvanza, ruta, calle, false));
+                        if (ticksAcum + NUMERO_MINUTOS_RECOLECCION_PROMEDIO < numTicks) {
+                            ticksAcum += NUMERO_MINUTOS_RECOLECCION_PROMEDIO;
+                            RecoleccionConCamion recoleccion = new RecoleccionConCamion(ticksAcum,
+                                calle, camionAvanza);
+                            contexto.añadirEventoRecoleccion(recoleccion);
+                            if (recoleccion.hayIdaATransferencia()) {
+                                ticksAcum += 2 * this.MINUTOS_PROMEDIO_A_TRANSFERENCIA;
+                            }
+                        }
+                    }
+                }   
             }
         }
     }
@@ -288,6 +316,10 @@ public class Simulacion implements Serializable {
         if (estadoEsValido()) {
             iniciarSimulacion();
         }
+    }
+    
+    private void ordenarEventos(ContextoSimulacion contexto) {
+        
     }
     
     private void ejecutarEventos(ContextoSimulacion contexto) {

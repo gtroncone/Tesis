@@ -21,6 +21,8 @@ public class MetadataMapa {
     private final int dimY;
     private final int dimTile;
     private final int distanciaPromedioATransferencia;
+    private final int VELOCIDAD_PROMEDIO_UNIDADES = 1000;
+    private final int FACTOR_EFICIENCIA = 3;
 
     public MetadataMapa() throws NullPointerException {
         maxZoom = 19;
@@ -65,7 +67,7 @@ public class MetadataMapa {
         zoom19[3] = 64;
         zooms.add(zoom19);
         
-        distanciaPromedioATransferencia = (14700 + 12500) / 2;
+        distanciaPromedioATransferencia = (14700 + 12500) * FACTOR_EFICIENCIA / 2;
         
         escalas = new double[zooms.size()];
         for (int i = 0; i < escalas.length; i++) {
@@ -79,8 +81,8 @@ public class MetadataMapa {
         }
     }
 
-    public int getDistanciaPromedioATransferencia() {
-        return distanciaPromedioATransferencia;
+    public int getMinutosPromedioATransferencia() {
+        return distanciaPromedioATransferencia / VELOCIDAD_PROMEDIO_UNIDADES;
     }
 
     private boolean verificacionDeMetadatos() {

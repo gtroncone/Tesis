@@ -166,7 +166,7 @@ public class MenuBarredores extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(listaAreaBarrido);
 
-        etiquetaNumBarredores.setText("Número de Barredores");
+        etiquetaNumBarredores.setText("Número de Barredores por Área");
 
         etiquetaNumCuadras.setText("Número de Cuadras");
 
@@ -258,7 +258,7 @@ public class MenuBarredores extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(etiquetaNumCuadras, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(etiquetaNumBarredores, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(etiquetaDigNumBarredores, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
