@@ -13,12 +13,12 @@ public class AreaBarrido {
     
     private int numeroBarredores;
     private int numeroCuadras;
-    private float capacidad;
+    private double capacidad;
     private Distribucion velocidadAcopio;
     private double[] cantidadBasura;
     
     public AreaBarrido(int numeroBarredores, int numeroCuadras,
-            float capacidad, Distribucion velocidadAcopio) {
+            double capacidad, Distribucion velocidadAcopio) {
         this.numeroBarredores = numeroBarredores;
         this.numeroCuadras = numeroCuadras;
         this.capacidad = capacidad;
@@ -50,11 +50,11 @@ public class AreaBarrido {
         this.numeroCuadras = numeroCuadras;
     }
 
-    public float getCapacidad() {
+    public double getCapacidad() {
         return capacidad;
     }
 
-    public void setCapacidad(float capacidad) {
+    public void setCapacidad(double capacidad) {
         this.capacidad = capacidad;
     }
 
@@ -72,5 +72,19 @@ public class AreaBarrido {
     
     public void añadirBasuraArea(int index, double basura) {
         this.cantidadBasura[index] += basura;
+    }
+    
+    public void restarBasuraArea(double basura) {
+        double aRestar = basura;
+        for (int i = 0; i < cantidadBasura.length; i++) {
+            if (cantidadBasura[i] <= aRestar)  {
+                double aux = cantidadBasura[i];
+                cantidadBasura[i] = 0;
+                aRestar -= aux;
+            } else {
+                cantidadBasura[i] -= aRestar;
+                aRestar = 0;
+            }
+        }
     }
 }

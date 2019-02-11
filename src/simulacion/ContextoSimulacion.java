@@ -5,6 +5,7 @@
  */
 package simulacion;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import simulacion.eventos.Evento;
 
@@ -14,13 +15,17 @@ import simulacion.eventos.Evento;
  */
 public class ContextoSimulacion {
 
-    private LinkedList<Ruta> rutas;
-    private LinkedList<Camion> camiones;
+    private final LinkedList<Ruta> rutas;
+    private final LinkedList<Camion> camiones;
     
-    private LinkedList<Evento> eventosAcumulacion;
-    private LinkedList<Evento> eventosEntradaUnidades;
-    private LinkedList<Evento> eventosAvanceUnidades;
-    private LinkedList<Evento> eventosRecoleccion;
+    private final LinkedList<Evento> eventosAcumulacion;
+    private final LinkedList<Evento> eventosEntradaUnidades;
+    private final LinkedList<Evento> eventosAvanceUnidades;
+    private final LinkedList<Evento> eventosRecoleccion;
+    private final LinkedList<Evento> eventosAcopiacion;
+    
+    private final LinkedList<LinkedList<Evento>> listaEventos;
+    private final LinkedList<Evento> listaAuditoria;
     
     public ContextoSimulacion(LinkedList<Ruta> rutas, LinkedList<Camion> camiones) {
         this.rutas = new LinkedList<>();
@@ -29,6 +34,16 @@ public class ContextoSimulacion {
         eventosEntradaUnidades = new LinkedList<>();
         eventosAvanceUnidades = new LinkedList<>();
         eventosRecoleccion = new LinkedList<>();
+        eventosAcopiacion = new LinkedList<>();
+        
+        listaEventos = new LinkedList<LinkedList<Evento>>();
+        listaEventos.add(eventosAcumulacion);
+        listaEventos.add(eventosEntradaUnidades);
+        listaEventos.add(eventosAvanceUnidades);
+        listaEventos.add(eventosRecoleccion);
+        listaEventos.add(eventosAcopiacion);
+        
+        listaAuditoria = new LinkedList<Evento>();
         
         for (int i = 0; i < camiones.size(); i++) {
             this.camiones.add(new Camion(camiones.get(i)));
@@ -55,6 +70,10 @@ public class ContextoSimulacion {
     public void añadirEventoRecoleccion(Evento evento) {
         eventosRecoleccion.add(evento);
     }
+    
+    public void añadirEventoAcopiacion(Evento evento) {
+        eventosAcopiacion.add(evento);
+    }
 
     public LinkedList<Ruta> getRutas() {
         return rutas;
@@ -64,12 +83,38 @@ public class ContextoSimulacion {
         return camiones;
     }
 
-    public LinkedList<Evento> getEventosAcumulacion() {
-        return eventosAcumulacion;
-    }
-    
     public void sortEventos() {
-        
+        for (int i = 0; i < listaEventos.size(); i++) {
+            Collections.sort(listaEventos.get(i));
+        }
+    }
+
+    public LinkedList<Evento> getListaAuditoria() {
+        return listaAuditoria;
     }
     
+    public void ejecutarEventos() {
+        boolean aux = true;
+        int minTick;
+        while (aux) {
+            minTick = Integer.MAX_VALUE;
+            boolean estanVacias = true;
+            for (int i = 0; i < listaEventos.size(); i++) {
+                estanVacias &= listaEventos.get(i).isEmpty();
+                if (!listaEventos.get(i).isEmpty()
+                    && listaEventos.get(i).peek().getTick() < minTick) {
+                    minTick = listaEventos.get(i).peek().getTick();
+                }
+            }
+            for (int i = 0; i < listaEventos.size(); i++) {
+                Evento e =  listaEventos.get(i).peek();
+                if (e.getTick() == minTick) {
+                    e.modificarEstado();
+                    listaEventos.get(i).removeFirst();
+                    listaAuditoria.add(e);
+                }
+            }
+            aux = !estanVacias;
+        }
+    }
 }

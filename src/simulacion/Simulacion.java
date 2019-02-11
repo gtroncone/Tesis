@@ -7,9 +7,11 @@ package simulacion;
 
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 import logica.MetadataMapa;
+import simulacion.eventos.AcopioDesechoPeatonal;
 import simulacion.eventos.AcumulacionDesechoPeatonal;
 import simulacion.eventos.DepositoDesechoEnPuntoAcumulacion;
 import simulacion.eventos.EntradaARuta;
@@ -37,6 +39,8 @@ public class Simulacion implements Serializable {
     
     private final int NUMERO_MINUTOS_RECOLECCION_PROMEDIO = 5;
     private final int MINUTOS_PROMEDIO_A_TRANSFERENCIA;
+    private final int INICIO_HORARIO_LABORAL = 8;
+    private final int FINAL_HORARIO_LABORAL = 17;
     private final double[] escalas;
 
     public Simulacion() {
@@ -146,45 +150,73 @@ public class Simulacion implements Serializable {
             listarEventosAcumulacionDesechoPeatonal(contexto, numTicks);
             listarEventosEntradaARuta(contexto, numTicks);
             listarEventosAcopioDesechoPeatonal(contexto, numTicks);
-            // ordenarEventos(context0);
+            ordenarEventos(contexto);
             // ejecutarEventos(contexto);
         }
     }
     
-    /**
-     * Para cada ruta, para cada área acumulación, para cada barredor, se simula
-     * cuando el barredor llega a su capacidad (se debe tomar en cuenta que es
-     * es necesario verificar si hay menos basura acumulada en el área que la acopiada,
-     * luego se añade un evento de acopio, en este evento se debe colocar los desechos 
-     * acopiados en un punto de acumulación aleatorio en la ruta
-     * @param contexto
-     * @param numTicks 
-     */
     private void listarEventosAcopioDesechoPeatonal(ContextoSimulacion contexto,
         int numTicks) {
-        
+        Random rand = new Random();
+        for (int i = 0; i < contexto.getRutas().size(); i++) {
+            Ruta ruta = contexto.getRutas().get(i);
+            for (int j = 0; j < ruta.getListaAreas().size(); j++) {
+                AreaBarrido area = ruta.getListaAreas().get(j);
+                for (int k = 0; k < area.getNumeroBarredores(); k++) {
+                    double velocidad = 1;
+                    if (area.getVelocidadAcopio().getTipoDistribucion().equals("Discreta")) {
+                        velocidad = area.getVelocidadAcopio().getDistribucionDiscreta()
+                            .inverseCumulativeProbability(rand.nextDouble());
+                    } else if (area.getVelocidadAcopio().getTipoDistribucion().equals("Continua")) {
+                        velocidad = area.getVelocidadAcopio().getDistribucionReal()
+                            .inverseCumulativeProbability(rand.nextDouble());
+                    }
+                    double capacidad = area.getCapacidad();
+                    int ticksParaLlenado = (int) Math.floor(capacidad / velocidad);
+                    int auxTicks = 0;
+                    while (auxTicks + ticksParaLlenado < numTicks) {
+                        auxTicks += ticksParaLlenado;
+                        double cantidadBasuraEnArea = 0;
+                        for (int w = 0; i < area.getCantidadBasura().length; w++) {
+                            cantidadBasuraEnArea += area.getCantidadBasura()[w];
+                        }
+                        if (tickEstaEnHorarioLaboral(auxTicks)) {
+                            contexto.añadirEventoAcopiacion(new AcopioDesechoPeatonal(auxTicks, ruta, area, cantidadBasuraEnArea));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private boolean tickEstaEnHorarioLaboral(int tick) {
+        int tickInicioHorario = INICIO_HORARIO_LABORAL * 60;
+        int tickFinalHorario = FINAL_HORARIO_LABORAL * 60;
+        int tickDia = 24 * 60;
+        return ((tick % tickDia) >= tickInicioHorario && (tick % tickDia) <= tickFinalHorario);
     }
 
-    // BUG: REVISAR ACUMULACIONDESECHOPEATONAL.JAVA
-    // ES NECESARIO MOVER EL FOR POR AREA DE ACUMULACIÓN A ESTA FUNCIÓN
     private void listarEventosAcumulacionDesechoPeatonal(ContextoSimulacion contexto,
         int numTicks) {
         Random rand = new Random();
         for (int i = 0; i < contexto.getRutas().size(); i++) {
             Ruta ruta = contexto.getRutas().get(i);
-            int auxTicks = 0;
-            while (auxTicks < numTicks) {
-                double aleatorio = rand.nextDouble();
-                if (auxTicks + 1 < numTicks) {
-                    auxTicks++;
-                    if (ruta.getFlujoPeatonal().getTipoDistribucion().equals("Discreta")) {
-                        contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks, 
-                            ruta.getListaAreas(), ruta.getDesechosPorPeaton(),
-                            ruta.getFlujoPeatonal().getDistribucionDiscreta().inverseCumulativeProbability(aleatorio)));
-                    } else if (ruta.getFlujoPeatonal().getTipoDistribucion().equals("Continua")) {
-                        contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks,
-                            ruta.getListaAreas(), ruta.getDesechosPorPeaton(),
-                            (int) Math.floor(ruta.getFlujoPeatonal().getDistribucionReal().inverseCumulativeProbability(aleatorio))));
+            for (int j = 0; i < ruta.getListaAreas().size(); j++) {
+                int auxTicks = 0;
+                AreaBarrido area = ruta.getListaAreas().get(j);
+                while (auxTicks < numTicks) {
+                    double aleatorio = rand.nextDouble();
+                    if (auxTicks + 1 < numTicks) {
+                        auxTicks++;
+                        if (ruta.getFlujoPeatonal().getTipoDistribucion().equals("Discreta")) {
+                            contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks, 
+                                area, ruta.getDesechosPorPeaton(),
+                                ruta.getFlujoPeatonal().getDistribucionDiscreta().inverseCumulativeProbability(aleatorio)));
+                        } else if (ruta.getFlujoPeatonal().getTipoDistribucion().equals("Continua")) {
+                            contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks,
+                                area, ruta.getDesechosPorPeaton(),
+                                (int) Math.floor(ruta.getFlujoPeatonal().getDistribucionReal().inverseCumulativeProbability(aleatorio))));
+                        }
                     }
                 }
             }
@@ -319,15 +351,11 @@ public class Simulacion implements Serializable {
     }
     
     private void ordenarEventos(ContextoSimulacion contexto) {
-        
+        contexto.sortEventos();
     }
     
     private void ejecutarEventos(ContextoSimulacion contexto) {
-        /*LinkedList<Evento> eventosAcumulacion = contexto.getEventosAcumulacion();
-        for (int i = 0; i < eventosAcumulacion.size(); i++) {
-            Evento eventoAcumulacion = eventosAcumulacion.get(i);
-            eventoAcumulacion.modificarEstado();
-        }*/
+        contexto.ejecutarEventos();
     }
 
     private boolean estadoEsValido() {

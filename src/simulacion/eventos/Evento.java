@@ -9,7 +9,7 @@ package simulacion.eventos;
  *
  * @author gtroncone
  */
-public abstract class Evento {
+public abstract class Evento implements Comparable<Evento> {
     
     private final int tick;
     
@@ -23,6 +23,11 @@ public abstract class Evento {
     
     public boolean isTick(int tick) {
         return this.tick == tick;
+    }
+    
+    @Override
+    public int compareTo(Evento e) {
+        return Integer.compare(this.tick, e.getTick());
     }
     
     public abstract void modificarEstado();

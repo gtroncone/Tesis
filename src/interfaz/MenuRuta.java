@@ -591,8 +591,10 @@ public class MenuRuta extends javax.swing.JFrame {
                 interfaz.getSimulacion().añadirRuta(ruta);
                 modoCreacion();
                 refrescarRutas();
+                interfaz.actualizarMapa();
             } else {
                 editarRuta();
+                interfaz.actualizarMapa();
             }
         }
     }//GEN-LAST:event_btnAceptarActionPerformed

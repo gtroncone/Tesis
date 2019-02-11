@@ -77,7 +77,7 @@ public class MenuBarredores extends javax.swing.JFrame {
     
     private boolean esValido() {
         try {
-            Float.parseFloat(campoCapacidad.getText());
+            Double.parseDouble(campoCapacidad.getText());
         } catch (NumberFormatException e) {
             alerta("El campo capacidad no tiene un número válido");
             return false;
@@ -349,7 +349,7 @@ public class MenuBarredores extends javax.swing.JFrame {
         if (ruta.getListaAreas() != null) {
             for (int i = 0; i < ruta.getListaAreas().size(); i++) {
                 modeloAreas.addElement(this.rutas.get(
-                        listaRutas.getSelectedIndex()).getListaAreas().get(i));
+                    listaRutas.getSelectedIndex()).getListaAreas().get(i));
             }
         }
         reiniciarSubMenu();
@@ -358,7 +358,7 @@ public class MenuBarredores extends javax.swing.JFrame {
     private void listaAreaBarridoValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaAreaBarridoValueChanged
         if (listaAreaBarrido.getSelectedIndex() > -1) {
             AreaBarrido area = rutas.get(listaRutas.getSelectedIndex())
-                    .getListaAreas().get(listaAreaBarrido.getSelectedIndex());
+                .getListaAreas().get(listaAreaBarrido.getSelectedIndex());
             etiquetaDigNumBarredores.setText(String.valueOf(area.getNumeroBarredores()));
             etiquetaDigNumCuadras.setText(String.valueOf(area.getNumeroCuadras()));
             campoCapacidad.setText(String.valueOf(area.getCapacidad()));
@@ -388,19 +388,19 @@ public class MenuBarredores extends javax.swing.JFrame {
     private void btnRemoverBarredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverBarredorActionPerformed
         if (Integer.parseInt(etiquetaDigNumBarredores.getText()) > 0) {
             etiquetaDigNumBarredores.setText(String.valueOf(
-                    Integer.parseInt(etiquetaDigNumBarredores.getText()) - 1));
+                Integer.parseInt(etiquetaDigNumBarredores.getText()) - 1));
         }
     }//GEN-LAST:event_btnRemoverBarredorActionPerformed
 
     private void btnSumarCuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSumarCuadraActionPerformed
         etiquetaDigNumCuadras.setText(String.valueOf(
-                Integer.parseInt(etiquetaDigNumCuadras.getText()) + 1));
+            Integer.parseInt(etiquetaDigNumCuadras.getText()) + 1));
     }//GEN-LAST:event_btnSumarCuadraActionPerformed
 
     private void btnRestarCuadraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestarCuadraActionPerformed
         if (Integer.parseInt(etiquetaDigNumCuadras.getText()) > 0) {
             etiquetaDigNumCuadras.setText(String.valueOf(
-                    Integer.parseInt(etiquetaDigNumCuadras.getText()) - 1));
+                Integer.parseInt(etiquetaDigNumCuadras.getText()) - 1));
         }
     }//GEN-LAST:event_btnRestarCuadraActionPerformed
 
@@ -408,10 +408,10 @@ public class MenuBarredores extends javax.swing.JFrame {
         if (esValido()) {
             if (listaRutas.getSelectedIndex() > -1) {
                 AreaBarrido area = new AreaBarrido(
-                        Integer.parseInt(etiquetaDigNumBarredores.getText()),
-                        Integer.parseInt(etiquetaDigNumCuadras.getText()), 
-                        Float.parseFloat(campoCapacidad.getText()), 
-                        new Distribucion(campoDistVelAcopio.getText()));
+                    Integer.parseInt(etiquetaDigNumBarredores.getText()),
+                    Integer.parseInt(etiquetaDigNumCuadras.getText()), 
+                    Double.parseDouble(campoCapacidad.getText()), 
+                    new Distribucion(campoDistVelAcopio.getText()));
                 rutas.get(listaRutas.getSelectedIndex()).añadirArea(area);
                 modeloAreas.addElement("Area " + modeloAreas.getSize());
             }
@@ -425,7 +425,7 @@ public class MenuBarredores extends javax.swing.JFrame {
                 AreaBarrido area = rutas.get(listaRutas.getSelectedIndex()).getListaAreas().get(listaAreaBarrido.getSelectedIndex());
                 area.setNumeroBarredores(Integer.parseInt(etiquetaDigNumBarredores.getText()));
                 area.setNumeroCuadras(Integer.parseInt(etiquetaDigNumCuadras.getText()));
-                area.setCapacidad(Float.parseFloat(campoCapacidad.getText()));
+                area.setCapacidad(Double.parseDouble(campoCapacidad.getText()));
                 area.setVelocidadAcopio(new Distribucion(campoDistVelAcopio.getText()));
             }
         }

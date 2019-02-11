@@ -111,7 +111,7 @@ public class UI extends javax.swing.JFrame {
         return simulacion;
     }
     
-    private void actualizarMapa() {
+    public void actualizarMapa() {
         mapa.setIcon(new ImageIcon(render.getRender()));
     }
     
