@@ -79,23 +79,28 @@ public class MenuCamiones extends javax.swing.JFrame {
     
     public void setListaCamiones(LinkedList<Camion> listaCamiones) {
         this.listaCamiones = listaCamiones;
+        dropSelCamion.removeAllItems();
+        dropSelCamion.addItem("Nuevo Camión");
+        for (int i = 0; i < listaCamiones.size(); i++) {
+            dropSelCamion.addItem(listaCamiones.get(i).getId());
+        }
     }
     
     private boolean camionEsValido() {
         if (campoModeloCamion.getText().length() <= 0) {
-            alerta("El campo de modelo del camión no puede estar vacío");
+            UI.alerta("El campo de modelo del camión no puede estar vacío");
             return false;
         } else if (campoIDCamion.getText().length() <= 0) {
-            alerta("El campo de ID del camión no puede estar vacío");
+            UI.alerta("El campo de ID del camión no puede estar vacío");
             return false;
         } else if (!campoIDEsUnico()) {
-            alerta("El campo de ID del camión debe ser único");
+            UI.alerta("El campo de ID del camión debe ser único");
             return false;
         }
         try {
             Double.parseDouble(campoCostoCamion.getText());
         } catch (NumberFormatException e) {
-            alerta("El campo de precio del camión no contiene un número válido");
+            UI.alerta("El campo de precio del camión no contiene un número válido");
             return false;
         }
         return true;
@@ -114,23 +119,19 @@ public class MenuCamiones extends javax.swing.JFrame {
     
     private boolean piezaEsValida() {
         if (campoNomPieza.getText().length() <= 0) {
-            alerta("El campo de nombre de la pieza no puede estar vacío");
+            UI.alerta("El campo de nombre de la pieza no puede estar vacío");
             return false;
         } else if (!Distribucion.esDistValida(campoDistTiempoVidaPieza.getText())) {
-            alerta("La notación de distribución en el campo de tiempo de vida es incorrecta");
+            UI.alerta("La notación de distribución en el campo de tiempo de vida es incorrecta");
             return false;
         }
         try {
             Double.parseDouble(campoCostoPieza.getText());
         } catch (NumberFormatException e) {
-            alerta("El campo de costo de la pieza no contiene un número válido");
+            UI.alerta("El campo de costo de la pieza no contiene un número válido");
             return false;
         }
         return true;
-    }
-    
-    private void alerta(String s) {
-        JOptionPane.showMessageDialog(null, s);
     }
 
     /**
@@ -379,7 +380,6 @@ public class MenuCamiones extends javax.swing.JFrame {
                 reiniciarMenu();
                 campoModeloCamion.setText("");
                 dropSelCamion.addItem(camion.getId());
-                listaCamiones.add(camion);
             } else {
                 Camion camion = listaCamiones.get(dropSelCamion.getSelectedIndex() - 1);
                 camion.setModelo(campoModeloCamion.getText());
@@ -403,6 +403,7 @@ public class MenuCamiones extends javax.swing.JFrame {
                     dropSelPieza.addItem(listaPiezas.get(i).getNombre());
                 }
             }
+            campoCostoCamion.setText(String.valueOf(camion.getPrecio()));
         } else {
             btnNuevoCamion.setText("Crear");
             reiniciarMenu();

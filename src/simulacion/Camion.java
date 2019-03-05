@@ -5,13 +5,14 @@
  */
 package simulacion;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author gtroncone
  */
-public class Camion {
+public class Camion implements Serializable {
     
     private String modelo;
     private int capacidad; // 0 = 15yd3, 1 = 25yd3
@@ -22,7 +23,11 @@ public class Camion {
     private final double TASA_COMPACTACION = 650;
     private final double TASA_LIBRAS_A_KG = 0.453592;
     private double carga = 0;
-    
+    private double distanciaRecorrida = 0;
+    private int numeroAverias = 0;
+    private int numeroDeViajesATransferencia = 0;
+    private static int CAPACIDAD_EN_YARDAS_CUBICAS_CAMION_PEQUEÑO = 15;
+    private static int CAPACIDAD_EN_YARDAS_CUBICAS_CAMION_GRANDE = 25;
     
     private LinkedList<Pieza> piezas;
     
@@ -42,8 +47,10 @@ public class Camion {
         this.precio = camion.getPrecio();
         
         this.piezas = new LinkedList<>();
-        for (int i = 0; i < camion.getPiezas().size(); i++) {
-            this.piezas.add(new Pieza(camion.getPiezas().get(i)));
+        if (camion.getPiezas() != null) {
+            for (int i = 0; i < camion.getPiezas().size(); i++) {
+                this.piezas.add(new Pieza(camion.getPiezas().get(i)));
+            }
         }
     }
 
@@ -77,9 +84,9 @@ public class Camion {
 
     public double getCapacidadEnKg() {
         if (this.capacidad == 0) {
-            return (15 * TASA_COMPACTACION * TASA_LIBRAS_A_KG);
+            return (CAPACIDAD_EN_YARDAS_CUBICAS_CAMION_PEQUEÑO * TASA_COMPACTACION * TASA_LIBRAS_A_KG);
         } else {
-            return (25 * TASA_COMPACTACION * TASA_LIBRAS_A_KG);
+            return (CAPACIDAD_EN_YARDAS_CUBICAS_CAMION_GRANDE * TASA_COMPACTACION * TASA_LIBRAS_A_KG);
         }
     }
 
@@ -126,4 +133,29 @@ public class Camion {
     public void disminuirCarga(double carga) {
         this.carga -= carga;
     }
+
+    public double getDistanciaRecorrida() {
+        return distanciaRecorrida;
+    }
+
+    public void añadirDistanciaRecorrida(double distanciaRecorrida) {
+        this.distanciaRecorrida += distanciaRecorrida;
+    }
+    
+    public void incrementarNumeroDeAverias() {
+        this.numeroAverias++;
+    }
+
+    public int getNumeroAverias() {
+        return numeroAverias;
+    }
+    
+    public void añadirViajeATransferencia() {
+        this.numeroDeViajesATransferencia++;
+    }
+
+    public int getNumeroDeViajesATransferencia() {
+        return numeroDeViajesATransferencia;
+    }
+           
 }

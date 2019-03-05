@@ -64,14 +64,14 @@ public class MenuConfiguracion extends javax.swing.JFrame {
         try {
             Double.parseDouble(campoSalarioBarredores.getText());
         } catch (NumberFormatException e) {
-            alerta("El campo de salario de barredores no contiene un número válido.");
+            UI.alerta("El campo de salario de barredores no contiene un número válido.");
             return false;
         }
         
         try {
             Double.parseDouble(campoEquipoRec.getText());
         } catch (NumberFormatException e) {
-            alerta("El campo de salario del equipo de recolección"
+            UI.alerta("El campo de salario del equipo de recolección"
                     + " no contiene un número válido.");
             return false;
         }
@@ -79,16 +79,12 @@ public class MenuConfiguracion extends javax.swing.JFrame {
         try {
             Double.parseDouble(campoSalarioMecanicos.getText());
         } catch (NumberFormatException e) {
-            alerta("El campo de salario de mecánicos"
+            UI.alerta("El campo de salario de mecánicos"
                     + " no contiene un número válido.");
             return false;
         }
         
         return true;
-    }
-    
-    private void alerta(String s) {
-        JOptionPane.showMessageDialog(null, s);
     }
     
     public void setConfiguracion() {
@@ -101,6 +97,10 @@ public class MenuConfiguracion extends javax.swing.JFrame {
         } else {
             dropNumRepeticiones.setSelectedItem("5");
         }
+        
+        dropNumDias.setSelectedItem(String.valueOf(sim.getNumeroDeDias()));
+                
+        dropDiaInicial.setSelectedIndex(sim.getDiaInicial() - 1);
         
         if (sim.getSalarioBarredores() > 0) {
             campoSalarioBarredores.setText(String.valueOf(sim.getSalarioBarredores()));
@@ -125,6 +125,8 @@ public class MenuConfiguracion extends javax.swing.JFrame {
         } else {
             campoSalarioMecanicos.setText("0");
         }
+        
+        dropTipoMantenimiento.setSelectedIndex(sim.getTipoDeMantenimiento());
     }
 
     /**
@@ -317,7 +319,7 @@ public class MenuConfiguracion extends javax.swing.JFrame {
             sim.setTipoDeMantenimiento(dropTipoMantenimiento.getSelectedIndex());
             sim.setDiaInicial(dropDiaInicial.getSelectedIndex() + 1);
             sim.setNumeroDeDias(dropNumDias.getSelectedIndex() + 1);
-            alerta("Configuración almacenada exitosamente.");
+            UI.alerta("Configuración almacenada exitosamente.");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

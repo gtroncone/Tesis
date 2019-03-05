@@ -5,6 +5,12 @@
  */
 package logica;
 
+import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -13,79 +19,87 @@ import java.util.ArrayList;
  */
 public class MetadataMapa {
 
-    private final ArrayList<int[]> zooms;
-    private final double[] escalas;
-    private final int maxZoom;
-    private final int minZoom;
-    private final int dimX;
-    private final int dimY;
-    private final int dimTile;
-    private final int distanciaPromedioATransferencia;
-    private final int VELOCIDAD_PROMEDIO_UNIDADES = 1000;
-    private final int FACTOR_EFICIENCIA = 3;
-
-    public MetadataMapa() throws NullPointerException {
-        maxZoom = 19;
-        minZoom = 16;
-        dimX = 1280;
-        dimY = 696;
-        dimTile = 256;
+    private static ArrayList<int[]> zooms;
+    private static double[] escalas;
+    private static Point[] puntoCTPorZoom;
+    private static int maxZoom;
+    private static int minZoom;
+    private static int dimX;
+    private static int dimY;
+    private static int dimTile;
+    private static final int VELOCIDAD_PROMEDIO_UNIDADES = 1000;
+    
+    public static void init() throws FileNotFoundException, IOException {
+        File metadata = new File("./metadata.txt");
+        
+        BufferedReader br = new BufferedReader(new FileReader(metadata));
+        
+        maxZoom = Integer.parseInt(br.readLine());
+        minZoom = Integer.parseInt(br.readLine());
+        dimX = Integer.parseInt(br.readLine());
+        dimY = Integer.parseInt(br.readLine());
+        dimTile = Integer.parseInt(br.readLine());
         zooms = new ArrayList<>();
         int[] zoom16 = new int[4];
         int[] zoom17 = new int[4];
         int[] zoom18 = new int[4];
         int[] zoom19 = new int[4];
-
+        
         /*
             Indice 0: representa la baseX
             Indice 1: representa la baseY
             Indice 2: representa numX
             Indice 3: representa numY
          */
-
-        zoom16[0] = 20584;
-        zoom16[1] = 30840;
-        zoom16[2] = 8;
-        zoom16[3] = 8;
+        
+        for (int i = 0; i < zoom16.length; i++) {
+            zoom16[i] = Integer.parseInt(br.readLine());
+        }
         zooms.add(zoom16);
-
-        zoom17[0] = 41168;
-        zoom17[1] = 61680;
-        zoom17[2] = 16;
-        zoom17[3] = 16;
+        
+        for (int i = 0; i < zoom17.length; i++) {
+            zoom17[i] = Integer.parseInt(br.readLine());
+        }
         zooms.add(zoom17);
-
-        zoom18[0] = 82336;
-        zoom18[1] = 123360;
-        zoom18[2] = 32;
-        zoom18[3] = 32;
+        
+        for (int i = 0; i < zoom18.length; i++) {
+            zoom18[i] = Integer.parseInt(br.readLine());
+        }
         zooms.add(zoom18);
-        
-        zoom19[0] = 164672;
-        zoom19[1] = 246720;
-        zoom19[2] = 64;
-        zoom19[3] = 64;
+
+        for (int i = 0; i < zoom19.length; i++) {
+            zoom19[i] = Integer.parseInt(br.readLine());
+        }
         zooms.add(zoom19);
-        
-        distanciaPromedioATransferencia = (14700 + 12500) * FACTOR_EFICIENCIA / 2;
-        
+                
         escalas = new double[zooms.size()];
         for (int i = 0; i < escalas.length; i++) {
             escalas[i] = 156543.03392 * Math.cos(10.4806 * Math.PI / 180) / Math.pow(2, minZoom + i);
             // metersPerPx = 156543.03392 * Math.cos(latLng.lat() * Math.PI / 180) / Math.pow(2, zoom)
             // https://groups.google.com/forum/#!topic/google-maps-js-api-v3/hDRO4oHVSeM
         }
-
+        
+        puntoCTPorZoom = new Point[zooms.size()];
+        for (int i = 0; i < puntoCTPorZoom.length; i++) {
+            System.out.println("Escala: " + escalas[i]);
+            puntoCTPorZoom[i] = new Point((int) Math.floor(-60 / escalas[i]),
+                (int) Math.floor(11190 / escalas[i]));
+        }
+        
         if (!verificacionDeMetadatos()) {
             throw new NullPointerException();
         }
     }
-
-    public int getMinutosPromedioATransferencia() {
-        return distanciaPromedioATransferencia / VELOCIDAD_PROMEDIO_UNIDADES;
+    
+    public static double getDistanciaATransferencia(Point puntoI, int zoom) {
+        return puntoCTPorZoom[zoom].distance(puntoI) * escalas[zoom];
     }
 
-    private boolean verificacionDeMetadatos() {
+    public static int getMinutosPromedioATransferencia(Point puntoI, int zoom) {
+        return ((int) Math.floor(getDistanciaATransferencia(puntoI, zoom) / VELOCIDAD_PROMEDIO_UNIDADES));
+    }
+
+    private static boolean verificacionDeMetadatos() {
         if (maxZoom < minZoom) {
             return false;
         } else {
@@ -100,35 +114,35 @@ public class MetadataMapa {
         return true;
     }
 
-    public double[] getEscalas() {
+    public static double[] getEscalas() {
         return escalas;
     }
     
-    public double getEscala(int index) {
+    public static double getEscala(int index) {
         return escalas[index];
     }
 
-    public int getMaxZoom() {
+    public static int getMaxZoom() {
         return maxZoom;
     }
 
-    public int getMinZoom() {
+    public static int getMinZoom() {
         return minZoom;
     }
 
-    public int getDimX() {
+    public static int getDimX() {
         return dimX;
     }
 
-    public int getDimY() {
+    public static int getDimY() {
         return dimY;
     }
     
-    public int getDimTile() {
+    public static int getDimTile() {
         return dimTile;
     }
 
-    public int getDato(int zoom, String llave) {
+    public static int getDato(int zoom, String llave) {
         int indiceArray;
         int indiceZoom;
 

@@ -8,6 +8,7 @@ package simulacion.eventos;
 import simulacion.Calle;
 import simulacion.Camion;
 import simulacion.Ruta;
+import simulacion.Simulacion;
 
 /**
  *
@@ -40,6 +41,12 @@ public class UnidadAvanza extends Evento {
         } else {
             calle.camionAvanzaASiguientePunto(camion);
         }
+        int numPuntos = calle.getPuntosAcum().getNumeroPuntos();
+        double distanciaCalle = Simulacion.calcularDistanciaEntrePuntos(
+            calle.getPuntoInicial(), 
+            calle.getPuntoFinal(), ruta);
+        double distanciaRecorrida = distanciaCalle / (numPuntos + 1);
+        camion.añadirDistanciaRecorrida(distanciaRecorrida);
     }
     
 }

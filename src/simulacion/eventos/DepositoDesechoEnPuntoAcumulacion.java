@@ -38,13 +38,8 @@ public class DepositoDesechoEnPuntoAcumulacion extends Evento {
     public void modificarEstado() {
         Random rand = new Random();
         Distribucion dist = callePuntoAcumulacion.getPuntosAcum().getTasaGeneracion();
-        if (dist.getTipoDistribucion().equals("Discreta")) {
-            callePuntoAcumulacion.getPuntosAcum().acumularCantidadBasuraPunto(numeroPuntoAcumulacion,
-                dist.getDistribucionDiscreta().inverseCumulativeProbability(rand.nextDouble()));
-        } else if (dist.getTipoDistribucion().equals("Continua")) {
-            callePuntoAcumulacion.getPuntosAcum().acumularCantidadBasuraPunto(numeroPuntoAcumulacion,
-                dist.getDistribucionReal().inverseCumulativeProbability(rand.nextDouble()));
-        }
+        callePuntoAcumulacion.getPuntosAcum().acumularCantidadBasuraPunto(numeroPuntoAcumulacion,
+            dist.evaluarDistribucionInversa(rand.nextDouble()));
     }
     
 }

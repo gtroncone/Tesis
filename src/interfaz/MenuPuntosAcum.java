@@ -104,23 +104,23 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
         campoTasaAcum.setText("");
         campoTasaGen.setText("");
         for (int i = 0; i < sliderDiario.length; i++) {
-            sliderDiario[i].setValue(0);
+            sliderDiario[i].setMaximum(200);
+            sliderDiario[i].setValue(100);
+            sliderDiario[i].setMinimum(0);
         }
         for (int i = 0; i < sliderSemanal.length; i++) {
-            sliderSemanal[i].setValue(0);
+            sliderSemanal[i].setMaximum(200);
+            sliderSemanal[i].setValue(100);
+            sliderSemanal[i].setMinimum(0);
         }
-    }
-    
-    private void alerta(String s) {
-        JOptionPane.showMessageDialog(null, s);
     }
     
     private boolean esValido() {
         if (!Distribucion.esDistValida(campoTasaAcum.getText())) {
-            alerta("La notación de distribución en el campo de tasa de acumulación es incorrecta");
+            UI.alerta("La notación de distribución en el campo de tasa de acumulación es incorrecta");
             return false;
         } else if (!Distribucion.esDistValida(campoTasaGen.getText())) {
-            alerta("La notación de distribución en el campo de tasa de generación es incorrecta");
+            UI.alerta("La notación de distribución en el campo de tasa de generación es incorrecta");
             return false;
         }
         return true;
@@ -1173,6 +1173,7 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
                 rutas.get(listaRutas.getSelectedIndex()).getCalles()
                         .get(listaCalles.getSelectedIndex())
                         .setPuntosAcum(puntosAcum);
+                UI.alerta("Puntos de acumulación añadidos correctamente");
             }
         }
     }//GEN-LAST:event_btnCrearPtoAcumActionPerformed
@@ -1200,6 +1201,7 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
 
                 puntosAcum.setFactorSemanal(arraySemanal);
                 puntosAcum.setFactorHora(arrayDiario);
+                UI.alerta("Puntos de acumulación editados correctamente");
             }
         }
     }//GEN-LAST:event_btnEditarPtoAcumActionPerformed

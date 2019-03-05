@@ -5,11 +5,13 @@
  */
 package simulacion;
 
+import java.io.Serializable;
+
 /**
  *
  * @author gtroncone
  */
-public class AreaBarrido {
+public class AreaBarrido implements Serializable {
     
     private int numeroBarredores;
     private int numeroCuadras;

@@ -107,11 +107,13 @@ public class ContextoSimulacion {
                 }
             }
             for (int i = 0; i < listaEventos.size(); i++) {
-                Evento e =  listaEventos.get(i).peek();
-                if (e.getTick() == minTick) {
-                    e.modificarEstado();
-                    listaEventos.get(i).removeFirst();
-                    listaAuditoria.add(e);
+                if (!listaEventos.get(i).isEmpty()) {
+                    Evento e =  listaEventos.get(i).peek();
+                    if (e.getTick() == minTick) {
+                        e.modificarEstado();
+                        listaEventos.get(i).removeFirst();
+                        listaAuditoria.add(e);
+                    }
                 }
             }
             aux = !estanVacias;

@@ -5,10 +5,15 @@
  */
 package simulacion.metricas;
 
+import java.util.LinkedList;
+import simulacion.eventos.Evento;
+
 /**
  *
  * @author gtroncone
  */
 public abstract class Metrica {
+        
+    public abstract void evaluar(LinkedList<Evento> listaAuditoria);
     
 }

@@ -7,6 +7,8 @@ package simulacion.eventos;
 
 import simulacion.Calle;
 import simulacion.Camion;
+import simulacion.Ruta;
+import simulacion.Simulacion;
 
 /**
  *
@@ -16,17 +18,22 @@ public class SalidaRuta extends Evento {
 
     private Calle calle;
     private Camion camion;
+    private Ruta ruta;
     
-    public SalidaRuta(int tick, Calle calle, Camion camion) {
+    public SalidaRuta(int tick, Calle calle, Camion camion, Ruta ruta) {
         super(tick);
         this.calle = calle;
         this.camion = camion;
+        this.ruta = ruta;
     }
 
     @Override
     public void modificarEstado() {
         calle.camionSale(camion);
         camion.setActivo(false);
+        camion.añadirViajeATransferencia();
+        camion.añadirDistanciaRecorrida(
+            Simulacion.calcularDistanciaEntrePuntoYTransferencia(calle.getPuntoFinal(), ruta));
     }
     
 }

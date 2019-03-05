@@ -5,6 +5,7 @@
  */
 package simulacion;
 
+import java.io.Serializable;
 import org.apache.commons.math3.distribution.ExponentialDistribution;
 import org.apache.commons.math3.distribution.IntegerDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -20,7 +21,7 @@ import org.apache.commons.math3.exception.NumberIsTooLargeException;
  *
  * @author gtroncone
  */
-public class Distribucion {
+public class Distribucion implements Serializable {
     
     private String campo;
     private RealDistribution distReal;
@@ -179,15 +180,25 @@ public class Distribucion {
         }
     }
     
-    public RealDistribution getDistribucionReal() {
+    private RealDistribution getDistribucionReal() {
         return distReal;
     }
     
-    public IntegerDistribution getDistribucionDiscreta() {
+    private IntegerDistribution getDistribucionDiscreta() {
         return distEntera;
     }
     
-    public String getTipoDistribucion() {
+    public double evaluarDistribucionInversa(double probabilidad) {
+        if (this.getTipoDistribucion() == "Continua") {
+            return this.getDistribucionReal().inverseCumulativeProbability(probabilidad);
+        } else if (this.getTipoDistribucion() == "Discreta") {
+            return this.getDistribucionDiscreta().inverseCumulativeProbability(probabilidad);
+        } else {
+            return 0;
+        }
+    }
+    
+    private String getTipoDistribucion() {
         if (distReal != null) {
             return "Continua";
         } else if (distEntera != null) {

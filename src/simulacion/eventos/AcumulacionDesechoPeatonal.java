@@ -31,13 +31,8 @@ public class AcumulacionDesechoPeatonal extends Evento {
     public void modificarEstado() {
         Random rand = new Random();
         for (int i = 0; i < areaBarrido.getCantidadBasura().length; i++) {
-            if (desechoPorPeaton.getTipoDistribucion().equals("Discreta")) {
-                areaBarrido.añadirBasuraArea(i, desechoPorPeaton.getDistribucionDiscreta()
-                    .inverseCumulativeProbability(rand.nextDouble()) * personasEnEvento);
-            } else if (desechoPorPeaton.getTipoDistribucion().equals("Continua")) {
-                areaBarrido.añadirBasuraArea(i, desechoPorPeaton.getDistribucionReal()
-                    .inverseCumulativeProbability(rand.nextDouble()) * personasEnEvento);
-            }
+            areaBarrido.añadirBasuraArea(i, desechoPorPeaton.evaluarDistribucionInversa(
+                rand.nextDouble() * personasEnEvento));
         }
     }
 }

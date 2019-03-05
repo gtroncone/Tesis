@@ -5,13 +5,14 @@
  */
 package simulacion;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author gtroncone
  */
-public class Horario {
+public class Horario implements Serializable {
     
     private final LinkedList<int[]> datos;
     private LinkedList<Camion> camionesAsignados;
@@ -28,7 +29,7 @@ public class Horario {
         
         for (int i = 0; i < horario.getDatos().size(); i++) {
             int[] dato = new int[horario.getDatos().get(i).length];
-            for (int j = 0; j < horario.getDatos().get(i).length; i++) {
+            for (int j = 0; j < horario.getDatos().get(i).length; j++) {
                 dato[j] = horario.getDatos().get(i)[j];
             }
             this.datos.add(dato);

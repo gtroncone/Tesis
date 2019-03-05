@@ -90,17 +90,13 @@ public class MenuHorarios extends javax.swing.JFrame {
         }
     }
     
-    private void alerta(String s) {
-        JOptionPane.showMessageDialog(null, s);
-    }
-    
     private boolean horarioEsUnico() {
         String entrada = dropHoras.getItemAt(dropHoras.getSelectedIndex());
         entrada += ":" + dropMinutos.getItemAt(dropMinutos.getSelectedIndex());
         entrada += " Frecuencia: " + dropFrecuencias.getItemAt(dropFrecuencias.getSelectedIndex());
         for (int i = 0; i < modelo.getSize(); i++) {
             if (modelo.getElementAt(i).equals(entrada)) {
-                alerta("No pueden haber dos horarios exactamente iguales");
+                UI.alerta("No pueden haber dos horarios exactamente iguales");
                 return false;
             }
         }
@@ -109,7 +105,7 @@ public class MenuHorarios extends javax.swing.JFrame {
     
     private boolean hayHorario() {
         if (modelo.getSize() <= 0) {
-            alerta("No hay horarios asignados");
+            UI.alerta("No hay horarios asignados");
             return false;
         }
         return true;
@@ -348,7 +344,7 @@ public class MenuHorarios extends javax.swing.JFrame {
                 menuRuta.setVisible(true);
             }
         } else {
-            alerta("No pueden haber dos horarios exactamente iguales");
+            UI.alerta("No pueden haber dos horarios exactamente iguales");
         }
     }//GEN-LAST:event_btnCrearHorarioActionPerformed
 

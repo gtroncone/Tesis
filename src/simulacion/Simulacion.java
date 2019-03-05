@@ -5,11 +5,18 @@
  */
 package simulacion;
 
+import interfaz.UI;
 import java.awt.Point;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.regex.Pattern;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import logica.MetadataMapa;
 import simulacion.eventos.AcopioDesechoPeatonal;
 import simulacion.eventos.AcumulacionDesechoPeatonal;
@@ -18,6 +25,7 @@ import simulacion.eventos.EntradaARuta;
 import simulacion.eventos.RecoleccionConCamion;
 import simulacion.eventos.SalidaRuta;
 import simulacion.eventos.UnidadAvanza;
+import simulacion.metricas.Metrica;
 
 /**
  *
@@ -38,17 +46,15 @@ public class Simulacion implements Serializable {
     private int diaInicial = 1;
     
     private final int NUMERO_MINUTOS_RECOLECCION_PROMEDIO = 5;
-    private final int MINUTOS_PROMEDIO_A_TRANSFERENCIA;
     private final int INICIO_HORARIO_LABORAL = 8;
     private final int FINAL_HORARIO_LABORAL = 17;
-    private final double[] escalas;
+    
+    private final LinkedList<Metrica> listaMetricas;
 
-    public Simulacion() {
-        rutas = new LinkedList<>();
-        camiones = new LinkedList<>();
-        MetadataMapa aux = new MetadataMapa();
-        escalas = aux.getEscalas();
-        MINUTOS_PROMEDIO_A_TRANSFERENCIA = aux.getMinutosPromedioATransferencia();
+    public Simulacion(LinkedList<Metrica> metricas) {
+        this.rutas = new LinkedList<>();
+        this.camiones = new LinkedList<>();
+        this.listaMetricas = metricas;
     }
 
     public void añadirRuta(Ruta ruta) {
@@ -60,11 +66,11 @@ public class Simulacion implements Serializable {
     }
 
     public LinkedList<Camion> getCamiones() {
-        return camiones;
+        return this.camiones;
     }
 
     public void añadirCamion(Camion camion) {
-        camiones.add(camion);
+        this.camiones.add(camion);
     }
 
     public int getNumRepeticiones() {
@@ -144,16 +150,21 @@ public class Simulacion implements Serializable {
     }
 
     private void cicloPrincipal(ContextoSimulacion[] contextos) {
-        int numTicks = determinarNumTicks();
-        for (ContextoSimulacion contexto : contextos) {
-            listarEventosAcumulacionDesechos(contexto, numTicks);
-            listarEventosAcumulacionDesechoPeatonal(contexto, numTicks);
-            listarEventosEntradaARuta(contexto, numTicks);
-            listarEventosAcopioDesechoPeatonal(contexto, numTicks);
-            ordenarEventos(contexto);
-            // ejecutarEventos(contexto);
+        try {
+            int numTicks = determinarNumTicks();
+            for (ContextoSimulacion contexto : contextos) {
+                listarEventosAcumulacionDesechos(contexto, numTicks);
+                listarEventosAcumulacionDesechoPeatonal(contexto, numTicks);
+                listarEventosEntradaARuta(contexto, numTicks);
+                listarEventosAcopioDesechoPeatonal(contexto, numTicks);
+                ordenarEventos(contexto);
+                ejecutarEventos(contexto);
+            }
+            desplegarResultados(contextos);
+        } catch (IOException ex) {
+            UI.alerta("Error al guardar el archivo con los resultados");
         }
-    }
+    }  
     
     private void listarEventosAcopioDesechoPeatonal(ContextoSimulacion contexto,
         int numTicks) {
@@ -163,14 +174,8 @@ public class Simulacion implements Serializable {
             for (int j = 0; j < ruta.getListaAreas().size(); j++) {
                 AreaBarrido area = ruta.getListaAreas().get(j);
                 for (int k = 0; k < area.getNumeroBarredores(); k++) {
-                    double velocidad = 1;
-                    if (area.getVelocidadAcopio().getTipoDistribucion().equals("Discreta")) {
-                        velocidad = area.getVelocidadAcopio().getDistribucionDiscreta()
-                            .inverseCumulativeProbability(rand.nextDouble());
-                    } else if (area.getVelocidadAcopio().getTipoDistribucion().equals("Continua")) {
-                        velocidad = area.getVelocidadAcopio().getDistribucionReal()
-                            .inverseCumulativeProbability(rand.nextDouble());
-                    }
+                    double velocidad;
+                    velocidad = area.getVelocidadAcopio().evaluarDistribucionInversa(rand.nextDouble());
                     double capacidad = area.getCapacidad();
                     int ticksParaLlenado = (int) Math.floor(capacidad / velocidad);
                     int auxTicks = 0;
@@ -208,15 +213,9 @@ public class Simulacion implements Serializable {
                     double aleatorio = rand.nextDouble();
                     if (auxTicks + 1 < numTicks) {
                         auxTicks++;
-                        if (ruta.getFlujoPeatonal().getTipoDistribucion().equals("Discreta")) {
-                            contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks, 
-                                area, ruta.getDesechosPorPeaton(),
-                                ruta.getFlujoPeatonal().getDistribucionDiscreta().inverseCumulativeProbability(aleatorio)));
-                        } else if (ruta.getFlujoPeatonal().getTipoDistribucion().equals("Continua")) {
-                            contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks,
-                                area, ruta.getDesechosPorPeaton(),
-                                (int) Math.floor(ruta.getFlujoPeatonal().getDistribucionReal().inverseCumulativeProbability(aleatorio))));
-                        }
+                        contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks,
+                            area, ruta.getDesechosPorPeaton(),
+                            (int) Math.floor(ruta.getFlujoPeatonal().evaluarDistribucionInversa(aleatorio))));
                     }
                 }
             }
@@ -229,25 +228,18 @@ public class Simulacion implements Serializable {
             Ruta ruta = contexto.getRutas().get(i);
             for (int j = 0; j < ruta.getCalles().size(); j++) {
                 Calle calle = ruta.getCalles().get(j);
-                for (int k = 0; k < calle.getPuntosAcum().getNumeroPuntos(); k++) {
-                    PuntosAcumulacion puntos = calle.getPuntosAcum();
-                    int auxTicks = 0;
-                    while (auxTicks < numTicks) {
-                        double aleatorio = rand.nextDouble();
-                        double tiempoEvento;
-                        if (puntos.getTasaAcumulacion().getTipoDistribucion().equals("Discreta")) {
-                            tiempoEvento = puntos.getTasaAcumulacion().getDistribucionDiscreta().inverseCumulativeProbability(aleatorio);
+                if (calle.getPuntosAcum() != null) {    
+                    for (int k = 0; k < calle.getPuntosAcum().getNumeroPuntos(); k++) {
+                        PuntosAcumulacion puntos = calle.getPuntosAcum();
+                        int auxTicks = 0;
+                        while (auxTicks < numTicks) {
+                            double aleatorio = rand.nextDouble();
+                            double tiempoEvento;
+                            tiempoEvento = puntos.getTasaAcumulacion().evaluarDistribucionInversa(aleatorio);
                             if (tiempoEvento + auxTicks < numTicks) {
                                 auxTicks += (int) Math.floor(tiempoEvento);
-                                contexto.añadirEventoAcumulacion(new DepositoDesechoEnPuntoAcumulacion(auxTicks, calle, k, diaInicial));
-                            } else {
-                                break;
-                            }
-                        } else if (puntos.getTasaAcumulacion().getTipoDistribucion().equals("Continua")) {
-                            tiempoEvento = puntos.getTasaAcumulacion().getDistribucionReal().inverseCumulativeProbability(aleatorio);
-                            if (Math.floor(tiempoEvento) + auxTicks < numTicks) {
-                                auxTicks += (int) Math.floor(tiempoEvento);
-                                contexto.añadirEventoAcumulacion(new DepositoDesechoEnPuntoAcumulacion(auxTicks, calle, k, diaInicial));
+                                contexto.añadirEventoAcumulacion(
+                                    new DepositoDesechoEnPuntoAcumulacion(auxTicks, calle, k, diaInicial));
                             } else {
                                 break;
                             }
@@ -265,18 +257,20 @@ public class Simulacion implements Serializable {
             
             LinkedList<Camion> camionesAsignados = horario.getCamionesAsignados();
             LinkedList<Integer> mapaCamionesAHorarios = horario.getMapaCamionHorarios();
-            for (int j = 0; j < camionesAsignados.size(); j++) {
-                Camion camion = camionesAsignados.get(j);
-                int[] datosHorario = horario.getDatos().get(mapaCamionesAHorarios.get(j));
-                int paridadDiaInicial = diaInicial % 2;
-                for (int dia = 0; dia < numeroDeDias; dia++) {
-                    // -> Aquí deben incluirse los eventos de mantenimiento <-
-                    if (datosHorario[2] == 0 || dia % 2 == paridadDiaInicial) {
-                        int tick = 0;
-                        tick += dia * 24 * 60;
-                        tick += (datosHorario[0] * 60) + datosHorario[1];
-                        contexto.añadirEventoEntradaUnidad(new EntradaARuta(tick, camion, ruta));
-                        listarEventosAvanceUnidad(tick, camion, ruta, numTicks, contexto);
+            if (camionesAsignados != null) {
+                for (int j = 0; j < camionesAsignados.size(); j++) {
+                    Camion camion = camionesAsignados.get(j);
+                    int[] datosHorario = horario.getDatos().get(mapaCamionesAHorarios.get(j));
+                    int paridadDiaInicial = diaInicial % 2;
+                    for (int dia = 0; dia < numeroDeDias; dia++) {
+                        // -> Aquí deben incluirse los eventos de mantenimiento <-
+                        if (datosHorario[2] == 0 || dia % 2 == paridadDiaInicial) {
+                            int tick = 0;
+                            tick += dia * 24 * 60;
+                            tick += (datosHorario[0] * 60) + datosHorario[1];
+                            contexto.añadirEventoEntradaUnidad(new EntradaARuta(tick, camion, ruta));
+                            listarEventosAvanceUnidad(tick, camion, ruta, numTicks, contexto);
+                        }
                     }
                 }
             }
@@ -296,12 +290,8 @@ public class Simulacion implements Serializable {
             for (int j = 0; j <= calle.getPuntosAcum().getNumeroPuntos(); j++) {
                 // -> Aquí deben manejarse los eventos de avería y de reparación <-
                 double velocidad = 1;
-                if (calle.getVelocidad().getTipoDistribucion().equals("Discreta")) {
-                    velocidad = calle.getVelocidad().getDistribucionDiscreta().inverseCumulativeProbability(rand.nextDouble());
-                } else if (calle.getVelocidad().getTipoDistribucion().equals("Continua")) {
-                    velocidad = calle.getVelocidad().getDistribucionReal().inverseCumulativeProbability(rand.nextDouble());
-                }
-
+                velocidad = calle.getVelocidad().evaluarDistribucionInversa(rand.nextDouble());
+                
                 double distancia = calcularDistanciaEntrePuntos(calle.getPuntoFinal(), calle.getPuntoFinal(), ruta);
                 distancia /= (calle.getPuntosAcum().getNumeroPuntos() + 1);
 
@@ -313,7 +303,7 @@ public class Simulacion implements Serializable {
                     if (j == calle.getPuntosAcum().getNumeroPuntos()) {
                         if (ruta.getCalles().getLast().equals(calle)) {
                             // En este caso se abandona la ruta y se va al centro de transferencia
-                            contexto.añadirEventoAvanceUnidades(new SalidaRuta(ticksAcum, calle, camionAvanza));
+                            contexto.añadirEventoAvanceUnidades(new SalidaRuta(ticksAcum, calle, camionAvanza, ruta));
                         } else {
                             // En este caso se va a la siguiente calle en la ruta
                             contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksParaAvanzar,
@@ -326,10 +316,11 @@ public class Simulacion implements Serializable {
                         if (ticksAcum + NUMERO_MINUTOS_RECOLECCION_PROMEDIO < numTicks) {
                             ticksAcum += NUMERO_MINUTOS_RECOLECCION_PROMEDIO;
                             RecoleccionConCamion recoleccion = new RecoleccionConCamion(ticksAcum,
-                                calle, camionAvanza);
+                                calle, camionAvanza, ruta);
                             contexto.añadirEventoRecoleccion(recoleccion);
                             if (recoleccion.hayIdaATransferencia()) {
-                                ticksAcum += 2 * this.MINUTOS_PROMEDIO_A_TRANSFERENCIA;
+                                ticksAcum += 2 * MetadataMapa.getMinutosPromedioATransferencia(
+                                    ruta.getPuntos().get(recoleccion.getPuntoInicial()), ruta.getZoom());
                             }
                         }
                     }
@@ -338,10 +329,59 @@ public class Simulacion implements Serializable {
         }
     }
     
-    private double calcularDistanciaEntrePuntos(int puntoI, int puntoF, Ruta ruta) {
+    private void desplegarResultados(ContextoSimulacion[] contextos) throws IOException {
+        JFileChooser j = new JFileChooser();
+        int returnValue = j.showSaveDialog(null);
+        
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            String filePath = j.getSelectedFile().getAbsolutePath();
+            String[] partes = filePath.split(Pattern.quote("/"));
+               String[] aux = partes[partes.length - 1].split(Pattern.quote("."));
+               String extension = aux[aux.length - 1];
+               if (extension.isEmpty()) {
+                   filePath += ".html";
+               } else {
+                    if (!extension.equals("html")) {
+                        if (filePath.charAt(filePath.length() - 1) == '.') {
+                            filePath += "html";
+                        } else {
+                            filePath += ".html";
+                        }
+                    }
+               }
+            BufferedWriter br = new BufferedWriter(new FileWriter(new File(filePath)));
+            
+            String data = "";
+            
+            data += "<!DOCTYPE html>\n";
+            data += "<html>\n";
+            data += "<head>\n";
+            data += "<title>Resultados</title>\n";
+            data += "</head>\n";
+            data += "<body>\n";
+            data += "<ul>\n";
+            data += "<li>Resultado 1</li>\n";
+            data += "</ul>\n";
+            data += "</body>\n";
+            data += "</html>\n";
+            
+            String[] dataToWrite = data.split(Pattern.quote("\n"));
+            for (String line : dataToWrite) {
+                br.write(line);
+            }
+            br.close();
+        }
+    }
+    
+    public static double calcularDistanciaEntrePuntos(int puntoI, int puntoF, Ruta ruta) {
         Point puntoInicial = ruta.getPuntos().get(puntoI);
         Point puntoFinal = ruta.getPuntos().get(puntoF);
-        return (puntoFinal.distance(puntoInicial) * escalas[ruta.getZoom()]);
+        return (puntoFinal.distance(puntoInicial) * MetadataMapa.getEscalas()[ruta.getZoom()]);
+    }
+    
+    public static double calcularDistanciaEntrePuntoYTransferencia(int puntoI, Ruta ruta) {
+        Point puntoInicial = ruta.getPuntos().get(puntoI);
+        return MetadataMapa.getDistanciaATransferencia(puntoInicial, ruta.getZoom());
     }
     
     public void ejecutar() {

@@ -6,13 +6,14 @@
 package simulacion;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author gtroncone
  */
-public class Ruta {
+public class Ruta implements Serializable {
    
     private String nombre;
     private Horario horario;
@@ -57,8 +58,10 @@ public class Ruta {
         
         this.listaAreas = new LinkedList<>();
         
-        for (int i = 0; i < ruta.getListaAreas().size(); i++) {
-            this.listaAreas.add(new AreaBarrido(ruta.getListaAreas().get(i)));
+        if (ruta.getListaAreas() != null) {
+            for (int i = 0; i < ruta.getListaAreas().size(); i++) {
+                this.listaAreas.add(new AreaBarrido(ruta.getListaAreas().get(i)));
+            }
         }
         
         this.zoom = ruta.getZoom();

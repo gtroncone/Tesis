@@ -6,12 +6,13 @@
 package simulacion;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  *
  * @author gtroncone
  */
-public class PuntosAcumulacion {
+public class PuntosAcumulacion implements Serializable {
     
     private final Color color;
     private Distribucion tasaAcumulacion;

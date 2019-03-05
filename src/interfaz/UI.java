@@ -16,10 +16,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import logica.MetadataMapa;
 import logica.Render;
+import logica.Tesis;
 
 /**
  *
@@ -29,6 +34,7 @@ public class UI extends javax.swing.JFrame {
     
     private final static double FACTOR_AUTOSCROLL = 0.95;
     private final static double ACELERACION_AUTOSCROLL = 0.01;
+    private String filepath = "";
     
     private int ultimoX;
     private int ultimoY;
@@ -37,16 +43,17 @@ public class UI extends javax.swing.JFrame {
         
     private boolean modoDibujo = false;
     
-    private final Render render;
+    private Render render;
     private final JLabel mapa;
-    private final MenuRuta menuRuta;
-    private final MenuCamiones menuCamiones;
-    private final MenuPuntosAcum menuPuntosAcum;
-    private final MenuBarredores menuBarredores;
-    private final MenuConfiguracion menuConfiguracion;
-    private final MenuAsignacionCamiones menuAsignacion;
+    private MenuRuta menuRuta;
+    private MenuCamiones menuCamiones;
+    private MenuPuntosAcum menuPuntosAcum;
+    private MenuBarredores menuBarredores;
+    private MenuConfiguracion menuConfiguracion;
+    private MenuAsignacionCamiones menuAsignacion;
     
-    private final Simulacion simulacion;
+    private Simulacion simulacion;
+    private final Tesis tesis;
     
     private final ScheduledExecutorService autoScroll;
     private static ScheduledFuture<?> t;
@@ -59,11 +66,12 @@ public class UI extends javax.swing.JFrame {
      * @throws java.io.IOException
      */
     
-    public UI(Simulacion simulacion) throws IOException {
+    public UI(Simulacion simulacion, Tesis tesis) throws IOException {
         initComponents();
         this.setResizable(false);
         
         this.simulacion = simulacion;
+        this.tesis = tesis;
         
         menuRuta = new MenuRuta(this);
         menuCamiones = new MenuCamiones(this);
@@ -77,8 +85,8 @@ public class UI extends javax.swing.JFrame {
 
         render = new Render(simulacion);
         mapa = new JLabel(new ImageIcon(render.getRender()), JLabel.CENTER);
-        mapa.setSize(new Dimension(render.getMetadata().getDimX(),
-                render.getMetadata().getDimY()));
+        mapa.setSize(new Dimension(MetadataMapa.getDimX(),
+                MetadataMapa.getDimY()));
         contenedorMapa.add(mapa);
 
         BufferedImage imagen = ImageIO.read(new File("assets/ruta.png"));
@@ -102,9 +110,27 @@ public class UI extends javax.swing.JFrame {
         imagen = ImageIO.read(new File("assets/play.png"));
         btnPlay.setIcon(new ImageIcon(imagen));
         
+        imagen = ImageIO.read(new File("assets/carga.png"));
+        btnCargar.setIcon(new ImageIcon(imagen));
+        
+        imagen = ImageIO.read(new File("assets/guardar.png"));
+        btnGuardar.setIcon(new ImageIcon(imagen));
+        
+        imagen = ImageIO.read(new File("assets/nuevo.png"));
+        btnNuevo.setIcon(new ImageIcon(imagen));
+        
         autoScroll = Executors.newSingleThreadScheduledExecutor();
         btnPlay.setFocusPainted(false);
         btnZoomOut.setFocusPainted(false);
+    }
+    
+    public void setSimulacion(Simulacion simulacion) {
+        this.simulacion = simulacion;
+        this.render = new Render(simulacion);
+        this.actualizarMapa();
+        this.menuRuta.setListaRutas(simulacion.getRutas());
+        this.menuConfiguracion.setConfiguracion();
+        this.menuCamiones.setListaCamiones(simulacion.getCamiones());
     }
 
     public Simulacion getSimulacion() {
@@ -117,6 +143,10 @@ public class UI extends javax.swing.JFrame {
     
     public int getZoom() {
         return render.getZoom();
+    }
+    
+    public static void alerta(String s) {
+        JOptionPane.showMessageDialog(null, s);
     }
     
     public void iniciarProcesoDeDibujo(LinkedList<Point> puntos) {
@@ -158,6 +188,9 @@ public class UI extends javax.swing.JFrame {
         btnPlay = new javax.swing.JButton();
         btnZoomOut = new javax.swing.JButton();
         btnZoomIn = new javax.swing.JButton();
+        btnCargar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -273,28 +306,59 @@ public class UI extends javax.swing.JFrame {
             }
         });
 
+        btnCargar.setFont(new java.awt.Font("Ubuntu", 0, 36)); // NOI18N
+        btnCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarActionPerformed(evt);
+            }
+        });
+
+        btnGuardar.setFont(new java.awt.Font("Ubuntu", 0, 36)); // NOI18N
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnNuevo.setFont(new java.awt.Font("Ubuntu", 0, 36)); // NOI18N
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addComponent(btnPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnZoomIn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnZoomOut, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnZoomOut, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnZoomIn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnZoomOut, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnZoomIn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout contenedorMapaLayout = new javax.swing.GroupLayout(contenedorMapa);
@@ -304,7 +368,7 @@ public class UI extends javax.swing.JFrame {
             .addGroup(contenedorMapaLayout.createSequentialGroup()
                 .addGap(197, 197, 197)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorMapaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -315,7 +379,7 @@ public class UI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorMapaLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 395, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 409, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -324,15 +388,17 @@ public class UI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(contenedorMapa, javax.swing.GroupLayout.PREFERRED_SIZE, 1280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(contenedorMapa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 24, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -471,11 +537,102 @@ public class UI extends javax.swing.JFrame {
         actualizarMapa();
     }//GEN-LAST:event_btnZoomInActionPerformed
 
+    private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
+        JFileChooser j = new JFileChooser();
+        int returnValue = j.showOpenDialog(null);
+        
+        if (returnValue == j.APPROVE_OPTION) {
+            this.filepath = j.getSelectedFile().getAbsolutePath();
+            this.filepath = j.getSelectedFile().getAbsolutePath();
+            String[] partes = this.filepath.split(Pattern.quote("/"));
+            String[] aux = partes[partes.length - 1].split(Pattern.quote("."));
+            String extension = aux[aux.length - 1];
+            if (extension.equals("dsim")) {
+                try {
+                    tesis.deSerializarTesis(this.filepath);
+                } catch (IOException ex) {
+                    System.out.println(ex);
+                    alerta("Error al cargar archivo");
+                } catch (ClassNotFoundException ex) {
+                    System.out.println(ex);
+                    alerta("Error al cargar archivo");
+                }
+            } else {
+                alerta("El archivo seleccionado es inválido");
+            }
+        }
+    }//GEN-LAST:event_btnCargarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if (this.filepath.isEmpty()) {
+           JFileChooser j = new JFileChooser();
+           int returnValue = j.showSaveDialog(null);
+
+           if (returnValue == j.APPROVE_OPTION) {
+               this.filepath = j.getSelectedFile().getAbsolutePath();
+               String[] partes = this.filepath.split(Pattern.quote("/"));
+               String[] aux = partes[partes.length - 1].split(Pattern.quote("."));
+               String extension = aux[aux.length - 1];
+               if (extension.isEmpty()) {
+                   this.filepath += ".dsim";
+               } else {
+                    if (!extension.equals("dsim")) {
+                        if (this.filepath.charAt(this.filepath.length() - 1) == '.') {
+                            this.filepath += "dsim";
+                        } else {
+                            this.filepath += ".dsim";
+                        }
+                    }
+               }
+           }
+        }
+        try {
+            tesis.serializarTesis(this.filepath);
+            alerta("Guardado correctamente");
+        } catch (IOException ex) {
+            System.out.println(ex);
+            alerta("Error inesperado ocurrido al guardar. ¿Tiene los permisos requeridos?");
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        JFileChooser j = new JFileChooser();
+        int returnValue = j.showSaveDialog(null);
+
+        if (returnValue == j.APPROVE_OPTION) {
+            this.filepath = j.getSelectedFile().getAbsolutePath();
+            String[] partes = this.filepath.split(Pattern.quote("/"));
+            String[] aux = partes[partes.length - 1].split(Pattern.quote("."));
+            String extension = aux[aux.length - 1];
+            if (extension.isEmpty()) {
+                this.filepath += ".dsim";
+            } else {
+                 if (!extension.equals("dsim")) {
+                     if (this.filepath.charAt(this.filepath.length() - 1) == '.') {
+                         this.filepath += "dsim";
+                     } else {
+                         this.filepath += ".dsim";
+                     }
+                 }
+            }
+        }
+        try {
+            tesis.guardarNuevo(this.filepath);
+            alerta("Guardado correctamente");
+        } catch (IOException ex) {
+            System.out.println(ex);
+            alerta("Error inesperado ocurrido al guardar. ¿Tiene los permisos requeridos?");
+        }
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignarCamiones;
     private javax.swing.JButton btnBarrido;
     private javax.swing.JButton btnCamiones;
+    private javax.swing.JButton btnCargar;
     private javax.swing.JButton btnConfiguracion;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnPlay;
     private javax.swing.JButton btnPtosAcum;
     private javax.swing.JButton btnRutas;

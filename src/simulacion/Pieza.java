@@ -5,11 +5,13 @@
  */
 package simulacion;
 
+import java.io.Serializable;
+
 /**
  *
  * @author gtroncone
  */
-public class Pieza {
+public class Pieza implements Serializable {
     
     private String nombre;
     private double costo;

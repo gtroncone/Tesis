@@ -7,31 +7,85 @@ package logica;
 
 import simulacion.Simulacion;
 import interfaz.UI;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import simulacion.metricas.CumplimientoFrecuenciaRecoleccionEnRuta;
+import simulacion.metricas.EficaciaRecoleccion;
+import simulacion.metricas.EficienciaCamionesRecolectores;
+import simulacion.metricas.KilometrosSinAveriaEnRuta;
+import simulacion.metricas.Metrica;
+import simulacion.metricas.ToneladasPorTiempoRecoleccion;
 
 /**
  *
  * @author gtroncone
  */
-public class Tesis {
+public class Tesis implements Serializable {
 
     /**
      * @param args the command line arguments
      */
     private UI interfaz;
     private Simulacion simulacion;
-
+    private LinkedList<Metrica> metricas;
+    
     public Tesis() {
-        simulacion = new Simulacion();
+        metricas = new LinkedList<>();
+        metricas.add(new CumplimientoFrecuenciaRecoleccionEnRuta());
+        metricas.add(new EficaciaRecoleccion());
+        metricas.add(new EficienciaCamionesRecolectores());
+        metricas.add(new KilometrosSinAveriaEnRuta());
+        metricas.add(new ToneladasPorTiempoRecoleccion());
+        
+        simulacion = new Simulacion(metricas);
         try {
-            interfaz = new UI(simulacion);
+            MetadataMapa.init();
+        } catch (IOException ex) {
+            Logger.getLogger(Tesis.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
+        }
+        try {
+            interfaz = new UI(simulacion, this);
         } catch (IOException ex) {
             Logger.getLogger(Tesis.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void guardarNuevo(String filepath) throws IOException {
+        this.simulacion = new Simulacion(metricas);
+        this.interfaz.setSimulacion(this.simulacion);
+        this.serializarTesis(filepath);
+    }
+    
+    public void serializarTesis(String filepath) throws FileNotFoundException, IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(filepath);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
+        objectOutputStream.writeObject(this.simulacion);
+        objectOutputStream.close();
+    }
+    
+    public void deSerializarTesis(String filepath) throws FileNotFoundException, IOException, ClassNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream(filepath);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+        ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
+        Object object = objectInputStream.readObject();
+        objectInputStream.close();
+        
+        this.simulacion = (Simulacion) object;
+        this.interfaz.setSimulacion(this.simulacion);
     }
 
     public static void main(String args[]) {
@@ -43,7 +97,7 @@ public class Tesis {
             System.exit(0);
         }
         Tesis tesis = new Tesis();
-
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

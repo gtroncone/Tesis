@@ -71,19 +71,15 @@ public class MenuBarredores extends javax.swing.JFrame {
         campoDistVelAcopio.setText("");
     }
     
-    private void alerta(String s) {
-        JOptionPane.showMessageDialog(null, s);
-    }
-    
     private boolean esValido() {
         try {
             Double.parseDouble(campoCapacidad.getText());
         } catch (NumberFormatException e) {
-            alerta("El campo capacidad no tiene un número válido");
+            UI.alerta("El campo capacidad no tiene un número válido");
             return false;
         }
-        if (Distribucion.esDistValida(campoDistVelAcopio.getText())) {
-            alerta("La notación de distribución en el campo de velocidad de acopio es incorrecta");
+        if (!Distribucion.esDistValida(campoDistVelAcopio.getText())) {
+            UI.alerta("La notación de distribución en el campo de velocidad de acopio es incorrecta");
             return false;
         }
         return true;
@@ -415,6 +411,7 @@ public class MenuBarredores extends javax.swing.JFrame {
                 rutas.get(listaRutas.getSelectedIndex()).añadirArea(area);
                 modeloAreas.addElement("Area " + modeloAreas.getSize());
             }
+            UI.alerta("Área de barrido añadida correctamente");
         }
     }//GEN-LAST:event_btnCrearAreaBarridoActionPerformed
 
@@ -428,6 +425,7 @@ public class MenuBarredores extends javax.swing.JFrame {
                 area.setCapacidad(Double.parseDouble(campoCapacidad.getText()));
                 area.setVelocidadAcopio(new Distribucion(campoDistVelAcopio.getText()));
             }
+            UI.alerta("Área de barrido editada correctamente");
         }
     }//GEN-LAST:event_btnEditarAreaBarridoActionPerformed
 

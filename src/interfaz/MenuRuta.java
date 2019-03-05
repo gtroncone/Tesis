@@ -39,7 +39,6 @@ public class MenuRuta extends javax.swing.JFrame {
     private LinkedList<Point> puntos;
     private LinkedList<Ruta> listaRutas;
     
-    // La ruta tiene un punto de más (el inicial)
     private DefaultListModel modeloCalles;
     
     private Color estadoColorPicker;
@@ -133,6 +132,11 @@ public class MenuRuta extends javax.swing.JFrame {
     public void setHorario(Horario horario) {
         this.horario = horario;
     }
+
+    public void setListaRutas(LinkedList<Ruta> listaRutas) {
+        this.listaRutas = listaRutas;
+        this.refrescarRutas();
+    }
     
     private void refrescarRutas() {
         listaRutas = interfaz.getSimulacion().getRutas();
@@ -149,22 +153,22 @@ public class MenuRuta extends javax.swing.JFrame {
     
     private boolean camposRutaSonValidos() {
         if (campoNombreRuta.getText().length() <= 0) {
-            alerta("El campo de nombre de ruta está vacío");
+            UI.alerta("El campo de nombre de ruta está vacío");
             return false;
         } else if (!nombreRutaEsUnico()) {
-            alerta("El nombre de la ruta a crear o editar no es único");
+            UI.alerta("El nombre de la ruta a crear o editar no es único");
             return false;
         } else if (!Distribucion.esDistValida(campoDistFlujoPeatonal.getText())) {
-            alerta("La notación de distribución en el campo del flujo peatonal es incorrecta");
+            UI.alerta("La notación de distribución en el campo del flujo peatonal es incorrecta");
             return false;
         } else if (!Distribucion.esDistValida(campoDistDesPorPeaton.getText())) {
-            alerta("La notación de distribución en el campo de desechos por peatón es incorrecta");
+            UI.alerta("La notación de distribución en el campo de desechos por peatón es incorrecta");
             return false;
         } else if (horario == null) {
-            alerta("La ruta no tiene horario asignado");
+            UI.alerta("La ruta no tiene horario asignado");
             return false;
         } else if (!callesFueronAsignadasCorrectamente()) {
-            alerta("Algunos nodos en la ruta no tienen calle asignada o no fueron asignadas correctamente");
+            UI.alerta("Algunos nodos en la ruta no tienen calle asignada o no fueron asignadas correctamente");
             return false;
         }
         return true;
@@ -205,28 +209,24 @@ public class MenuRuta extends javax.swing.JFrame {
         return true;
     }
     
-    private void alerta(String s) {
-        JOptionPane.showMessageDialog(null, s);
-    }
-    
     private boolean camposCalleSonValidos() {
         if (campoNombreCalle.getText().length() <= 0) {
-            alerta("Campo nombre de calle está vacío");
+            UI.alerta("Campo nombre de calle está vacío");
             return false;
         }else if (!nombreCalleEsUnico()) {
             if (dropSelRuta.getSelectedIndex() <= 0) {
-                alerta("El nombre de la calle a editar o crear no es único");
+                UI.alerta("El nombre de la calle a editar o crear no es único");
                 return false;
             }
         } else if (!Distribucion.esDistValida(campoDistVelRecor.getText())) {
-            alerta("La notación de distribución en el campo de velocidad de recorrido es inválida");
+            UI.alerta("La notación de distribución en el campo de velocidad de recorrido es inválida");
             return false;
         } else if (!esAsignacionDePuntosValida()) {
-            alerta("La asignación de puntos a la calle es inválida");
+            UI.alerta("La asignación de puntos a la calle es inválida");
             return false;
         } else if (dropPrimerPuntoCalle.getSelectedItem() == null ||
             dropSegundoPuntoCalle.getSelectedItem() == null) {
-            alerta("No se han seleccionado puntos");
+            UI.alerta("No se han seleccionado puntos");
             return false;
         }
         return true;
@@ -549,7 +549,7 @@ public class MenuRuta extends javax.swing.JFrame {
         this.setVisible(false);
         if (dropSelRuta.getSelectedIndex() > 0) {
             menuHorarios.setHorario(listaRutas
-                    .get(dropSelRuta.getSelectedIndex() - 1).getHorario());
+                .get(dropSelRuta.getSelectedIndex() - 1).getHorario());
         } else {
             menuHorarios.setHorario(null);
         }
@@ -654,14 +654,17 @@ public class MenuRuta extends javax.swing.JFrame {
             estadoColorPicker = calle.getColor();
             campoNombreCalle.setText(calle.getNombre());
             campoDistVelRecor.setText(calle.getVelocidad().getCampo());
-            for (int i = 0; i < puntos.size(); i++) {
-                if (calle.getPuntoInicial() == i) {
-                    dropPrimerPuntoCalle.setSelectedItem(Integer.toString(i));
-                }
-                if (calle.getPuntoFinal() == i) {
-                    dropSegundoPuntoCalle.setSelectedItem(Integer.toString(i));
-                }
+            int limiteSup = calle.getPuntoFinal();
+            dropPrimerPuntoCalle.removeAllItems();
+            for (int i = 0; i < limiteSup; i++) {
+                dropPrimerPuntoCalle.addItem(String.valueOf(i));
             }
+            dropSegundoPuntoCalle.removeAllItems();
+            for (int i = 1; i <= limiteSup; i++) {
+                dropSegundoPuntoCalle.addItem(String.valueOf(i));
+            }
+            dropPrimerPuntoCalle.setSelectedItem(String.valueOf(calle.getPuntoInicial()));
+            dropSegundoPuntoCalle.setSelectedItem(String.valueOf(calle.getPuntoFinal()));
         } else {
             estadoColorPicker = null;
         }

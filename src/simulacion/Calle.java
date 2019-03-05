@@ -6,13 +6,14 @@
 package simulacion;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author gtroncone
  */
-public class Calle {
+public class Calle implements Serializable {
     
     private String nombre;
     private Distribucion velocidad;
@@ -42,7 +43,9 @@ public class Calle {
         this.puntoInicial = calle.getPuntoInicial();
         this.puntoFinal = calle.getPuntoFinal();
         this.color = new Color(calle.getColor().getGreen());
-        this.puntosAcum = new PuntosAcumulacion(calle.getPuntosAcum());
+        if (calle.getPuntosAcum() != null) {
+            this.puntosAcum = new PuntosAcumulacion(calle.getPuntosAcum());            
+        }
         this.camiones = new LinkedList<>();
         this.mapaCamionesPuntos = new LinkedList<>();
     }

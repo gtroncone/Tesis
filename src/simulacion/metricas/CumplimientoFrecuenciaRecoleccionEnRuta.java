@@ -5,10 +5,18 @@
  */
 package simulacion.metricas;
 
+import java.util.LinkedList;
+import simulacion.eventos.Evento;
+
 /**
  *
  * @author gtroncone
  */
-public class CumplimientoFrecuenciaRecoleccionEnRuta {
+public class CumplimientoFrecuenciaRecoleccionEnRuta extends Metrica {
+
+    @Override
+    public void evaluar(LinkedList<Evento> listaAuditoria) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
