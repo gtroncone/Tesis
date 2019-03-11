@@ -21,7 +21,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import simulacion.metricas.CostoTotal;
 import simulacion.metricas.CumplimientoFrecuenciaRecoleccionEnRuta;
+import simulacion.metricas.DesechosTotalesRecolectados;
 import simulacion.metricas.EficaciaRecoleccion;
 import simulacion.metricas.EficienciaCamionesRecolectores;
 import simulacion.metricas.KilometrosSinAveriaEnRuta;
@@ -41,13 +43,15 @@ public class Tesis implements Serializable {
     private Simulacion simulacion;
     private LinkedList<Metrica> metricas;
     
-    public Tesis() {
+    public Tesis() {      
         metricas = new LinkedList<>();
-        metricas.add(new CumplimientoFrecuenciaRecoleccionEnRuta());
-        metricas.add(new EficaciaRecoleccion());
-        metricas.add(new EficienciaCamionesRecolectores());
-        metricas.add(new KilometrosSinAveriaEnRuta());
-        metricas.add(new ToneladasPorTiempoRecoleccion());
+        metricas.add(new CostoTotal("Costo Total"));
+        metricas.add(new DesechosTotalesRecolectados("Total de Desechos Recolectados"));
+        metricas.add(new CumplimientoFrecuenciaRecoleccionEnRuta("Cumplimiento de Frecuencia de Recolección en Ruta"));
+        metricas.add(new EficaciaRecoleccion("Eficacia de Recolección"));
+        metricas.add(new EficienciaCamionesRecolectores("Eficiencia de Camiones Recolectores"));
+        metricas.add(new KilometrosSinAveriaEnRuta("Kilómetros Sin Avería En Ruta"));
+        metricas.add(new ToneladasPorTiempoRecoleccion("Toneladas por Tiempo de Recolección"));
         
         simulacion = new Simulacion(metricas);
         try {

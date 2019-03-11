@@ -18,7 +18,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import simulacion.Calle;
 import simulacion.Distribucion;
 import simulacion.Horario;
@@ -158,10 +157,10 @@ public class MenuRuta extends javax.swing.JFrame {
         } else if (!nombreRutaEsUnico()) {
             UI.alerta("El nombre de la ruta a crear o editar no es único");
             return false;
-        } else if (!Distribucion.esDistValida(campoDistFlujoPeatonal.getText())) {
+        } else if (!Distribucion.esDistValida(campoDistFlujoPeatonal.getText(), false)) {
             UI.alerta("La notación de distribución en el campo del flujo peatonal es incorrecta");
             return false;
-        } else if (!Distribucion.esDistValida(campoDistDesPorPeaton.getText())) {
+        } else if (!Distribucion.esDistValida(campoDistDesPorPeaton.getText(), false)) {
             UI.alerta("La notación de distribución en el campo de desechos por peatón es incorrecta");
             return false;
         } else if (horario == null) {
@@ -213,12 +212,12 @@ public class MenuRuta extends javax.swing.JFrame {
         if (campoNombreCalle.getText().length() <= 0) {
             UI.alerta("Campo nombre de calle está vacío");
             return false;
-        }else if (!nombreCalleEsUnico()) {
+        } else if (!nombreCalleEsUnico()) {
             if (dropSelRuta.getSelectedIndex() <= 0) {
                 UI.alerta("El nombre de la calle a editar o crear no es único");
                 return false;
             }
-        } else if (!Distribucion.esDistValida(campoDistVelRecor.getText())) {
+        } else if (!Distribucion.esDistValida(campoDistVelRecor.getText(), false)) {
             UI.alerta("La notación de distribución en el campo de velocidad de recorrido es inválida");
             return false;
         } else if (!esAsignacionDePuntosValida()) {

@@ -29,6 +29,13 @@ public class Camion implements Serializable {
     private static int CAPACIDAD_EN_YARDAS_CUBICAS_CAMION_PEQUEÑO = 15;
     private static int CAPACIDAD_EN_YARDAS_CUBICAS_CAMION_GRANDE = 25;
     
+    private int numeroRutasIniciadas = 0;
+    private int numeroRutasConFallas = 0;
+    private double cargaTotalRecolectada = 0;
+    
+    private int tiempoOperacion = 0;
+    private int tickEntrada;
+    
     private LinkedList<Pieza> piezas;
     
     public Camion(String modelo, int capacidad, String id,
@@ -37,6 +44,9 @@ public class Camion implements Serializable {
         this.capacidad = capacidad;
         this.id = id;
         this.piezas = piezas;
+        if (piezas == null) {
+            this.piezas = new LinkedList<>();
+        }
         this.precio = precio;
     }
     
@@ -128,6 +138,7 @@ public class Camion implements Serializable {
     
     public void añadirCarga(double carga) {
         this.carga += carga;
+        this.cargaTotalRecolectada += carga;
     }
     
     public void disminuirCarga(double carga) {
@@ -140,6 +151,9 @@ public class Camion implements Serializable {
 
     public void añadirDistanciaRecorrida(double distanciaRecorrida) {
         this.distanciaRecorrida += distanciaRecorrida;
+        for (Pieza pieza : piezas) {
+            pieza.añadirDistanciaRecorrida(distanciaRecorrida);
+        }
     }
     
     public void incrementarNumeroDeAverias() {
@@ -156,6 +170,38 @@ public class Camion implements Serializable {
 
     public int getNumeroDeViajesATransferencia() {
         return numeroDeViajesATransferencia;
+    }
+    
+    public void añadirFallaRuta() {
+        this.numeroRutasConFallas++;
+    }
+    
+    public void añadirEntradaRuta() {
+        this.numeroRutasIniciadas++;
+    }
+
+    public int getNumeroRutasIniciadas() {
+        return numeroRutasIniciadas;
+    }
+
+    public int getNumeroRutasConFallas() {
+        return numeroRutasConFallas;
+    }
+
+    public double getCargaTotalRecolectada() {
+        return cargaTotalRecolectada;
+    }
+
+    public void setTickEntrada(int tick) {
+        this.tickEntrada = tick;
+    }
+    
+    public void setTickSalida(int tick) {
+        this.tiempoOperacion += (tick - this.tickEntrada);
+    }
+
+    public int getTiempoOperacion() {
+        return tiempoOperacion;
     }
            
 }

@@ -21,6 +21,7 @@ public class PuntosAcumulacion implements Serializable {
     private int[] factorSemanal;
     private int numeroPuntos;
     private double[] cantidadBasura;
+    private double totalGenerado = 0;
     
     public PuntosAcumulacion(Distribucion tasaAcumulacion, Distribucion tasaGeneracion,
             int[] factorHora, int[] factorSemanal, int numeroPuntos) {
@@ -102,6 +103,11 @@ public class PuntosAcumulacion implements Serializable {
     
     public void acumularCantidadBasuraPunto(int index, double cantidad) {
         this.cantidadBasura[index] += cantidad;
+        this.totalGenerado += cantidad;
+    }
+    
+    public double getTotalGenerado() {
+        return this.totalGenerado;
     }
     
     public double getCantidadBasuraPunto(int index) {

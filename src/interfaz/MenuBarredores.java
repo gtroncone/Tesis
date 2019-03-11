@@ -9,7 +9,6 @@ import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import simulacion.AreaBarrido;
 import simulacion.Distribucion;
 import simulacion.Ruta;
@@ -78,7 +77,7 @@ public class MenuBarredores extends javax.swing.JFrame {
             UI.alerta("El campo capacidad no tiene un número válido");
             return false;
         }
-        if (!Distribucion.esDistValida(campoDistVelAcopio.getText())) {
+        if (!Distribucion.esDistValida(campoDistVelAcopio.getText(), false)) {
             UI.alerta("La notación de distribución en el campo de velocidad de acopio es incorrecta");
             return false;
         }

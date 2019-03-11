@@ -26,6 +26,7 @@ public class Distribucion implements Serializable {
     private String campo;
     private RealDistribution distReal;
     private IntegerDistribution distEntera;
+    private DistribucionPoissonCompuestaNoHomogeneaNormal distEspecial;
     
     public Distribucion(String campo) {
         this.campo = campo;
@@ -36,7 +37,7 @@ public class Distribucion implements Serializable {
         return campo;
     }
     
-    static public boolean esDistValida(String campo) {
+    static public boolean esDistValida(String campo, boolean permitidaEspecial) {
         String aux = campo.trim();
         aux = aux.replaceAll("\\s", "");
         aux = aux.replaceAll("\\)", "");
@@ -107,9 +108,9 @@ public class Distribucion implements Serializable {
                     }
                     return false;
                 case "mpcnh":
-                    if (auxParametros.length == 2) {
+                    if (permitidaEspecial && auxParametros.length == 3) {
                         try {
-                            new NormalDistribution(auxParametros[0], auxParametros[1]);
+                            new NormalDistribution(auxParametros[1], auxParametros[2]);
                             return true;
                         } catch (NotStrictlyPositiveException e) {
                             return false;
@@ -173,8 +174,9 @@ public class Distribucion implements Serializable {
                     }
                     return;
                 case "mpcnh":
-                    if (auxParametros.length == 2) {
-                        distReal = new DistribucionPoissonCompuestaNoHomogeneaNormal();
+                    if (auxParametros.length == 3) {
+                        distEspecial = new DistribucionPoissonCompuestaNoHomogeneaNormal(
+                            auxParametros[0], auxParametros[1], auxParametros[2]);
                     }
             }
         }
@@ -187,15 +189,43 @@ public class Distribucion implements Serializable {
     private IntegerDistribution getDistribucionDiscreta() {
         return distEntera;
     }
-    
+
+    private DistribucionPoissonCompuestaNoHomogeneaNormal getDistEspecial() {
+        return distEspecial;
+    }
+        
     public double evaluarDistribucionInversa(double probabilidad) {
-        if (this.getTipoDistribucion() == "Continua") {
-            return this.getDistribucionReal().inverseCumulativeProbability(probabilidad);
-        } else if (this.getTipoDistribucion() == "Discreta") {
-            return this.getDistribucionDiscreta().inverseCumulativeProbability(probabilidad);
-        } else {
+        if (null == this.getTipoDistribucion()) {
             return 0;
+        } else switch (this.getTipoDistribucion()) {
+            case "Continua":
+                return this.getDistribucionReal().inverseCumulativeProbability(probabilidad);
+            case "Discreta":
+                return this.getDistribucionDiscreta().inverseCumulativeProbability(probabilidad);
+            default:
+                return 0;
         }
+    }
+    
+    public double evaluarDistribucion(double valor) {
+        if (null == this.getTipoDistribucion()) {
+            return 0;
+        } else switch (this.getTipoDistribucion()) {
+            case "Continua":
+                return this.getDistribucionReal().cumulativeProbability(valor);
+            case "Discreta":
+                return this.getDistribucionDiscreta().cumulativeProbability((int) Math.floor(valor));
+            default:
+                return 0;
+        }
+    }
+    
+    public double evaluarDistribucionInversaEspecial() {
+        return 0;
+    }
+    
+    public boolean esDistribucionEspecial() {
+        return "Especial".equals(this.getTipoDistribucion());
     }
     
     private String getTipoDistribucion() {
@@ -203,6 +233,8 @@ public class Distribucion implements Serializable {
             return "Continua";
         } else if (distEntera != null) {
             return "Discreta";
+        } else if (distEspecial != null) {
+            return "Especial";
         }
         return "Ninguna";
     }

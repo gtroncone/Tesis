@@ -31,22 +31,24 @@ public class UnidadAvanza extends Evento {
 
     @Override
     public void modificarEstado() {
-        this.camion.setActivo(true);
-        if (cambioDeCalle) {
-            // Pasa a la siguiente calle
-            int indexCalle = ruta.getCalles().indexOf(calle);
-            Calle proximaCalle = ruta.getCalles().get(indexCalle + 1);
-            proximaCalle.camionEntra(camion);
-            calle.camionSale(camion);
-        } else {
-            calle.camionAvanzaASiguientePunto(camion);
+        if (!camion.isAveriado()) {
+            this.camion.setActivo(true);
+            if (cambioDeCalle) {
+                // Pasa a la siguiente calle
+                int indexCalle = ruta.getCalles().indexOf(calle);
+                Calle proximaCalle = ruta.getCalles().get(indexCalle + 1);
+                proximaCalle.camionEntra(camion);
+                calle.camionSale(camion);
+            } else {
+                calle.camionAvanzaASiguientePunto(camion);
+            }
+            int numPuntos = calle.getPuntosAcum().getNumeroPuntos();
+            double distanciaCalle = Simulacion.calcularDistanciaEntrePuntos(
+                calle.getPuntoInicial(), 
+                calle.getPuntoFinal(), ruta);
+            double distanciaRecorrida = distanciaCalle / (numPuntos + 1);
+            camion.añadirDistanciaRecorrida(distanciaRecorrida);
         }
-        int numPuntos = calle.getPuntosAcum().getNumeroPuntos();
-        double distanciaCalle = Simulacion.calcularDistanciaEntrePuntos(
-            calle.getPuntoInicial(), 
-            calle.getPuntoFinal(), ruta);
-        double distanciaRecorrida = distanciaCalle / (numPuntos + 1);
-        camion.añadirDistanciaRecorrida(distanciaRecorrida);
     }
     
 }

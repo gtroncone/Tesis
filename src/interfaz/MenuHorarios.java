@@ -9,7 +9,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import simulacion.Horario;
 
 /**

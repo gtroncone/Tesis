@@ -81,7 +81,6 @@ public class MetadataMapa {
         
         puntoCTPorZoom = new Point[zooms.size()];
         for (int i = 0; i < puntoCTPorZoom.length; i++) {
-            System.out.println("Escala: " + escalas[i]);
             puntoCTPorZoom[i] = new Point((int) Math.floor(-60 / escalas[i]),
                 (int) Math.floor(11190 / escalas[i]));
         }

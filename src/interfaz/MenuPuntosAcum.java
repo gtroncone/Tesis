@@ -9,7 +9,6 @@ import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import simulacion.Calle;
 import simulacion.Distribucion;
@@ -116,10 +115,10 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
     }
     
     private boolean esValido() {
-        if (!Distribucion.esDistValida(campoTasaAcum.getText())) {
+        if (!Distribucion.esDistValida(campoTasaAcum.getText(), false)) {
             UI.alerta("La notación de distribución en el campo de tasa de acumulación es incorrecta");
             return false;
-        } else if (!Distribucion.esDistValida(campoTasaGen.getText())) {
+        } else if (!Distribucion.esDistValida(campoTasaGen.getText(), true)) {
             UI.alerta("La notación de distribución en el campo de tasa de generación es incorrecta");
             return false;
         }

@@ -16,9 +16,9 @@ import simulacion.Ruta;
  */
 public class AcopioDesechoPeatonal extends Evento {
     
-    private Ruta ruta;
-    private AreaBarrido area;
-    private double cantidadBasuraEnArea;
+    private final Ruta ruta;
+    private final AreaBarrido area;
+    private final double cantidadBasuraEnArea;
     
     public AcopioDesechoPeatonal(int tick, Ruta ruta, AreaBarrido area,
         double cantidadBasuraEnArea) {

@@ -23,18 +23,39 @@ public class ContextoSimulacion {
     private final LinkedList<Evento> eventosAvanceUnidades;
     private final LinkedList<Evento> eventosRecoleccion;
     private final LinkedList<Evento> eventosAcopiacion;
+    private final LinkedList<Evento> eventosMantenimiento;
+    private final LinkedList<Evento> eventosAveria;
     
     private final LinkedList<LinkedList<Evento>> listaEventos;
     private final LinkedList<Evento> listaAuditoria;
     
-    public ContextoSimulacion(LinkedList<Ruta> rutas, LinkedList<Camion> camiones) {
+    private final int numTicks;
+    
+    private final double salarioBarredores;
+    private final double salarioEquipoRecoleccion;
+    private final int numMecanicos;
+    private final double salarioMecanicos;
+
+    
+    public ContextoSimulacion(LinkedList<Ruta> rutas, LinkedList<Camion> camiones, int numTicks,
+        double salarioBarredores, double salarioEquipoRecoleccion, int numMecanicos,
+        double salarioMecanicos) {
         this.rutas = new LinkedList<>();
-        this.camiones = new LinkedList<>();        
+        this.camiones = new LinkedList<>();  
+        this.numTicks = numTicks;
+        
         eventosAcumulacion = new LinkedList<>();
         eventosEntradaUnidades = new LinkedList<>();
         eventosAvanceUnidades = new LinkedList<>();
         eventosRecoleccion = new LinkedList<>();
         eventosAcopiacion = new LinkedList<>();
+        eventosMantenimiento = new LinkedList<>();
+        eventosAveria = new LinkedList<>();
+        
+        this.salarioBarredores = salarioBarredores;
+        this.salarioEquipoRecoleccion = salarioEquipoRecoleccion;
+        this.numMecanicos = numMecanicos;
+        this.salarioMecanicos = salarioMecanicos;
         
         listaEventos = new LinkedList<LinkedList<Evento>>();
         listaEventos.add(eventosAcumulacion);
@@ -42,6 +63,8 @@ public class ContextoSimulacion {
         listaEventos.add(eventosAvanceUnidades);
         listaEventos.add(eventosRecoleccion);
         listaEventos.add(eventosAcopiacion);
+        listaEventos.add(eventosMantenimiento);
+        listaEventos.add(eventosAveria);
         
         listaAuditoria = new LinkedList<Evento>();
         
@@ -74,6 +97,14 @@ public class ContextoSimulacion {
     public void añadirEventoAcopiacion(Evento evento) {
         eventosAcopiacion.add(evento);
     }
+    
+    public void añadirEventoMantenimiento(Evento evento) {
+        eventosMantenimiento.add(evento);
+    }
+    
+    public void añadirEventoAveria(Evento evento) {
+        eventosAveria.add(evento);
+    }
 
     public LinkedList<Ruta> getRutas() {
         return rutas;
@@ -91,6 +122,26 @@ public class ContextoSimulacion {
 
     public LinkedList<Evento> getListaAuditoria() {
         return listaAuditoria;
+    }
+
+    public int getNumTicks() {
+        return numTicks;
+    }
+
+    public double getSalarioBarredores() {
+        return salarioBarredores;
+    }
+
+    public double getSalarioEquipoRecoleccion() {
+        return salarioEquipoRecoleccion;
+    }
+
+    public int getNumMecanicos() {
+        return numMecanicos;
+    }
+
+    public double getSalarioMecanicos() {
+        return salarioMecanicos;
     }
     
     public void ejecutarEventos() {

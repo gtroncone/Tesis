@@ -16,10 +16,10 @@ import simulacion.Simulacion;
  */
 public class SalidaRuta extends Evento {
 
-    private Calle calle;
-    private Camion camion;
-    private Ruta ruta;
-    
+    private final Calle calle;
+    private final Camion camion;
+    private final Ruta ruta;
+
     public SalidaRuta(int tick, Calle calle, Camion camion, Ruta ruta) {
         super(tick);
         this.calle = calle;
@@ -29,11 +29,15 @@ public class SalidaRuta extends Evento {
 
     @Override
     public void modificarEstado() {
-        calle.camionSale(camion);
-        camion.setActivo(false);
-        camion.añadirViajeATransferencia();
-        camion.añadirDistanciaRecorrida(
-            Simulacion.calcularDistanciaEntrePuntoYTransferencia(calle.getPuntoFinal(), ruta));
+        if (!camion.isAveriado()) {
+            calle.camionSale(camion);
+            camion.setActivo(false);
+            camion.añadirViajeATransferencia();
+            camion.añadirDistanciaRecorrida(
+                Simulacion.calcularDistanciaEntrePuntoYTransferencia(calle.getPuntoFinal(), ruta));
+
+            camion.setTickSalida(tick);
+        }
     }
-    
+
 }

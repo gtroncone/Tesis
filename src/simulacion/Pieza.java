@@ -16,15 +16,18 @@ public class Pieza implements Serializable {
     private String nombre;
     private double costo;
     private Distribucion tiempoDeVida;
-    private int cantidadPorCamion;
     private boolean ocasionaFallaCritica;
+    private boolean estaAveriada = false;
+    private int numeroDeAverias = 0;
+    
+    private int numeroCambios = 0;
+    private double distanciaRecorrida = 0;
     
     public Pieza(String nombre, double costo, Distribucion tiempoDeVida,
-            int cantidadPorCamion, boolean ocasionaFallaCritica) {
+            boolean ocasionaFallaCritica) {
         this.nombre = nombre;
         this.costo = costo;
         this.tiempoDeVida = tiempoDeVida;
-        this.cantidadPorCamion = cantidadPorCamion;
         this.ocasionaFallaCritica = ocasionaFallaCritica;
     }
     
@@ -32,7 +35,6 @@ public class Pieza implements Serializable {
         this.nombre = pieza.getNombre();
         this.costo = pieza.getCosto();
         this.tiempoDeVida = new Distribucion(pieza.getTiempoDeVida().getCampo());
-        this.cantidadPorCamion = pieza.getCantidadPorCamion();
         this.ocasionaFallaCritica = pieza.isOcasionaFallaCritica();
     }
 
@@ -60,20 +62,46 @@ public class Pieza implements Serializable {
         this.tiempoDeVida = tiempoDeVida;
     }
 
-    public int getCantidadPorCamion() {
-        return cantidadPorCamion;
-    }
-
-    public void setCantidadPorCamion(int cantidadPorCamion) {
-        this.cantidadPorCamion = cantidadPorCamion;
-    }
-
     public boolean isOcasionaFallaCritica() {
         return ocasionaFallaCritica;
     }
 
     public void setOcasionaFallaCritica(boolean ocasionaFallaCritica) {
         this.ocasionaFallaCritica = ocasionaFallaCritica;
+    }
+    
+    public void cambiarPieza() {
+        this.numeroCambios++;
+        resetearDistanciaRecorrida();
+    }
+    
+    public int getNumeroCambios() {
+        return numeroCambios;
+    }
+
+    public boolean isEstaAveriada() {
+        return estaAveriada;
+    }
+
+    public void setEstaAveriada(boolean estaAveriada) {
+        this.estaAveriada = estaAveriada;
+        this.numeroDeAverias++;
+    }
+               
+    public void añadirDistanciaRecorrida(double distancia) {
+        this.distanciaRecorrida += distancia;
+    }
+    
+    public void resetearDistanciaRecorrida() {
+        this.distanciaRecorrida = 0;
+    }
+
+    public int getNumeroDeAverias() {
+        return numeroDeAverias;
+    }
+
+    public double getDistanciaRecorrida() {
+        return distanciaRecorrida;
     }
     
 }

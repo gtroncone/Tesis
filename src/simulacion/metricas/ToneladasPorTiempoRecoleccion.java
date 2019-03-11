@@ -6,7 +6,8 @@
 package simulacion.metricas;
 
 import java.util.LinkedList;
-import simulacion.eventos.Evento;
+import simulacion.Camion;
+import simulacion.ContextoSimulacion;
 
 /**
  *
@@ -14,9 +15,34 @@ import simulacion.eventos.Evento;
  */
 public class ToneladasPorTiempoRecoleccion extends Metrica {
 
+    private Double resultado;
+    
+    public ToneladasPorTiempoRecoleccion(String nombre) {
+        super(nombre);
+    }
+    
     @Override
-    public void evaluar(LinkedList<Evento> listaAuditoria) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void evaluar(ContextoSimulacion contexto) {
+        LinkedList<Camion> camiones = contexto.getCamiones();
+        double cargaTotalRecolectada = 0;
+        double tiempoTotalOperacion = 0;
+                
+        for (Camion camion : camiones) {
+            cargaTotalRecolectada += camion.getCargaTotalRecolectada();
+            tiempoTotalOperacion += camion.getTiempoOperacion();
+        }
+        
+        this.resultado = ((cargaTotalRecolectada / 1000) / tiempoTotalOperacion);
+    }
+
+    @Override
+    public Object getResultado() {
+        return this.resultado;
+    }
+
+    @Override
+    public boolean isIterable() {
+        return false;
     }
     
 }

@@ -14,8 +14,8 @@ import simulacion.Ruta;
  */
 public class EntradaARuta extends Evento {
     
-    private Camion camion;
-    private Ruta ruta;
+    private final Camion camion;
+    private final Ruta ruta;
 
     public EntradaARuta(int tick, Camion camion, Ruta ruta) {
         super(tick);
@@ -25,8 +25,12 @@ public class EntradaARuta extends Evento {
 
     @Override
     public void modificarEstado() {
-        ruta.getCalles().getFirst().camionEntra(camion);
-        camion.setActivo(true);
+        if (!camion.isAveriado()) {
+            ruta.getCalles().getFirst().camionEntra(camion);
+            camion.setActivo(true);
+            camion.añadirEntradaRuta();
+            camion.setTickEntrada(tick);
+        }
     }
     
 }

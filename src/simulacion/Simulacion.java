@@ -16,12 +16,13 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import logica.MetadataMapa;
 import simulacion.eventos.AcopioDesechoPeatonal;
 import simulacion.eventos.AcumulacionDesechoPeatonal;
+import simulacion.eventos.ManejoPiezasYAverias;
 import simulacion.eventos.DepositoDesechoEnPuntoAcumulacion;
 import simulacion.eventos.EntradaARuta;
+import simulacion.eventos.MantenimientoSobreUnidad;
 import simulacion.eventos.RecoleccionConCamion;
 import simulacion.eventos.SalidaRuta;
 import simulacion.eventos.UnidadAvanza;
@@ -41,14 +42,15 @@ public class Simulacion implements Serializable {
     private double salarioEquipoRecoleccion = 0;
     private int numMecanicos = 0;
     private double salarioMecanicos = 0;
-    private int tipoDeMantenimiento;
+    private int tipoDeMantenimiento; // 0 = 90%, 1 = 50 %, 2 = 0%
     private int numeroDeDias = 1;
     private int diaInicial = 1;
     
     private final int NUMERO_MINUTOS_RECOLECCION_PROMEDIO = 5;
     private final int INICIO_HORARIO_LABORAL = 8;
     private final int FINAL_HORARIO_LABORAL = 17;
-    
+    private final int INICIO_HORARIO_MANTENIMIENTO = 5;
+        
     private final LinkedList<Metrica> listaMetricas;
 
     public Simulacion(LinkedList<Metrica> metricas) {
@@ -138,20 +140,20 @@ public class Simulacion implements Serializable {
     }
 
     private void iniciarSimulacion() {
+        int numTicks = determinarNumTicks();
         ContextoSimulacion[] instancias = new ContextoSimulacion[numRepeticiones];
         for (int i = 0; i < instancias.length; i++) {
-            instancias[i] = new ContextoSimulacion(rutas, camiones);
+            instancias[i] = new ContextoSimulacion(rutas, camiones, numTicks, salarioBarredores, salarioEquipoRecoleccion, numMecanicos, salarioMecanicos);
         }
-        cicloPrincipal(instancias);
+        cicloPrincipal(instancias, numTicks);
     }
 
     private int determinarNumTicks() {
         return 60 * 24 * numeroDeDias;
     }
 
-    private void cicloPrincipal(ContextoSimulacion[] contextos) {
+    private void cicloPrincipal(ContextoSimulacion[] contextos, int numTicks) {
         try {
-            int numTicks = determinarNumTicks();
             for (ContextoSimulacion contexto : contextos) {
                 listarEventosAcumulacionDesechos(contexto, numTicks);
                 listarEventosAcumulacionDesechoPeatonal(contexto, numTicks);
@@ -213,9 +215,11 @@ public class Simulacion implements Serializable {
                     double aleatorio = rand.nextDouble();
                     if (auxTicks + 1 < numTicks) {
                         auxTicks++;
-                        contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks,
-                            area, ruta.getDesechosPorPeaton(),
-                            (int) Math.floor(ruta.getFlujoPeatonal().evaluarDistribucionInversa(aleatorio))));
+                        if (tickEstaEnHorarioLaboral(auxTicks)) {
+                            contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks,
+                                area, ruta.getDesechosPorPeaton(),
+                                (int) Math.floor(ruta.getFlujoPeatonal().evaluarDistribucionInversa(aleatorio))));
+                        }
                     }
                 }
             }
@@ -231,7 +235,10 @@ public class Simulacion implements Serializable {
                 if (calle.getPuntosAcum() != null) {    
                     for (int k = 0; k < calle.getPuntosAcum().getNumeroPuntos(); k++) {
                         PuntosAcumulacion puntos = calle.getPuntosAcum();
+                        int[] factorHora = puntos.getFactorHora();
+                        int[] factorSemanal = puntos.getFactorSemanal();
                         int auxTicks = 0;
+                        
                         while (auxTicks < numTicks) {
                             double aleatorio = rand.nextDouble();
                             double tiempoEvento;
@@ -239,7 +246,8 @@ public class Simulacion implements Serializable {
                             if (tiempoEvento + auxTicks < numTicks) {
                                 auxTicks += (int) Math.floor(tiempoEvento);
                                 contexto.añadirEventoAcumulacion(
-                                    new DepositoDesechoEnPuntoAcumulacion(auxTicks, calle, k, diaInicial));
+                                    new DepositoDesechoEnPuntoAcumulacion(auxTicks,
+                                        calle, k, diaInicial, factorHora, factorSemanal));
                             } else {
                                 break;
                             }
@@ -263,11 +271,14 @@ public class Simulacion implements Serializable {
                     int[] datosHorario = horario.getDatos().get(mapaCamionesAHorarios.get(j));
                     int paridadDiaInicial = diaInicial % 2;
                     for (int dia = 0; dia < numeroDeDias; dia++) {
-                        // -> Aquí deben incluirse los eventos de mantenimiento <-
                         if (datosHorario[2] == 0 || dia % 2 == paridadDiaInicial) {
                             int tick = 0;
                             tick += dia * 24 * 60;
                             tick += (datosHorario[0] * 60) + datosHorario[1];
+                            int inicioDia = dia * 24 * 60;
+                            inicioDia += INICIO_HORARIO_MANTENIMIENTO * 60;
+                            contexto.añadirEventoMantenimiento(
+                                new MantenimientoSobreUnidad(inicioDia, camion, tipoDeMantenimiento));
                             contexto.añadirEventoEntradaUnidad(new EntradaARuta(tick, camion, ruta));
                             listarEventosAvanceUnidad(tick, camion, ruta, numTicks, contexto);
                         }
@@ -277,22 +288,23 @@ public class Simulacion implements Serializable {
         }
     }
     
+    // W!
     private void listarEventosAvanceUnidad(int tickInicial, Camion camionAvanza,
             Ruta ruta, int numTicks, ContextoSimulacion contexto) {
         
         Random rand = new Random();
-        int ticksAcum = tickInicial;
+        int ticksAcum = tickInicial;      
         
         // El camión debe estar en la calle inicial
         for (int i = 0; i < ruta.getCalles().size(); i++) {
             Calle calle = ruta.getCalles().get(i);
-            int ticksParaAvanzar = 0;
+            int ticksParaAvanzar;
             for (int j = 0; j <= calle.getPuntosAcum().getNumeroPuntos(); j++) {
-                // -> Aquí deben manejarse los eventos de avería y de reparación <-
+                
                 double velocidad = 1;
                 velocidad = calle.getVelocidad().evaluarDistribucionInversa(rand.nextDouble());
                 
-                double distancia = calcularDistanciaEntrePuntos(calle.getPuntoFinal(), calle.getPuntoFinal(), ruta);
+                double distancia = calcularDistanciaEntrePuntos(calle.getPuntoInicial(), calle.getPuntoFinal(), ruta);
                 distancia /= (calle.getPuntosAcum().getNumeroPuntos() + 1);
 
                 ticksParaAvanzar = (int) Math.floor(distancia / velocidad);
@@ -300,30 +312,31 @@ public class Simulacion implements Serializable {
                 // En este caso hay que avanzar a la siguiente calle
                 if (ticksAcum + ticksParaAvanzar < numTicks) {
                     ticksAcum += ticksParaAvanzar;
+                    
+                    contexto.añadirEventoAveria(new ManejoPiezasYAverias(ticksAcum, camionAvanza, calle));
+                    
                     if (j == calle.getPuntosAcum().getNumeroPuntos()) {
                         if (ruta.getCalles().getLast().equals(calle)) {
                             // En este caso se abandona la ruta y se va al centro de transferencia
                             contexto.añadirEventoAvanceUnidades(new SalidaRuta(ticksAcum, calle, camionAvanza, ruta));
+                            return;
                         } else {
                             // En este caso se va a la siguiente calle en la ruta
-                            contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksParaAvanzar,
+                            contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksAcum,
                                 camionAvanza, ruta, calle, true));
                         }
                     } else {
                         // En este caso hay que avanzar al siguiente punto de acumulación
-                        contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksParaAvanzar,
+                        contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksAcum,
                             camionAvanza, ruta, calle, false));
                         if (ticksAcum + NUMERO_MINUTOS_RECOLECCION_PROMEDIO < numTicks) {
                             ticksAcum += NUMERO_MINUTOS_RECOLECCION_PROMEDIO;
-                            RecoleccionConCamion recoleccion = new RecoleccionConCamion(ticksAcum,
-                                calle, camionAvanza, ruta);
-                            contexto.añadirEventoRecoleccion(recoleccion);
-                            if (recoleccion.hayIdaATransferencia()) {
-                                ticksAcum += 2 * MetadataMapa.getMinutosPromedioATransferencia(
-                                    ruta.getPuntos().get(recoleccion.getPuntoInicial()), ruta.getZoom());
-                            }
+                            contexto.añadirEventoRecoleccion(new RecoleccionConCamion(ticksAcum,
+                                calle, camionAvanza, ruta));
                         }
                     }
+                } else {
+                    break;
                 }   
             }
         }
@@ -333,6 +346,43 @@ public class Simulacion implements Serializable {
         JFileChooser j = new JFileChooser();
         int returnValue = j.showSaveDialog(null);
         
+        Object[] resultadosIterables = new Object[listaMetricas.size()];
+        double[] resultadosNoIterables = new double[listaMetricas.size()];
+        String[] nombres = new String[listaMetricas.size()];
+        
+        for (int i = 0; i < listaMetricas.size(); i++) {
+            Metrica metrica = listaMetricas.get(i);
+            nombres[i] = metrica.getNombre();
+            for (ContextoSimulacion contexto : contextos) {
+                metrica.evaluar(contexto);
+                if (metrica.isIterable()) {
+                    if (resultadosIterables[i] == null) {
+                        resultadosIterables[i] = metrica.getResultado();
+                    } else {
+                        LinkedList<Double> resultado = (LinkedList) metrica.getResultado();
+                        for (int k = 0; k < ((LinkedList) resultadosIterables[i]).size(); k++) {
+                            ((LinkedList) resultadosIterables[i]).set(
+                                k, ((LinkedList<Double>) resultadosIterables[i]).get(k) + resultado.get(k));
+                        }
+                    }
+                } else {
+                    resultadosNoIterables[i] += (Double) metrica.getResultado();
+                }
+            }
+        }
+        
+        for (int i = 0; i < listaMetricas.size(); i++) {
+            Metrica metrica = listaMetricas.get(i);
+            if (metrica.isIterable()) {
+                LinkedList<Double> resultados = ((LinkedList<Double>)resultadosIterables[i]);
+                for (int k = 0; k < resultados.size(); k++) {
+                    resultados.set(k, (resultados.get(k) / contextos.length));
+                }
+            } else {
+                resultadosNoIterables[i] /= contextos.length;
+            }
+        }
+                
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             String filePath = j.getSelectedFile().getAbsolutePath();
             String[] partes = filePath.split(Pattern.quote("/"));
@@ -359,9 +409,26 @@ public class Simulacion implements Serializable {
             data += "<title>Resultados</title>\n";
             data += "</head>\n";
             data += "<body>\n";
-            data += "<ul>\n";
-            data += "<li>Resultado 1</li>\n";
-            data += "</ul>\n";
+            for (int i = 0; i < listaMetricas.size(); i++) {
+                Metrica metrica = listaMetricas.get(i);
+                data += "<h1>" + metrica.getNombre() + "</h1>\n";
+                data += "<ul>\n";
+                if (metrica.isIterable()) {
+                    LinkedList<Double> resultados = ((LinkedList<Double>)resultadosIterables[i]);
+                    LinkedList<String> subtitulos = listaMetricas.get(i).getSubtitulos();
+                    for (int k = 0; k < resultados.size(); k++) {
+                        data += "<li>\n";
+                        if (subtitulos != null) {
+                            data += "<h4>" + subtitulos.get(k) + "</h4\n";
+                        }
+                        data += "<p>" + resultados.get(k) + "</p>\n";
+                        data += "</li>\n";
+                    }
+                } else {
+                    data += "<li>" + resultadosNoIterables[i] + "</li>\n";
+                }
+                data += "</ul>\n";
+            }
             data += "</body>\n";
             data += "</html>\n";
             

@@ -11,7 +11,7 @@ package simulacion.eventos;
  */
 public abstract class Evento implements Comparable<Evento> {
     
-    private final int tick;
+    protected final int tick;
     
     public Evento(int tick) {
         this.tick = tick;
