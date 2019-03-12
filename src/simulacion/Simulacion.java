@@ -235,8 +235,6 @@ public class Simulacion implements Serializable {
                 if (calle.getPuntosAcum() != null) {    
                     for (int k = 0; k < calle.getPuntosAcum().getNumeroPuntos(); k++) {
                         PuntosAcumulacion puntos = calle.getPuntosAcum();
-                        int[] factorHora = puntos.getFactorHora();
-                        int[] factorSemanal = puntos.getFactorSemanal();
                         int auxTicks = 0;
                         
                         while (auxTicks < numTicks) {
@@ -244,10 +242,11 @@ public class Simulacion implements Serializable {
                             double tiempoEvento;
                             tiempoEvento = puntos.getTasaAcumulacion().evaluarDistribucionInversa(aleatorio);
                             if (tiempoEvento + auxTicks < numTicks) {
+                                int aux = auxTicks;
                                 auxTicks += (int) Math.floor(tiempoEvento);
                                 contexto.añadirEventoAcumulacion(
                                     new DepositoDesechoEnPuntoAcumulacion(auxTicks,
-                                        calle, k, diaInicial, factorHora, factorSemanal));
+                                        aux, calle, k, diaInicial));
                             } else {
                                 break;
                             }

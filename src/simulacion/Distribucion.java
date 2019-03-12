@@ -27,9 +27,18 @@ public class Distribucion implements Serializable {
     private RealDistribution distReal;
     private IntegerDistribution distEntera;
     private DistribucionPoissonCompuestaNoHomogeneaNormal distEspecial;
+    private int[] arraySemanal;
+    private int[] arrayDiario;
     
     public Distribucion(String campo) {
         this.campo = campo;
+        parse(this.campo);
+    }
+    
+    public Distribucion(String campo, int[] arraySemanal, int[] arrayDiario) {
+        this.campo = campo;
+        this.arrayDiario = arrayDiario;
+        this.arraySemanal = arraySemanal;
         parse(this.campo);
     }
 
@@ -108,7 +117,7 @@ public class Distribucion implements Serializable {
                     }
                     return false;
                 case "mpcnh":
-                    if (permitidaEspecial && auxParametros.length == 3) {
+                    if (permitidaEspecial && auxParametros.length == 3 && auxParametros[0] > 0) {
                         try {
                             new NormalDistribution(auxParametros[1], auxParametros[2]);
                             return true;
@@ -174,7 +183,7 @@ public class Distribucion implements Serializable {
                     }
                     return;
                 case "mpcnh":
-                    if (auxParametros.length == 3) {
+                    if (auxParametros.length == 3 && auxParametros[0] > 0) {
                         distEspecial = new DistribucionPoissonCompuestaNoHomogeneaNormal(
                             auxParametros[0], auxParametros[1], auxParametros[2]);
                     }
@@ -220,8 +229,12 @@ public class Distribucion implements Serializable {
         }
     }
     
-    public double evaluarDistribucionInversaEspecial() {
-        return 0;
+    public double evaluarDistribucionInversaEspecial(int tickInicial, int tickFinal, double probabilidad, int diaInicial) {
+        if (this.esDistEspecial()) {
+            return this.getDistEspecial().evaluarProbabilidadInversa(tickFinal, tickInicial, probabilidad, arrayDiario, arraySemanal, diaInicial);
+        } else {
+            return 0;
+        }
     }
     
     public boolean esDistribucionEspecial() {
@@ -237,6 +250,98 @@ public class Distribucion implements Serializable {
             return "Especial";
         }
         return "Ninguna";
+    }
+    
+    public boolean esDistEspecial() {
+        return this.distEspecial != null;
+    }
+    
+    public static boolean seriaDistEspecial(String campo) {
+        String aux = campo.trim();
+        aux = aux.replaceAll("\\s", "");
+        aux = aux.replaceAll("\\)", "");
+        String[] partes = aux.split("\\(");
+        String[] parametros;
+        if (partes.length > 1) {
+            parametros = partes[1].split(",");
+            double[] auxParametros = new double[parametros.length];
+            try {
+                for (int i = 0; i < auxParametros.length; i++) {
+                    auxParametros[i] = Double.parseDouble(parametros[i]);
+                }
+            } catch (NumberFormatException e) {
+                return false;
+            }
+            switch (partes[0].toLowerCase()) {
+                case "const":
+                    if (auxParametros.length == 2) {
+                        try {
+                            new UniformRealDistribution(auxParametros[0], auxParametros[1]);
+                            return false;
+                        } catch (NumberIsTooLargeException e) {
+                            return false;
+                        }
+                    }
+                    return false;
+                case "tri":
+                    if (auxParametros.length == 3) {
+                        try {
+                            new TriangularDistribution(auxParametros[0],
+                                auxParametros[1], auxParametros[2]);
+                            return false;
+                        } catch (NumberIsTooLargeException e) {
+                            return false;
+                        }
+                    }
+                    return false;
+                case "weib":
+                    if (auxParametros.length == 2) {
+                        try {
+                            new WeibullDistribution(auxParametros[0], auxParametros[1]);
+                            return false;
+                        } catch (NotStrictlyPositiveException e) {
+                            return false;
+                        }
+                    }
+                    return false;
+                case "n":
+                    if (auxParametros.length == 2) {
+                        try {
+                            new NormalDistribution(auxParametros[0], auxParametros[1]);
+                            return false;
+                        } catch (NotStrictlyPositiveException e) {
+                            return false;
+                        }
+                    }
+                    return false;
+                case "exp":
+                    return auxParametros.length == 1;
+                case "pois":
+                    if (auxParametros.length == 1) {
+                        try {
+                            new PoissonDistribution(auxParametros[0]);
+                            return false;
+                        } catch (NotStrictlyPositiveException e) {
+                            return false;
+                        }
+                    }
+                    return false;
+                case "mpcnh":
+                    if (auxParametros.length == 3 && auxParametros[0] > 0) {
+                        try {
+                            new NormalDistribution(auxParametros[1], auxParametros[2]);
+                            return true;
+                        } catch (NotStrictlyPositiveException e) {
+                            return false;
+                        }
+                    }
+                    return false;
+                default:
+                    return false;
+            }
+        } else {
+            return false;
+        }        
     }
     
 }

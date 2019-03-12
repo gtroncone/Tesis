@@ -3,44 +3,37 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/metricas/CostoTotal.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/AcumulacionDesechoPeatonal.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/PuntosAcumulacion.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/metricas/Metrica.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/RecoleccionConCamion.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/UnidadAvanza.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/Pieza.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/MantenimientoSobreUnidad.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/MenuConfiguracion.java</file>
+            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/MantenimientoSobreUnidad.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/Distribucion.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/Camion.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/SalidaRuta.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/MenuPuntosAcum.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/AveriaEnUnidad.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/metricas/EficaciaRecoleccion.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/MenuHorarios.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/Calle.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/MenuBarredores.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/Simulacion.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/AcopioDesechoPeatonal.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/MenuAsignacionCamiones.java</file>
+            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/MenuBarredores.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/DistribucionPoissonCompuestaNoHomogeneaNormal.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/UI.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/logica/Render.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/DepositoDesechoEnPuntoAcumulacion.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/Horario.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/ContextoSimulacion.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/MenuCamiones.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/EntradaARuta.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/MenuRuta.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/logica/MetadataMapa.java</file>
+            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/interfaz/MenuRuta.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/AreaBarrido.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/metricas/EficienciaCamionesRecolectores.java</file>
+            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/metricas/DesechosTotalesRecolectados.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/Evento.java</file>
+            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/eventos/ManejoPiezasYAverias.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/Ruta.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/metricas/CumplimientoFrecuenciaRecoleccionEnRuta.java</file>
             <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/logica/Tesis.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/metricas/KilometrosSinAveriaEnRuta.java</file>
-            <file>file:/home/gtroncone/NetBeansProjects/Tesis/src/simulacion/metricas/ToneladasPorTiempoRecoleccion.java</file>
         </group>
     </open-files>
 </project-private>

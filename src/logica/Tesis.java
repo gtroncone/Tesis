@@ -43,7 +43,7 @@ public class Tesis implements Serializable {
     private Simulacion simulacion;
     private LinkedList<Metrica> metricas;
     
-    public Tesis() {      
+    public Tesis() {
         metricas = new LinkedList<>();
         metricas.add(new CostoTotal("Costo Total"));
         metricas.add(new DesechosTotalesRecolectados("Total de Desechos Recolectados"));

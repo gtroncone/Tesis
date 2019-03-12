@@ -1164,10 +1164,20 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
                     arrayDiario[i] = sliderDiario[i].getValue();
                 }
 
-                PuntosAcumulacion puntosAcum = new PuntosAcumulacion(
-                        new Distribucion(campoTasaAcum.getText()),
-                        new Distribucion(campoTasaGen.getText()), arrayDiario,
-                        arraySemanal, Integer.parseInt(etiquetaNumPuntosAcum.getText()));
+                PuntosAcumulacion puntosAcum;
+                
+                if (Distribucion.seriaDistEspecial(campoTasaGen.getText()))                 {
+                    puntosAcum = new PuntosAcumulacion(
+                            new Distribucion(campoTasaAcum.getText()),
+                            new Distribucion(campoTasaGen.getText(), arraySemanal, arrayDiario),
+                            arrayDiario, arraySemanal, Integer.parseInt(etiquetaNumPuntosAcum.getText())
+                    );
+                } else {
+                    puntosAcum = new PuntosAcumulacion(
+                            new Distribucion(campoTasaAcum.getText()),
+                            new Distribucion(campoTasaGen.getText()), arrayDiario,
+                            arraySemanal, Integer.parseInt(etiquetaNumPuntosAcum.getText()));   
+                }
 
                 rutas.get(listaRutas.getSelectedIndex()).getCalles()
                         .get(listaCalles.getSelectedIndex())
