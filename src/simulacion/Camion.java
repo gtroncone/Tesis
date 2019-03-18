@@ -35,6 +35,7 @@ public class Camion implements Serializable {
     
     private int tiempoOperacion = 0;
     private int tickEntrada;
+    private String test = "original";
     
     private LinkedList<Pieza> piezas;
     
@@ -51,6 +52,7 @@ public class Camion implements Serializable {
     }
     
     public Camion(Camion camion) {
+        this.test = "Copy";
         this.modelo = camion.getModelo();
         this.capacidad = camion.getCapacidad();
         this.id = camion.getId();
@@ -62,6 +64,10 @@ public class Camion implements Serializable {
                 this.piezas.add(new Pieza(camion.getPiezas().get(i)));
             }
         }
+    }
+    
+    public String getTest() {
+        return this.test;
     }
 
     public boolean isAveriado() {

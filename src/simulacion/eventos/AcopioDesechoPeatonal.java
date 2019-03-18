@@ -30,6 +30,7 @@ public class AcopioDesechoPeatonal extends Evento {
 
     @Override
     public void modificarEstado() {
+        //System.out.println("Se va a ejecutar un evento de acopio peatonal en el tick " + tick);
         Random rand = new Random();
         int indexCalle = rand.nextInt(ruta.getCalles().size());
         Calle calle = ruta.getCalles().get(indexCalle);

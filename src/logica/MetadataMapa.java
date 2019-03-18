@@ -91,7 +91,7 @@ public class MetadataMapa {
     }
     
     public static double getDistanciaATransferencia(Point puntoI, int zoom) {
-        return puntoCTPorZoom[zoom].distance(puntoI) * escalas[zoom];
+        return puntoCTPorZoom[zoom - MetadataMapa.getMinZoom()].distance(puntoI) * escalas[zoom - MetadataMapa.getMinZoom()];
     }
 
     public static int getMinutosPromedioATransferencia(Point puntoI, int zoom) {

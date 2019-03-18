@@ -22,9 +22,10 @@ public class ContextoSimulacion {
     private final LinkedList<Evento> eventosEntradaUnidades;
     private final LinkedList<Evento> eventosAvanceUnidades;
     private final LinkedList<Evento> eventosRecoleccion;
+    private final LinkedList<Evento> eventosSalidaUnidades;
     private final LinkedList<Evento> eventosAcopiacion;
-    private final LinkedList<Evento> eventosMantenimiento;
     private final LinkedList<Evento> eventosAveria;
+    private final LinkedList<Evento> eventosMantenimiento;
     
     private final LinkedList<LinkedList<Evento>> listaEventos;
     private final LinkedList<Evento> listaAuditoria;
@@ -48,6 +49,7 @@ public class ContextoSimulacion {
         eventosEntradaUnidades = new LinkedList<>();
         eventosAvanceUnidades = new LinkedList<>();
         eventosRecoleccion = new LinkedList<>();
+        eventosSalidaUnidades = new LinkedList<>();
         eventosAcopiacion = new LinkedList<>();
         eventosMantenimiento = new LinkedList<>();
         eventosAveria = new LinkedList<>();
@@ -62,9 +64,10 @@ public class ContextoSimulacion {
         listaEventos.add(eventosEntradaUnidades);
         listaEventos.add(eventosAvanceUnidades);
         listaEventos.add(eventosRecoleccion);
+        listaEventos.add(eventosSalidaUnidades);
         listaEventos.add(eventosAcopiacion);
-        listaEventos.add(eventosMantenimiento);
         listaEventos.add(eventosAveria);
+        listaEventos.add(eventosMantenimiento);
         
         listaAuditoria = new LinkedList<Evento>();
         
@@ -74,7 +77,7 @@ public class ContextoSimulacion {
         
         for (int i = 0; i < rutas.size(); i++) {
             this.rutas.add(new Ruta(rutas.get(i)));
-            this.rutas.get(i).getHorario().reconciliarCamiones(rutas.get(i), this.camiones);
+            this.rutas.get(i).getHorario().reconciliarCamiones(this.camiones);
         }        
     }
     
@@ -88,6 +91,10 @@ public class ContextoSimulacion {
     
     public void añadirEventoAvanceUnidades(Evento evento) {
         eventosAvanceUnidades.add(evento);
+    }
+    
+    public void añadirEventoSalidaUnidades(Evento evento) {
+        eventosSalidaUnidades.add(evento);
     }
     
     public void añadirEventoRecoleccion(Evento evento) {

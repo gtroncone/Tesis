@@ -23,11 +23,14 @@ public class MenuBarredores extends javax.swing.JFrame {
     private LinkedList<Ruta> rutas;
     private DefaultListModel modeloRutas;
     private DefaultListModel modeloAreas;
+    
+    private final double FACTOR_CONVERSION_VELOCIDAD_ACOPIO = 1 / 60;
 
     /**
      * Creates new form MenuBarredores
      * @param ui
      */
+    // Kilogramos / minuto <= kilogramos / hora
     public MenuBarredores(UI ui) {
         interfaz = ui;
         initComponents();
@@ -118,6 +121,7 @@ public class MenuBarredores extends javax.swing.JFrame {
         btnEliminasAreaBarrido = new javax.swing.JButton();
         etiquetaKilogramo = new javax.swing.JLabel();
         btnCancelarAreaBarrido = new javax.swing.JButton();
+        etiquetaKilogramo1 = new javax.swing.JLabel();
 
         jLabel10.setText("jLabel10");
 
@@ -224,7 +228,7 @@ public class MenuBarredores extends javax.swing.JFrame {
             }
         });
 
-        etiquetaKilogramo.setText("Kg.");
+        etiquetaKilogramo.setText("Kg");
 
         btnCancelarAreaBarrido.setText("Cancelar");
         btnCancelarAreaBarrido.addActionListener(new java.awt.event.ActionListener() {
@@ -232,6 +236,8 @@ public class MenuBarredores extends javax.swing.JFrame {
                 btnCancelarAreaBarridoActionPerformed(evt);
             }
         });
+
+        etiquetaKilogramo1.setText("Kg/h");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -273,11 +279,13 @@ public class MenuBarredores extends javax.swing.JFrame {
                                     .addComponent(etiquetaCapacidad))
                                 .addGap(24, 24, 24)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(campoCapacidad)
-                                        .addGap(23, 23, 23)
-                                        .addComponent(etiquetaKilogramo))
-                                    .addComponent(campoDistVelAcopio)))
+                                    .addComponent(campoCapacidad)
+                                    .addComponent(campoDistVelAcopio))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(etiquetaKilogramo1)
+                                    .addComponent(etiquetaKilogramo))
+                                .addGap(6, 6, 6))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
@@ -323,7 +331,8 @@ public class MenuBarredores extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaDistVelAcopio)
-                    .addComponent(campoDistVelAcopio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoDistVelAcopio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaKilogramo1))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrearAreaBarrido)
@@ -406,7 +415,8 @@ public class MenuBarredores extends javax.swing.JFrame {
                     Integer.parseInt(etiquetaDigNumBarredores.getText()),
                     Integer.parseInt(etiquetaDigNumCuadras.getText()), 
                     Double.parseDouble(campoCapacidad.getText()), 
-                    new Distribucion(campoDistVelAcopio.getText()));
+                    new Distribucion(campoDistVelAcopio.getText(),
+                    FACTOR_CONVERSION_VELOCIDAD_ACOPIO));
                 rutas.get(listaRutas.getSelectedIndex()).añadirArea(area);
                 modeloAreas.addElement("Area " + modeloAreas.getSize());
             }
@@ -422,7 +432,8 @@ public class MenuBarredores extends javax.swing.JFrame {
                 area.setNumeroBarredores(Integer.parseInt(etiquetaDigNumBarredores.getText()));
                 area.setNumeroCuadras(Integer.parseInt(etiquetaDigNumCuadras.getText()));
                 area.setCapacidad(Double.parseDouble(campoCapacidad.getText()));
-                area.setVelocidadAcopio(new Distribucion(campoDistVelAcopio.getText()));
+                area.setVelocidadAcopio(new Distribucion(campoDistVelAcopio.getText(),
+                FACTOR_CONVERSION_VELOCIDAD_ACOPIO));
             }
             UI.alerta("Área de barrido editada correctamente");
         }
@@ -460,6 +471,7 @@ public class MenuBarredores extends javax.swing.JFrame {
     private javax.swing.JLabel etiquetaDigNumCuadras;
     private javax.swing.JLabel etiquetaDistVelAcopio;
     private javax.swing.JLabel etiquetaKilogramo;
+    private javax.swing.JLabel etiquetaKilogramo1;
     private javax.swing.JLabel etiquetaNumBarredores;
     private javax.swing.JLabel etiquetaNumCuadras;
     private javax.swing.JLabel etiquetaRutas;

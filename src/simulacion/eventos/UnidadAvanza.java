@@ -31,6 +31,7 @@ public class UnidadAvanza extends Evento {
 
     @Override
     public void modificarEstado() {
+        //System.out.println("Se va a ejecutar un evento de avance de unidad en el tick " + tick);
         if (!camion.isAveriado()) {
             this.camion.setActivo(true);
             if (cambioDeCalle) {

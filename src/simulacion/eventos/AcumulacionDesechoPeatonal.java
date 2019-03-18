@@ -29,10 +29,11 @@ public class AcumulacionDesechoPeatonal extends Evento {
 
     @Override
     public void modificarEstado() {
+        //System.out.println("Se va a ejecutar un evento de aumulación peatonal en el tick " + tick);
         Random rand = new Random();
         for (int i = 0; i < areaBarrido.getCantidadBasura().length; i++) {
             areaBarrido.añadirBasuraArea(i, desechoPorPeaton.evaluarDistribucionInversa(
-                rand.nextDouble() * personasEnEvento));
+                rand.nextDouble()) * personasEnEvento);
         }
     }
 }

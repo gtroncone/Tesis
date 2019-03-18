@@ -34,7 +34,8 @@ public class Pieza implements Serializable {
     public Pieza(Pieza pieza) {
         this.nombre = pieza.getNombre();
         this.costo = pieza.getCosto();
-        this.tiempoDeVida = new Distribucion(pieza.getTiempoDeVida().getCampo());
+        this.tiempoDeVida = new Distribucion(pieza.getTiempoDeVida().getCampo(),
+            pieza.getTiempoDeVida().getFactor());
         this.ocasionaFallaCritica = pieza.isOcasionaFallaCritica();
     }
 

@@ -29,6 +29,7 @@ public class SalidaRuta extends Evento {
 
     @Override
     public void modificarEstado() {
+        //System.out.println("Se va a ejecutar un evento de salida de ruta en el tick " + tick);
         if (!camion.isAveriado()) {
             calle.camionSale(camion);
             camion.setActivo(false);

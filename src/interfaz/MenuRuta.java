@@ -43,11 +43,16 @@ public class MenuRuta extends javax.swing.JFrame {
     private Color estadoColorPicker;
     private final int[] rainbowColors;
     
+    private final double FACTOR_CONVERSION_VELOCIDAD = 1000 / 60;
+    
     /**
      * Creates new form MenuRuta
      * @param ui
      * @throws java.io.IOException
-     */    
+     */
+    // Desechos por Peatón = kg / persona
+    // Flujo peatonal = n° personas
+    // Velocidad de recorrido = m / min <= km / h
     public MenuRuta(UI ui) throws IOException {
         interfaz = ui;
         initComponents();
@@ -297,6 +302,9 @@ public class MenuRuta extends javax.swing.JFrame {
         dropPrimerPuntoCalle = new javax.swing.JComboBox<>();
         etiquetaPuntoFinal = new javax.swing.JLabel();
         dropSegundoPuntoCalle = new javax.swing.JComboBox<>();
+        etiquetaPuntosCalle1 = new javax.swing.JLabel();
+        etiquetaPuntosCalle2 = new javax.swing.JLabel();
+        etiquetaPuntosCalle3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -349,7 +357,19 @@ public class MenuRuta extends javax.swing.JFrame {
 
         etiquetaDistFlujoPeatonal.setText("Flujo Peatonal (Dist)");
 
+        campoDistFlujoPeatonal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoDistFlujoPeatonalActionPerformed(evt);
+            }
+        });
+
         etiquetaDistDesPorPeaton.setText("Desechos por Peatón (Dist)");
+
+        campoDistDesPorPeaton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoDistDesPorPeatonActionPerformed(evt);
+            }
+        });
 
         listaCallesRuta.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -403,6 +423,12 @@ public class MenuRuta extends javax.swing.JFrame {
 
         dropSegundoPuntoCalle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        etiquetaPuntosCalle1.setText("km/h");
+
+        etiquetaPuntosCalle2.setText("n° pers");
+
+        etiquetaPuntosCalle3.setText("kg / pers");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -417,9 +443,9 @@ public class MenuRuta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEditarHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(campoNombreRuta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dropSelRuta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dropSelRuta, 0, 128, Short.MAX_VALUE)
+                            .addComponent(campoNombreRuta))
                         .addGap(18, 18, 18)
                         .addComponent(btnEliminarRuta)))
                 .addGap(29, 29, 29))
@@ -430,11 +456,15 @@ public class MenuRuta extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(etiquetaDistFlujoPeatonal)
                             .addComponent(etiquetaDistDesPorPeaton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(campoDistDesPorPeaton, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(campoDistFlujoPeatonal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(127, 127, 127))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(campoDistFlujoPeatonal)
+                            .addComponent(campoDistDesPorPeaton, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(etiquetaPuntosCalle2)
+                            .addComponent(etiquetaPuntosCalle3))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -450,10 +480,14 @@ public class MenuRuta extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(etiquetaNombreCalle)
                                     .addComponent(etiquetaDistVelRecor))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(campoNombreCalle, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(campoDistVelRecor, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(campoDistVelRecor, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(etiquetaPuntosCalle1)))
+                                .addGap(21, 21, 21))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(etiquetaPuntosCalle)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -463,8 +497,8 @@ public class MenuRuta extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(etiquetaPuntoFinal)
                                 .addGap(18, 18, 18)
-                                .addComponent(dropSegundoPuntoCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(30, 30, 30))
+                                .addComponent(dropSegundoPuntoCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -499,11 +533,13 @@ public class MenuRuta extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaDistFlujoPeatonal)
-                    .addComponent(campoDistFlujoPeatonal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoDistFlujoPeatonal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaPuntosCalle2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaDistDesPorPeaton)
-                    .addComponent(campoDistDesPorPeaton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoDistDesPorPeaton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaPuntosCalle3))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
@@ -524,7 +560,8 @@ public class MenuRuta extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaDistVelRecor)
-                    .addComponent(campoDistVelRecor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoDistVelRecor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(etiquetaPuntosCalle1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(etiquetaPuntosCalle)
@@ -623,7 +660,7 @@ public class MenuRuta extends javax.swing.JFrame {
                     estadoColorPicker = new Color(rainbowColors[rand.nextInt(6)]);
                 }
                 Calle calle = new Calle(campoNombreCalle.getText(), 
-                new Distribucion(campoDistVelRecor.getText()),
+                new Distribucion(campoDistVelRecor.getText(), FACTOR_CONVERSION_VELOCIDAD),
                 Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()),
                 Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()),
                 new Color(estadoColorPicker.getRGB()));
@@ -634,7 +671,8 @@ public class MenuRuta extends javax.swing.JFrame {
                 Calle calle = listaCalles.get(listaCallesRuta.getSelectedIndex());
                 modeloCalles.set(listaCallesRuta.getSelectedIndex(), campoNombreCalle.getText());
                 calle.setNombre(campoNombreCalle.getText());
-                calle.setVelocidad(new Distribucion(campoDistVelRecor.getText()));
+                calle.setVelocidad(new Distribucion(campoDistVelRecor.getText(),
+                FACTOR_CONVERSION_VELOCIDAD));
                 calle.setPuntoInicial(Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()));
                 calle.setPuntoFinal(Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()));
                 calle.setColor(estadoColorPicker);
@@ -675,6 +713,14 @@ public class MenuRuta extends javax.swing.JFrame {
             listaCallesRuta.clearSelection();
         }
     }//GEN-LAST:event_listaCallesRutaMouseClicked
+
+    private void campoDistDesPorPeatonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDistDesPorPeatonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoDistDesPorPeatonActionPerformed
+
+    private void campoDistFlujoPeatonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDistFlujoPeatonalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoDistFlujoPeatonalActionPerformed
 
     public void setZoom(int zoom) {
         this.zoom = zoom;
@@ -718,6 +764,9 @@ public class MenuRuta extends javax.swing.JFrame {
     private javax.swing.JLabel etiquetaPuntoFinal;
     private javax.swing.JLabel etiquetaPuntoInicial;
     private javax.swing.JLabel etiquetaPuntosCalle;
+    private javax.swing.JLabel etiquetaPuntosCalle1;
+    private javax.swing.JLabel etiquetaPuntosCalle2;
+    private javax.swing.JLabel etiquetaPuntosCalle3;
     private javax.swing.JLabel etiquetaSelRuta;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;

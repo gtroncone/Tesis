@@ -29,8 +29,16 @@ public class KilometrosSinAveriaEnRuta extends Metrica {
         LinkedList<String> subtitulos = new LinkedList<>();
         
         for (Camion camion : camiones) {
-            resultados.add(camion.getDistanciaRecorrida() / camion.getNumeroAverias());
-            subtitulos.add("Camión: " + camion.getModelo() + " " + camion.getId());
+            double numeroDeAverias = camion.getNumeroAverias();
+            
+            if (numeroDeAverias == 0) {
+                resultados.add(Double.NaN);
+                subtitulos.add("Camión con modelo " + camion.getModelo() + " y con ID " + camion.getId()
+                    + " no sufrió averías");
+            } else {
+                resultados.add(camion.getDistanciaRecorrida() / camion.getNumeroAverias());
+                subtitulos.add("Camión con modelo " + camion.getModelo() + " y con ID " + camion.getId());
+            }
         }
         this.setSubtitulos(subtitulos);
     }

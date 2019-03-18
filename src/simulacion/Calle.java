@@ -39,7 +39,8 @@ public class Calle implements Serializable {
     
     public Calle(Calle calle) {
         this.nombre = calle.getNombre();
-        this.velocidad = new Distribucion(calle.getVelocidad().getCampo());
+        this.velocidad = new Distribucion(calle.getVelocidad().getCampo(),
+            calle.getVelocidad().getFactor());
         this.puntoInicial = calle.getPuntoInicial();
         this.puntoFinal = calle.getPuntoFinal();
         this.color = new Color(calle.getColor().getGreen());

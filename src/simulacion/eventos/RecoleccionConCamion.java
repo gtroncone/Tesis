@@ -30,8 +30,9 @@ public class RecoleccionConCamion extends Evento {
 
     @Override
     public void modificarEstado() {
+        //System.out.println("Se va a ejecutar un evento recolección con camión en el tick " + tick);
         if (!camion.isAveriado()) {
-            int puntoActual = calle.getMapaCamionesPuntos().get(calle.getMapaCamionesPuntos().indexOf(camion));
+            int puntoActual = calle.getMapaCamionesPuntos().get(calle.getCamiones().indexOf(camion)) - 1;
             double cantidadBasuraPunto = calle.getPuntosAcum().getCantidadBasuraPunto(puntoActual);
             if (camion.getCarga() + cantidadBasuraPunto <= camion.getCapacidadEnKg()) {
                 calle.getPuntosAcum().disminuirCantidadBasuraPunto(puntoActual, cantidadBasuraPunto);

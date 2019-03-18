@@ -31,8 +31,8 @@ public class ToneladasPorTiempoRecoleccion extends Metrica {
             cargaTotalRecolectada += camion.getCargaTotalRecolectada();
             tiempoTotalOperacion += camion.getTiempoOperacion();
         }
-        
-        this.resultado = ((cargaTotalRecolectada / 1000) / tiempoTotalOperacion);
+        System.out.println(tiempoTotalOperacion);
+        this.resultado = ((cargaTotalRecolectada / 1000) / (tiempoTotalOperacion / 60));
     }
 
     @Override

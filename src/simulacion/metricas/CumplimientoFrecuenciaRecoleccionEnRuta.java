@@ -29,8 +29,15 @@ public class CumplimientoFrecuenciaRecoleccionEnRuta extends Metrica {
         LinkedList<String> subtitulos = new LinkedList<>();
         
         for (Camion camion : camiones) {
-            resultados.add((double) (camion.getNumeroRutasConFallas() / camion.getNumeroRutasIniciadas()));
-            subtitulos.add("Camión: " + camion.getModelo() + " " + camion.getId());
+            double numeroRutas = camion.getNumeroRutasIniciadas();
+            if (numeroRutas == 0) {
+                resultados.add(Double.NaN);
+                subtitulos.add("Camión con modelo " + camion.getModelo() + " y con ID " + camion.getId()
+                    + " no fue desplegado");
+            } else {
+                resultados.add((double) ((numeroRutas - camion.getNumeroRutasConFallas()) / numeroRutas));
+                subtitulos.add("Camión con modelo " + camion.getModelo() + " y con ID " + camion.getId());                
+            }
         }
         this.setSubtitulos(subtitulos);
     }

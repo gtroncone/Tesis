@@ -32,7 +32,8 @@ public class AreaBarrido implements Serializable {
         this.numeroBarredores = areaBarrido.getNumeroBarredores();
         this.numeroCuadras = areaBarrido.getNumeroCuadras();
         this.capacidad = areaBarrido.getCapacidad();
-        this.velocidadAcopio = new Distribucion(areaBarrido.getVelocidadAcopio().getCampo());
+        this.velocidadAcopio = new Distribucion(areaBarrido.getVelocidadAcopio().getCampo(),
+            areaBarrido.getVelocidadAcopio().getFactor());
         this.cantidadBasura = new double[areaBarrido.getNumeroCuadras()];
     }
 

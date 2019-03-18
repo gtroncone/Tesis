@@ -29,6 +29,7 @@ public class MantenimientoSobreUnidad extends Evento {
 
     @Override
     public void modificarEstado() {
+        //System.out.println("Se va a ejecutar un evento de mantenimiento sobre unidad en el tick " + tick);
         LinkedList<Pieza> piezas = camion.getPiezas();
         for (Pieza pieza : piezas) {
             double distanciaLimite;

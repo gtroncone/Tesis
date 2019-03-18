@@ -25,6 +25,7 @@ public class EntradaARuta extends Evento {
 
     @Override
     public void modificarEstado() {
+        //System.out.println("Se va a ejecutar un evento de entrada a ruta en el tick " + tick);
         if (!camion.isAveriado()) {
             ruta.getCalles().getFirst().camionEntra(camion);
             camion.setActivo(true);

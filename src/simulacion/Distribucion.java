@@ -24,6 +24,7 @@ import org.apache.commons.math3.exception.NumberIsTooLargeException;
 public class Distribucion implements Serializable {
     
     private String campo;
+    private double factor = -1;
     private RealDistribution distReal;
     private IntegerDistribution distEntera;
     private DistribucionPoissonCompuestaNoHomogeneaNormal distEspecial;
@@ -35,6 +36,42 @@ public class Distribucion implements Serializable {
         parse(this.campo);
     }
     
+    public Distribucion(String campo, double factor) {
+        this.campo = campo;
+        
+        if (factor > 0) {
+            this.factor = factor;
+
+            String aux = campo.trim();
+
+            aux = aux.replaceAll("\\s", "");
+            aux = aux.replaceAll("\\)", "");
+            String[] partes = aux.split("\\(");
+            String[] parametros;
+            parametros = partes[1].split(",");
+            double [] auxParametros = new double[parametros.length];
+            try {
+                for (int i = 0; i < auxParametros.length; i++) {
+                    auxParametros[i] = Double.parseDouble(parametros[i]);
+                }
+
+                String resultado = partes[0] + "(";
+                for (int i = 0; i < auxParametros.length; i++) {
+                    resultado += String.valueOf(auxParametros[i] * factor);
+                    if (i != auxParametros.length - 1) {
+                        resultado += ",";
+                    }
+                }
+                resultado += ")";
+                parse(resultado);
+            } catch (NumberFormatException e) {
+
+            }
+        } else {
+            parse(campo);
+        }
+    }
+    
     public Distribucion(String campo, int[] arraySemanal, int[] arrayDiario) {
         this.campo = campo;
         this.arrayDiario = arrayDiario;
@@ -44,6 +81,10 @@ public class Distribucion implements Serializable {
 
     public String getCampo() {
         return campo;
+    }
+    
+    public double getFactor() {
+        return factor;
     }
     
     static public boolean esDistValida(String campo, boolean permitidaEspecial) {
@@ -231,7 +272,7 @@ public class Distribucion implements Serializable {
     
     public double evaluarDistribucionInversaEspecial(int tickInicial, int tickFinal, double probabilidad, int diaInicial) {
         if (this.esDistEspecial()) {
-            return this.getDistEspecial().evaluarProbabilidadInversa(tickFinal, tickInicial, probabilidad, arrayDiario, arraySemanal, diaInicial);
+            return this.getDistEspecial().evaluarProbabilidadInversa(tickInicial, tickFinal, probabilidad, arrayDiario, arraySemanal, diaInicial);
         } else {
             return 0;
         }
@@ -342,6 +383,10 @@ public class Distribucion implements Serializable {
         } else {
             return false;
         }        
+    }
+    
+    public boolean hayConversion() {
+        return this.factor == -1;
     }
     
 }

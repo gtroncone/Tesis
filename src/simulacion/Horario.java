@@ -34,7 +34,8 @@ public class Horario implements Serializable {
             }
             this.datos.add(dato);
         }
-        this.mapaCamionHorarios = new LinkedList<>();
+        this.mapaCamionHorarios = horario.getMapaCamionHorarios();
+        this.camionesAsignados = horario.getCamionesAsignados();
     }
 
     public LinkedList<int[]> getDatos() {
@@ -101,21 +102,23 @@ public class Horario implements Serializable {
         datos.remove(selectedIndex);
     }
     
-    public void reconciliarCamiones(Ruta ruta, LinkedList<Camion> nuevosCamiones) {
-        LinkedList<Camion> viejosCamionesAsignados = ruta.getHorario().getCamionesAsignados();
-        LinkedList<Integer> viejoMapaCamionesAHorario = ruta.getHorario().getMapaCamionHorarios();
+    public void reconciliarCamiones(LinkedList<Camion> nuevosCamiones) {
+        LinkedList<Camion> viejosCamionesAsignados = this.camionesAsignados;
+        LinkedList<Integer> viejoMapaCamionesAHorario = this.mapaCamionHorarios;
+        this.camionesAsignados = new LinkedList<>();
+        this.mapaCamionHorarios = new LinkedList<>();
         for (int i = 0; i < viejosCamionesAsignados.size(); i++) {
             encontrarCamion(viejosCamionesAsignados.get(i), i, nuevosCamiones,
                 viejoMapaCamionesAHorario);
         }
     }
     
-    private void encontrarCamion(Camion camion, int indiceCamion, LinkedList<Camion> listaCamiones,
+    private void encontrarCamion(Camion camion, int indiceCamion, LinkedList<Camion> nuevosCamiones,
             LinkedList<Integer> viejoMapaCamionesAHorario) {
-        for (int i = 0; i < listaCamiones.size(); i++) {
-            if (listaCamiones.get(i).getId().equals(camion.getId())) {
-                this.mapaCamionHorarios.add(viejoMapaCamionesAHorario.get(indiceCamion));
-                this.camionesAsignados.add(camion);
+        for (int i = 0; i < nuevosCamiones.size(); i++) {
+            if (nuevosCamiones.get(i).getId().equals(camion.getId())) {
+                this.mapaCamionHorarios.add(new Integer(viejoMapaCamionesAHorario.get(indiceCamion)));
+                this.camionesAsignados.add(nuevosCamiones.get(i));
             }
         }
     }

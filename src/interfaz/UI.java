@@ -584,14 +584,22 @@ public class UI extends javax.swing.JFrame {
                         }
                     }
                }
+                try {
+                    tesis.serializarTesis(this.filepath);
+                    alerta("Guardado correctamente");
+                } catch (IOException ex) {
+                    System.out.println(ex);
+                    alerta("Error inesperado ocurrido al guardar. ¿Tiene los permisos requeridos?");
+                }
            }
-        }
-        try {
-            tesis.serializarTesis(this.filepath);
-            alerta("Guardado correctamente");
-        } catch (IOException ex) {
-            System.out.println(ex);
-            alerta("Error inesperado ocurrido al guardar. ¿Tiene los permisos requeridos?");
+        } else {
+            try {
+                tesis.serializarTesis(this.filepath);
+                alerta("Guardado correctamente");
+            } catch (IOException ex) {
+                System.out.println(ex);
+                alerta("Error inesperado ocurrido al guardar. ¿Tiene los permisos requeridos?");
+            }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

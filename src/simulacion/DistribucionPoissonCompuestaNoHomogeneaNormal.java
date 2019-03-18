@@ -28,6 +28,7 @@ public class DistribucionPoissonCompuestaNoHomogeneaNormal {
     private final int NUMERO_ITERACIONES = 20;
     private final double TAMAÑO_STEP = 0.1;
     private final double LIMITE_SUPERIOR_SEGURIDAD = 50;
+    private final double LIMITE_INFERIOR_MDET = 50;
     
     public DistribucionPoissonCompuestaNoHomogeneaNormal(double lambda, double media, double desviacion) {
         this.media = media;
@@ -57,7 +58,7 @@ public class DistribucionPoissonCompuestaNoHomogeneaNormal {
             pendienteInicial = this.lambda * arraySemanal[this.diaI] *
                 ((arrayDiario[this.horaI + 1]) - (arrayDiario[this.horaI])) / 60;
         }
-        
+
         double pendienteFinal;
         
         if (this.horaF + 1 >= arrayDiario.length) {
@@ -72,18 +73,23 @@ public class DistribucionPoissonCompuestaNoHomogeneaNormal {
             pendienteFinal = this.lambda * arraySemanal[this.diaF] *
                 ((arrayDiario[this.horaF + 1]) - (arrayDiario[this.horaF])) / 60;
         }
-        
+                
         double yInicial = pendienteInicial * (tickInicial % 60) + (this.lambda * arrayDiario[this.horaI] * arraySemanal[this.diaI]);
         double yFinal = pendienteFinal * (tickFinal % 60) + (this.lambda * arrayDiario[this.horaF] * arraySemanal[this.diaF]);
-                        
+               
         double integral = 0;
         
         double aux = tickInicial;
         int indexDiario = this.horaI;
         int indexSemanal = this.diaI;
-        for (int i = 0; i < numeroPuntos; i++) {
-            if (tickFinal - aux < 60) {
-                integral += ((tickFinal - aux) * (yInicial + yFinal)) / 2;
+        for (int i = 0; i < numeroPuntos - 1; i++) {
+            if (tickFinal - aux <= 60) {
+                if (i == 0) {
+                    integral += ((tickFinal - aux) * (yInicial + yFinal)) / 2;
+                } else {
+                    double factorDiarioInicial = this.lambda * arrayDiario[indexDiario] * arraySemanal[indexSemanal];
+                    integral += (tickFinal - aux) * (yFinal + factorDiarioInicial) / 2;
+                }
                 break;
             } else {
                 indexDiario++;
@@ -97,10 +103,10 @@ public class DistribucionPoissonCompuestaNoHomogeneaNormal {
                 
                 if (i == 0) {
                     integral += ((this.primerTickGrilla - aux) * (yInicial
-                        + this.lambda * arrayDiario[indexDiario] * arraySemanal[indexSemanal]));
+                        + this.lambda * arrayDiario[indexDiario] * arraySemanal[indexSemanal])) / 2;
                     aux = this.primerTickGrilla;
                 } else {
-                    int viejoIndexDiario = indexDiario--;
+                    int viejoIndexDiario = indexDiario - 1;
                     int viejoIndexSemanal = indexSemanal;
                     if (viejoIndexDiario < 0) {
                         viejoIndexDiario = 23;
@@ -111,7 +117,8 @@ public class DistribucionPoissonCompuestaNoHomogeneaNormal {
                     }
                     integral += (60) * (this.lambda *
                         ((arrayDiario[indexDiario] * arraySemanal[indexSemanal])
-                        - (arrayDiario[viejoIndexDiario] * arraySemanal[viejoIndexSemanal]))) / 2;
+                        + (arrayDiario[viejoIndexDiario] * arraySemanal[viejoIndexSemanal]))) / 2;
+                    aux += 60;
                 }
             }
         }
@@ -135,6 +142,11 @@ public class DistribucionPoissonCompuestaNoHomogeneaNormal {
         double probabilidad, int[] arrayDiario, int[] arraySemanal, int diaInicial) {
         double mDeT = calcularFuncionM(tickInicial, tickFinal,
             arrayDiario, arraySemanal, diaInicial);
+        
+        if (mDeT < LIMITE_INFERIOR_MDET) {
+            return 0;
+        }
+        
         double factorTemporal = Math.exp(-mDeT);
                
         double probZ;
@@ -144,7 +156,6 @@ public class DistribucionPoissonCompuestaNoHomogeneaNormal {
             z += TAMAÑO_STEP;
             for (int n = 1; n < NUMERO_ITERACIONES; n++) {
                 NormalDistribution N = new NormalDistribution(n * media, Math.sqrt(n) * desviacion);
-
                 double potencia = Math.pow(mDeT, n);
                 double coeficienteFactorTemporal = (potencia / factorial(n)) * factorTemporal;
                 probZ += ((N.cumulativeProbability(z) - N.cumulativeProbability(0)) * coeficienteFactorTemporal);

@@ -107,15 +107,21 @@
                                           <Component id="etiquetaTasaAcum" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="etiquetaTasaGen" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace pref="41" max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="campoTasaAcum" alignment="1" min="-2" pref="170" max="-2" attributes="0"/>
-                                          <Component id="campoTasaGen" alignment="1" min="-2" pref="170" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="campoTasaAcum" pref="133" max="32767" attributes="0"/>
+                                          <Component id="campoTasaGen" max="32767" attributes="0"/>
                                       </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="etiquetaTasaAcum1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="etiquetaTasaAcum2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
                                       <Component id="etiquetaCantPuntosAcum" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace pref="60" max="32767" attributes="0"/>
                                       <Component id="etiquetaNumPuntosAcum" min="-2" pref="68" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnNuevoPuntoAcum" min="-2" max="-2" attributes="0"/>
@@ -123,7 +129,7 @@
                                       <Component id="btnRestarPuntoAcum" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="22" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -151,13 +157,15 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="campoTasaAcum" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="etiquetaTasaAcum" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="etiquetaTasaAcum2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="etiquetaTasaGen" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="campoTasaGen" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="etiquetaTasaAcum1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="25" max="32767" attributes="0"/>
+                      <EmptySpace pref="51" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnCrearPtoAcum" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnEditarPtoAcum" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -171,7 +179,7 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="etiquetaTasaAcum">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tasa de Acumulaci&#xf3;n (Dist)"/>
+                <Property name="text" type="java.lang.String" value="Tiempo de Interarribo (Dist)"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoTasaAcum">
@@ -202,7 +210,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="etiquetaTasaGen">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tasa de Generaci&#xf3;n (Dist)"/>
+                <Property name="text" type="java.lang.String" value="Masa por E. Desecho (Dist)"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoTasaGen">
@@ -301,6 +309,16 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRestarPuntoAcumActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="etiquetaTasaAcum1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="kg"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="etiquetaTasaAcum2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="min"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

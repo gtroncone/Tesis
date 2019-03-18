@@ -47,8 +47,10 @@ public class Ruta implements Serializable {
             this.calles.add(new Calle(ruta.getCalles().get(i)));
         }
         
-        this.flujoPeatonal = new Distribucion(ruta.getFlujoPeatonal().getCampo());
-        this.desechosPorPeaton = new Distribucion(ruta.getDesechosPorPeaton().getCampo());
+        this.flujoPeatonal = new Distribucion(ruta.getFlujoPeatonal().getCampo(),
+            ruta.getFlujoPeatonal().getFactor());
+        this.desechosPorPeaton = new Distribucion(ruta.getDesechosPorPeaton().getCampo(),
+            ruta.getDesechosPorPeaton().getFactor());
         
         this.puntos = new LinkedList<>();
         

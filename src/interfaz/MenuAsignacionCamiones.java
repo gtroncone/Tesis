@@ -59,7 +59,9 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
         if (this.camiones != null) {
             modeloCamiones.clear();
             for (int i = 0; i < this.camiones.size(); i++) {
-                modeloCamiones.addElement(this.camiones.get(i).getId());
+                Camion camion = this.camiones.get(i);
+                modeloCamiones.addElement("Modelo: " + camion.getModelo()
+                    + " ID: " + camion.getId());
             }
         }
     }
@@ -251,7 +253,9 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
                 Horario horario = rutas.get(listaRutas.getSelectedIndex()).getHorario();
                 horario.asignarCamion(camiones.get(listaPiscinaCamiones.getSelectedIndex()),
                     listaHorarios.getSelectedIndex());
-                modeloAsignados.addElement(camiones.get(listaPiscinaCamiones.getSelectedIndex()));
+                Camion camion = camiones.get(listaPiscinaCamiones.getSelectedIndex());
+                modeloAsignados.addElement("Modelo: " + camion.getModelo()
+                    + " ID: " + camion.getId());
             }
         }
     }//GEN-LAST:event_btnAsignarCamionActionPerformed
@@ -293,7 +297,8 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
             modeloAsignados.clear();
             for (int i = 0; i < camionesAux.size(); i++) {
                 Camion camion = camionesAux.get(i);
-                modeloAsignados.addElement(camion.getId());
+                modeloAsignados.addElement("Modelo: " + camion.getModelo()
+                    + " ID: " + camion.getId());
             }
         }
     }//GEN-LAST:event_listaHorariosValueChanged

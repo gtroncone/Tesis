@@ -39,6 +39,7 @@ public class DepositoDesechoEnPuntoAcumulacion extends Evento {
 
     @Override
     public void modificarEstado() {
+        //System.out.println("Se va a ejecutar un evento de depósito de desecho en el tick " + tick);
         Random rand = new Random();
         Distribucion dist = callePuntoAcumulacion.getPuntosAcum().getTasaGeneracion();
         if (dist.esDistribucionEspecial()) {

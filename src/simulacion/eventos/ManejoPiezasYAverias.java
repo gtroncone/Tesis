@@ -30,6 +30,7 @@ public class ManejoPiezasYAverias extends Evento {
 
     @Override
     public void modificarEstado() {
+        //System.out.println("Se va a ejecutar un evento de manejo de piezas y averías en el tick " + tick);
         Random rand = new Random();
         if (!camion.isAveriado()) {
             LinkedList<Pieza> piezas = camion.getPiezas();

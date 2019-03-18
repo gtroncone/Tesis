@@ -6,6 +6,7 @@
 package simulacion;
 
 import interfaz.UI;
+import java.awt.Desktop;
 import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -154,6 +155,7 @@ public class Simulacion implements Serializable {
 
     private void cicloPrincipal(ContextoSimulacion[] contextos, int numTicks) {
         try {
+            int cont = 0;
             for (ContextoSimulacion contexto : contextos) {
                 listarEventosAcumulacionDesechos(contexto, numTicks);
                 listarEventosAcumulacionDesechoPeatonal(contexto, numTicks);
@@ -161,8 +163,15 @@ public class Simulacion implements Serializable {
                 listarEventosAcopioDesechoPeatonal(contexto, numTicks);
                 ordenarEventos(contexto);
                 ejecutarEventos(contexto);
+                cont++;
+                System.out.println("Se acabó el contexto " + cont);
             }
-            desplegarResultados(contextos);
+            String url = desplegarResultados(contextos);
+            if (!url.isEmpty()) {
+                UI.alerta("¡Simulación ejecutada exitosamente!");
+                File htmlFile = new File(url);
+                Desktop.getDesktop().browse(htmlFile.toURI());
+            }
         } catch (IOException ex) {
             UI.alerta("Error al guardar el archivo con los resultados");
         }
@@ -232,7 +241,7 @@ public class Simulacion implements Serializable {
             Ruta ruta = contexto.getRutas().get(i);
             for (int j = 0; j < ruta.getCalles().size(); j++) {
                 Calle calle = ruta.getCalles().get(j);
-                if (calle.getPuntosAcum() != null) {    
+                if (calle.getPuntosAcum() != null) {
                     for (int k = 0; k < calle.getPuntosAcum().getNumeroPuntos(); k++) {
                         PuntosAcumulacion puntos = calle.getPuntosAcum();
                         int auxTicks = 0;
@@ -289,7 +298,7 @@ public class Simulacion implements Serializable {
     
     // W!
     private void listarEventosAvanceUnidad(int tickInicial, Camion camionAvanza,
-            Ruta ruta, int numTicks, ContextoSimulacion contexto) {
+        Ruta ruta, int numTicks, ContextoSimulacion contexto) {
         
         Random rand = new Random();
         int ticksAcum = tickInicial;      
@@ -298,53 +307,58 @@ public class Simulacion implements Serializable {
         for (int i = 0; i < ruta.getCalles().size(); i++) {
             Calle calle = ruta.getCalles().get(i);
             int ticksParaAvanzar;
-            for (int j = 0; j <= calle.getPuntosAcum().getNumeroPuntos(); j++) {
-                
-                double velocidad = 1;
-                velocidad = calle.getVelocidad().evaluarDistribucionInversa(rand.nextDouble());
-                
-                double distancia = calcularDistanciaEntrePuntos(calle.getPuntoInicial(), calle.getPuntoFinal(), ruta);
-                distancia /= (calle.getPuntosAcum().getNumeroPuntos() + 1);
+            if (calle.getPuntosAcum() != null) {
+                for (int j = 0; j <= calle.getPuntosAcum().getNumeroPuntos(); j++) {
 
-                ticksParaAvanzar = (int) Math.floor(distancia / velocidad);
+                    double velocidad = 1;
+                    velocidad = calle.getVelocidad().evaluarDistribucionInversa(rand.nextDouble());
 
-                // En este caso hay que avanzar a la siguiente calle
-                if (ticksAcum + ticksParaAvanzar < numTicks) {
-                    ticksAcum += ticksParaAvanzar;
+                    double distancia = calcularDistanciaEntrePuntos(calle.getPuntoInicial(), calle.getPuntoFinal(), ruta);
+                    distancia /= (calle.getPuntosAcum().getNumeroPuntos() + 1);
                     
-                    contexto.añadirEventoAveria(new ManejoPiezasYAverias(ticksAcum, camionAvanza, calle));
-                    
-                    if (j == calle.getPuntosAcum().getNumeroPuntos()) {
-                        if (ruta.getCalles().getLast().equals(calle)) {
-                            // En este caso se abandona la ruta y se va al centro de transferencia
-                            contexto.añadirEventoAvanceUnidades(new SalidaRuta(ticksAcum, calle, camionAvanza, ruta));
-                            return;
+                    ticksParaAvanzar = (int) Math.floor(distancia / velocidad);
+                    if (ticksParaAvanzar == 0) {
+                        ticksParaAvanzar = 1;
+                    }
+
+                    // En este caso hay que avanzar a la siguiente calle
+                    if (ticksAcum + ticksParaAvanzar < numTicks) {
+                        ticksAcum += ticksParaAvanzar;
+
+                        contexto.añadirEventoAveria(new ManejoPiezasYAverias(ticksAcum, camionAvanza, calle));
+
+                        if (j == calle.getPuntosAcum().getNumeroPuntos()) {
+                            if (ruta.getCalles().getLast().equals(calle)) {
+                                // En este caso se abandona la ruta y se va al centro de transferencia
+                                contexto.añadirEventoSalidaUnidades(new SalidaRuta(ticksAcum, calle, camionAvanza, ruta));
+                                return;
+                            } else {
+                                // En este caso se va a la siguiente calle en la ruta
+                                contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksAcum,
+                                    camionAvanza, ruta, calle, true));
+                            }
                         } else {
-                            // En este caso se va a la siguiente calle en la ruta
+                            // En este caso hay que avanzar al siguiente punto de acumulación
                             contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksAcum,
-                                camionAvanza, ruta, calle, true));
+                                camionAvanza, ruta, calle, false));
+                            if (ticksAcum + NUMERO_MINUTOS_RECOLECCION_PROMEDIO < numTicks) {
+                                ticksAcum += NUMERO_MINUTOS_RECOLECCION_PROMEDIO;
+                                contexto.añadirEventoRecoleccion(new RecoleccionConCamion(ticksAcum,
+                                    calle, camionAvanza, ruta));
+                            }
                         }
                     } else {
-                        // En este caso hay que avanzar al siguiente punto de acumulación
-                        contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksAcum,
-                            camionAvanza, ruta, calle, false));
-                        if (ticksAcum + NUMERO_MINUTOS_RECOLECCION_PROMEDIO < numTicks) {
-                            ticksAcum += NUMERO_MINUTOS_RECOLECCION_PROMEDIO;
-                            contexto.añadirEventoRecoleccion(new RecoleccionConCamion(ticksAcum,
-                                calle, camionAvanza, ruta));
-                        }
-                    }
-                } else {
-                    break;
-                }   
+                        break;
+                    }   
+                }
             }
         }
     }
     
-    private void desplegarResultados(ContextoSimulacion[] contextos) throws IOException {
+    private String desplegarResultados(ContextoSimulacion[] contextos) throws IOException {
         JFileChooser j = new JFileChooser();
         int returnValue = j.showSaveDialog(null);
-        
+               
         Object[] resultadosIterables = new Object[listaMetricas.size()];
         double[] resultadosNoIterables = new double[listaMetricas.size()];
         String[] nombres = new String[listaMetricas.size()];
@@ -406,6 +420,7 @@ public class Simulacion implements Serializable {
             data += "<html>\n";
             data += "<head>\n";
             data += "<title>Resultados</title>\n";
+            data += "<meta charset=\"utf-8\"/>\n";
             data += "</head>\n";
             data += "<body>\n";
             for (int i = 0; i < listaMetricas.size(); i++) {
@@ -415,16 +430,26 @@ public class Simulacion implements Serializable {
                 if (metrica.isIterable()) {
                     LinkedList<Double> resultados = ((LinkedList<Double>)resultadosIterables[i]);
                     LinkedList<String> subtitulos = listaMetricas.get(i).getSubtitulos();
-                    for (int k = 0; k < resultados.size(); k++) {
-                        data += "<li>\n";
-                        if (subtitulos != null) {
-                            data += "<h4>" + subtitulos.get(k) + "</h4\n";
+                    if (resultados.isEmpty()) {
+                        data += "<li>Sin resultados</li>\n";
+                    } else {
+                        for (int k = 0; k < resultados.size(); k++) {
+                            data += "<li>\n";
+                            if (subtitulos != null) {
+                                data += "<h4>" + subtitulos.get(k) + "</h4>\n";
+                            }
+                            if (!Double.isNaN(resultados.get(k))) {
+                                data += "<p>" + resultados.get(k) + "</p>\n";
+                            }
+                            data += "</li>\n";
                         }
-                        data += "<p>" + resultados.get(k) + "</p>\n";
-                        data += "</li>\n";
                     }
                 } else {
-                    data += "<li>" + resultadosNoIterables[i] + "</li>\n";
+                    if (Double.isNaN(resultadosNoIterables[i])) {
+                        data += "<li>Sin resultado</li>\n";
+                    } else {
+                        data += "<li>" + resultadosNoIterables[i] + "</li>\n";   
+                    }
                 }
                 data += "</ul>\n";
             }
@@ -436,13 +461,17 @@ public class Simulacion implements Serializable {
                 br.write(line);
             }
             br.close();
+            return j.getSelectedFile().getAbsolutePath();
+        } else {
+            UI.alerta("Simulación no ejecutada");
+            return "";
         }
     }
     
     public static double calcularDistanciaEntrePuntos(int puntoI, int puntoF, Ruta ruta) {
         Point puntoInicial = ruta.getPuntos().get(puntoI);
         Point puntoFinal = ruta.getPuntos().get(puntoF);
-        return (puntoFinal.distance(puntoInicial) * MetadataMapa.getEscalas()[ruta.getZoom()]);
+        return (puntoFinal.distance(puntoInicial) * MetadataMapa.getEscalas()[ruta.getZoom() - MetadataMapa.getMinZoom()]);
     }
     
     public static double calcularDistanciaEntrePuntoYTransferencia(int puntoI, Ruta ruta) {

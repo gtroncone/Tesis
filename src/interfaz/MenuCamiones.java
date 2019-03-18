@@ -23,10 +23,13 @@ public class MenuCamiones extends javax.swing.JFrame {
 
     private LinkedList<Pieza> listaPiezas;
     
+    private final double FACTOR_CONVERSION_TASA_FALLA = 1 / 1000;
+    
     /**
      * Creates new form MenuCamiones
      * @param ui
      */    
+    // Falla / metro <= falla / kilómetro
     public MenuCamiones(UI ui) {
         interfaz = ui;
         initComponents();
@@ -162,6 +165,7 @@ public class MenuCamiones extends javax.swing.JFrame {
         etiquetaCostoCamion = new javax.swing.JLabel();
         campoCostoCamion = new javax.swing.JTextField();
         checkFallaCritica = new java.awt.Checkbox();
+        etiquetaCostoCamion1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -223,7 +227,7 @@ public class MenuCamiones extends javax.swing.JFrame {
 
         etiquetaCostoPieza.setText("Costo de la Pieza");
 
-        etiquetaDistTVidaPieza.setText("Tiempo de Vida (Dist)");
+        etiquetaDistTVidaPieza.setText("Tasa de Falla (Dist)");
 
         btnAnadirPieza.setText("Crear");
         btnAnadirPieza.addActionListener(new java.awt.event.ActionListener() {
@@ -235,6 +239,8 @@ public class MenuCamiones extends javax.swing.JFrame {
         etiquetaCostoCamion.setText("Costo del Camión");
 
         checkFallaCritica.setLabel("¿Falla Crítica?");
+
+        etiquetaCostoCamion1.setText("1/km");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -277,7 +283,9 @@ public class MenuCamiones extends javax.swing.JFrame {
                                             .addComponent(campoCostoPieza)
                                             .addComponent(campoDistTiempoVidaPieza))
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnEliminarPieza))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btnEliminarPieza)
+                                            .addComponent(etiquetaCostoCamion1)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(160, 160, 160)
                                         .addComponent(btnAnadirPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -341,7 +349,8 @@ public class MenuCamiones extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoDistTiempoVidaPieza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(etiquetaDistTVidaPieza))
+                    .addComponent(etiquetaDistTVidaPieza)
+                    .addComponent(etiquetaCostoCamion1))
                 .addGap(18, 18, 18)
                 .addComponent(checkFallaCritica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -397,7 +406,7 @@ public class MenuCamiones extends javax.swing.JFrame {
             if (dropSelPieza.getSelectedIndex() == 0) {
                 Pieza pieza = new Pieza(campoNomPieza.getText(),
                         Double.parseDouble(campoCostoPieza.getText()),
-                        new Distribucion(campoDistTiempoVidaPieza.getText()),
+                        new Distribucion(campoDistTiempoVidaPieza.getText(), FACTOR_CONVERSION_TASA_FALLA),
                         checkFallaCritica.getState());
                 if (listaPiezas == null) {
                     listaPiezas = new LinkedList<>();
@@ -410,7 +419,8 @@ public class MenuCamiones extends javax.swing.JFrame {
                 Pieza pieza = listaPiezas.get(dropSelPieza.getSelectedIndex() - 1);
                 pieza.setNombre(campoNomPieza.getText());
                 pieza.setCosto(Double.parseDouble(campoCostoPieza.getText()));
-                pieza.setTiempoDeVida(new Distribucion(campoDistTiempoVidaPieza.getText()));
+                pieza.setTiempoDeVida(new Distribucion(campoDistTiempoVidaPieza.getText(),
+                FACTOR_CONVERSION_TASA_FALLA));
                 pieza.setOcasionaFallaCritica(checkFallaCritica.getState());
             }
         }
@@ -469,6 +479,7 @@ public class MenuCamiones extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> dropSelCamion;
     private javax.swing.JComboBox<String> dropSelPieza;
     private javax.swing.JLabel etiquetaCostoCamion;
+    private javax.swing.JLabel etiquetaCostoCamion1;
     private javax.swing.JLabel etiquetaCostoPieza;
     private javax.swing.JLabel etiquetaDistTVidaPieza;
     private javax.swing.JLabel etiquetaIDCamion;

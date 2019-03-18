@@ -73,7 +73,10 @@
                                           <Component id="campoDistTiempoVidaPieza" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="btnEliminarPieza" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="btnEliminarPieza" min="-2" max="-2" attributes="0"/>
+                                          <Component id="etiquetaCostoCamion1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="160" max="-2" attributes="0"/>
@@ -159,6 +162,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="campoDistTiempoVidaPieza" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="etiquetaDistTVidaPieza" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="etiquetaCostoCamion1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="checkFallaCritica" min="-2" max="-2" attributes="0"/>
@@ -300,7 +304,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="etiquetaDistTVidaPieza">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tiempo de Vida (Dist)"/>
+        <Property name="text" type="java.lang.String" value="Tasa de Falla (Dist)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="campoDistTiempoVidaPieza">
@@ -323,6 +327,11 @@
     <Component class="java.awt.Checkbox" name="checkFallaCritica">
       <Properties>
         <Property name="label" type="java.lang.String" value="&#xbf;Falla Cr&#xed;tica?"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="etiquetaCostoCamion1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1/km"/>
       </Properties>
     </Component>
   </SubComponents>

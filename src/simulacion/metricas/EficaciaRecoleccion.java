@@ -40,13 +40,17 @@ public class EficaciaRecoleccion extends Metrica {
             LinkedList<Calle> calles = ruta.getCalles();
             for (Calle calle : calles) {
                 PuntosAcumulacion puntosAcum = calle.getPuntosAcum();
-                totalGenerado += puntosAcum.getTotalGenerado();
+                if (puntosAcum != null) {
+                    totalGenerado += puntosAcum.getTotalGenerado();   
+                }
             }
         }
-        resultado = new Double(5);
         
-        this.resultado = (totalRecolectado / totalGenerado);
-        
+        if (totalGenerado != 0) {
+            this.resultado = (totalRecolectado / totalGenerado);   
+        } else {
+            this.resultado = Double.NaN;
+        }        
     }
 
     @Override
