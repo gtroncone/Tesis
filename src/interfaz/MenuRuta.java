@@ -628,9 +628,11 @@ public class MenuRuta extends javax.swing.JFrame {
                 modoCreacion();
                 refrescarRutas();
                 interfaz.actualizarMapa();
+                UI.alerta("Ruta creada exitosamente");
             } else {
                 editarRuta();
                 interfaz.actualizarMapa();
+                UI.alerta("Ruta editada exitosamente");
             }
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
@@ -667,6 +669,7 @@ public class MenuRuta extends javax.swing.JFrame {
                 listaCalles.add(calle);
                 modeloCalles.addElement(campoNombreCalle.getText());
                 estadoColorPicker = null;
+                UI.alerta("Calle creada exitosamente");
             } else {
                 Calle calle = listaCalles.get(listaCallesRuta.getSelectedIndex());
                 modeloCalles.set(listaCallesRuta.getSelectedIndex(), campoNombreCalle.getText());
@@ -676,6 +679,8 @@ public class MenuRuta extends javax.swing.JFrame {
                 calle.setPuntoInicial(Integer.parseInt((String)dropPrimerPuntoCalle.getSelectedItem()));
                 calle.setPuntoFinal(Integer.parseInt((String)dropSegundoPuntoCalle.getSelectedItem()));
                 calle.setColor(estadoColorPicker);
+                interfaz.actualizarMapa();
+                UI.alerta("Calle editada exitosamente");
             }
         }
     }//GEN-LAST:event_btnAnadirCalleActionPerformed

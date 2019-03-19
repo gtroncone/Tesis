@@ -21,6 +21,10 @@ public class KilometrosSinAveriaEnRuta extends Metrica {
         super(nombre);
     }
     
+    public KilometrosSinAveriaEnRuta(String nombre, String unidades) {
+        super(nombre, unidades);
+    }
+    
     @Override
     public void evaluar(ContextoSimulacion contexto) {
         resultados = new LinkedList<>();

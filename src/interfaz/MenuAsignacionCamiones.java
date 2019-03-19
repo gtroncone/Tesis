@@ -256,6 +256,7 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
                 Camion camion = camiones.get(listaPiscinaCamiones.getSelectedIndex());
                 modeloAsignados.addElement("Modelo: " + camion.getModelo()
                     + " ID: " + camion.getId());
+                UI.alerta("Camión asignado exitosamente");
             }
         }
     }//GEN-LAST:event_btnAsignarCamionActionPerformed

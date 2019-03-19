@@ -21,6 +21,10 @@ public class CumplimientoFrecuenciaRecoleccionEnRuta extends Metrica {
         super(nombre);
     }
     
+    public CumplimientoFrecuenciaRecoleccionEnRuta(String nombre, String unidades) {
+        super(nombre, unidades);
+    }
+    
     @Override
     public void evaluar(ContextoSimulacion contexto) {
         resultados = new LinkedList<>();

@@ -10,7 +10,6 @@ import java.util.Random;
 import simulacion.Calle;
 import simulacion.Camion;
 import simulacion.Pieza;
-import simulacion.Simulacion;
 
 /**
  *
@@ -39,6 +38,7 @@ public class ManejoPiezasYAverias extends Evento {
                     if (pieza.getTiempoDeVida().evaluarDistribucion(pieza.getDistanciaRecorrida())
                             > rand.nextDouble()) {
                         pieza.setEstaAveriada(true);
+                        camion.incrementarNumeroDeAverias();
                         if (pieza.isOcasionaFallaCritica()) {
                             camion.setAveriado(true);
                             camion.setActivo(false);

@@ -43,16 +43,8 @@ public class Tesis implements Serializable {
     private Simulacion simulacion;
     private LinkedList<Metrica> metricas;
     
-    public Tesis() {
-        metricas = new LinkedList<>();
-        metricas.add(new CostoTotal("Costo Total"));
-        metricas.add(new DesechosTotalesRecolectados("Total de Desechos Recolectados"));
-        metricas.add(new CumplimientoFrecuenciaRecoleccionEnRuta("Cumplimiento de Frecuencia de Recolección en Ruta"));
-        metricas.add(new EficaciaRecoleccion("Eficacia de Recolección"));
-        metricas.add(new EficienciaCamionesRecolectores("Eficiencia de Camiones Recolectores"));
-        metricas.add(new KilometrosSinAveriaEnRuta("Kilómetros Sin Avería En Ruta"));
-        metricas.add(new ToneladasPorTiempoRecoleccion("Toneladas por Tiempo de Recolección"));
-        
+    public Tesis() {       
+        añadirMetricas();
         simulacion = new Simulacion(metricas);
         try {
             MetadataMapa.init();
@@ -65,6 +57,17 @@ public class Tesis implements Serializable {
         } catch (IOException ex) {
             Logger.getLogger(Tesis.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void añadirMetricas() {
+        metricas = new LinkedList<>();
+        metricas.add(new CostoTotal("Costo Total"));
+        metricas.add(new DesechosTotalesRecolectados("Total de Desechos Recolectados", "toneladas"));
+        metricas.add(new CumplimientoFrecuenciaRecoleccionEnRuta("Cumplimiento de Frecuencia de Recolección en Ruta"));
+        metricas.add(new EficaciaRecoleccion("Eficacia de Recolección"));
+        metricas.add(new EficienciaCamionesRecolectores("Eficiencia de Camiones Recolectores"));
+        metricas.add(new KilometrosSinAveriaEnRuta("Kilómetros Sin Avería En Ruta", "km/avería"));
+        metricas.add(new ToneladasPorTiempoRecoleccion("Toneladas por Hora de Recolección", "tons/h"));
     }
     
     public void guardarNuevo(String filepath) throws IOException {
@@ -89,6 +92,8 @@ public class Tesis implements Serializable {
         objectInputStream.close();
         
         this.simulacion = (Simulacion) object;
+        añadirMetricas();
+        this.simulacion.setMetricas(metricas);
         this.interfaz.setSimulacion(this.simulacion);
     }
 

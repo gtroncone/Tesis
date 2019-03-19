@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -52,7 +53,7 @@ public class Simulacion implements Serializable {
     private final int FINAL_HORARIO_LABORAL = 17;
     private final int INICIO_HORARIO_MANTENIMIENTO = 5;
         
-    private final LinkedList<Metrica> listaMetricas;
+    private LinkedList<Metrica> listaMetricas;
 
     public Simulacion(LinkedList<Metrica> metricas) {
         this.rutas = new LinkedList<>();
@@ -139,6 +140,10 @@ public class Simulacion implements Serializable {
     public void setDiaInicial(int diaInicial) {
         this.diaInicial = diaInicial;
     }
+    
+    public void setMetricas(LinkedList<Metrica> metricas) {
+        this.listaMetricas = metricas;
+    }
 
     private void iniciarSimulacion() {
         int numTicks = determinarNumTicks();
@@ -187,6 +192,9 @@ public class Simulacion implements Serializable {
                 for (int k = 0; k < area.getNumeroBarredores(); k++) {
                     double velocidad;
                     velocidad = area.getVelocidadAcopio().evaluarDistribucionInversa(rand.nextDouble());
+                    if (velocidad <= 0) {
+                        velocidad = 1;
+                    }
                     double capacidad = area.getCapacidad();
                     int ticksParaLlenado = (int) Math.floor(capacidad / velocidad);
                     int auxTicks = 0;
@@ -217,13 +225,13 @@ public class Simulacion implements Serializable {
         Random rand = new Random();
         for (int i = 0; i < contexto.getRutas().size(); i++) {
             Ruta ruta = contexto.getRutas().get(i);
-            for (int j = 0; i < ruta.getListaAreas().size(); j++) {
+            for (int j = 0; j < ruta.getListaAreas().size(); j++) {
                 int auxTicks = 0;
                 AreaBarrido area = ruta.getListaAreas().get(j);
                 while (auxTicks < numTicks) {
                     double aleatorio = rand.nextDouble();
+                    auxTicks++;
                     if (auxTicks + 1 < numTicks) {
-                        auxTicks++;
                         if (tickEstaEnHorarioLaboral(auxTicks)) {
                             contexto.añadirEventoAcumulacion(new AcumulacionDesechoPeatonal(auxTicks,
                                 area, ruta.getDesechosPorPeaton(),
@@ -312,8 +320,10 @@ public class Simulacion implements Serializable {
 
                     double velocidad = 1;
                     velocidad = calle.getVelocidad().evaluarDistribucionInversa(rand.nextDouble());
-
                     double distancia = calcularDistanciaEntrePuntos(calle.getPuntoInicial(), calle.getPuntoFinal(), ruta);
+                    if (velocidad <= 0) {
+                        velocidad = 1;
+                    }
                     distancia /= (calle.getPuntosAcum().getNumeroPuntos() + 1);
                     
                     ticksParaAvanzar = (int) Math.floor(distancia / velocidad);
@@ -358,7 +368,7 @@ public class Simulacion implements Serializable {
     private String desplegarResultados(ContextoSimulacion[] contextos) throws IOException {
         JFileChooser j = new JFileChooser();
         int returnValue = j.showSaveDialog(null);
-               
+        DecimalFormat df = new DecimalFormat("#.####");
         Object[] resultadosIterables = new Object[listaMetricas.size()];
         double[] resultadosNoIterables = new double[listaMetricas.size()];
         String[] nombres = new String[listaMetricas.size()];
@@ -427,6 +437,7 @@ public class Simulacion implements Serializable {
                 Metrica metrica = listaMetricas.get(i);
                 data += "<h1>" + metrica.getNombre() + "</h1>\n";
                 data += "<ul>\n";
+                String unidades = listaMetricas.get(i).getUnidades();
                 if (metrica.isIterable()) {
                     LinkedList<Double> resultados = ((LinkedList<Double>)resultadosIterables[i]);
                     LinkedList<String> subtitulos = listaMetricas.get(i).getSubtitulos();
@@ -439,7 +450,7 @@ public class Simulacion implements Serializable {
                                 data += "<h4>" + subtitulos.get(k) + "</h4>\n";
                             }
                             if (!Double.isNaN(resultados.get(k))) {
-                                data += "<p>" + resultados.get(k) + "</p>\n";
+                                data += "<p>" + df.format(resultados.get(k)) + " " + unidades + " " + "</p>\n";
                             }
                             data += "</li>\n";
                         }
@@ -448,7 +459,7 @@ public class Simulacion implements Serializable {
                     if (Double.isNaN(resultadosNoIterables[i])) {
                         data += "<li>Sin resultado</li>\n";
                     } else {
-                        data += "<li>" + resultadosNoIterables[i] + "</li>\n";   
+                        data += "<li>" + df.format(resultadosNoIterables[i]) + " " + unidades + "</li>\n";   
                     }
                 }
                 data += "</ul>\n";
@@ -474,8 +485,8 @@ public class Simulacion implements Serializable {
         return (puntoFinal.distance(puntoInicial) * MetadataMapa.getEscalas()[ruta.getZoom() - MetadataMapa.getMinZoom()]);
     }
     
-    public static double calcularDistanciaEntrePuntoYTransferencia(int puntoI, Ruta ruta) {
-        Point puntoInicial = ruta.getPuntos().get(puntoI);
+    public static double calcularDistanciaEntrePuntoYTransferencia(Point puntoI, Ruta ruta) {
+        Point puntoInicial = puntoI;
         return MetadataMapa.getDistanciaATransferencia(puntoInicial, ruta.getZoom());
     }
     

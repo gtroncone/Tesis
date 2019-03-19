@@ -24,6 +24,10 @@ public class EficaciaRecoleccion extends Metrica {
         super(nombre);
     }
     
+    public EficaciaRecoleccion(String nombre, String unidades) {
+        super(nombre, unidades);
+    }
+    
     @Override
     public void evaluar(ContextoSimulacion contexto) {
         LinkedList<Camion> camiones = contexto.getCamiones();

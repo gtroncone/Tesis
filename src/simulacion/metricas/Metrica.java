@@ -17,9 +17,15 @@ public abstract class Metrica implements Serializable {
     
     private String nombre;
     private LinkedList<String> subtitulos;
+    private String unidades = "";
     
     public Metrica(String nombre) {
         this.nombre = nombre;
+    }
+    
+    public Metrica(String nombre, String unidades) {
+        this.nombre = nombre;
+        this.unidades = unidades;
     }
     
     public abstract void evaluar(ContextoSimulacion contexto);
@@ -34,6 +40,10 @@ public abstract class Metrica implements Serializable {
 
     public LinkedList<String> getSubtitulos() {
         return subtitulos;
+    }
+    
+    public String getUnidades() {
+        return this.unidades;
     }
     
     public void setSubtitulos(LinkedList<String> subtitulos) {

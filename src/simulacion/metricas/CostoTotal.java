@@ -23,6 +23,10 @@ public class CostoTotal extends Metrica {
     public CostoTotal(String nombre) {
         super(nombre);
     }
+    
+    public CostoTotal(String nombre, String unidades) {
+        super(nombre, unidades);
+    }
 
     @Override
     public void evaluar(ContextoSimulacion contexto) {

@@ -5,6 +5,7 @@
  */
 package simulacion.eventos;
 
+import java.awt.Point;
 import simulacion.Calle;
 import simulacion.Camion;
 import simulacion.Ruta;
@@ -42,8 +43,16 @@ public class RecoleccionConCamion extends Evento {
                 calle.getPuntosAcum().disminuirCantidadBasuraPunto(puntoActual, diferencia);
                 camion.añadirCarga(diferencia);
                 camion.setActivo(false);
+                Point puntoAuxI = new Point(ruta.getPuntos().get(calle.getPuntoInicial()));
+                Point puntoAuxF = new Point(ruta.getPuntos().get(calle.getPuntoFinal()));
+                int factor = calle.getPuntosAcum().getNumeroPuntos();
+                int x = (int) Math.floor(puntoAuxF.getX() - puntoAuxI.getX()) * factor;
+                int y = (int) Math.floor(puntoAuxF.getY() - puntoAuxI.getY()) * factor;
+                Point puntoAux = new Point((int) Math.floor(puntoAuxI.getX()) + x, 
+                    (int) Math.floor(puntoAuxF.getY()) + y);
+                
                 camion.añadirDistanciaRecorrida(
-                    2 * Simulacion.calcularDistanciaEntrePuntoYTransferencia(puntoActual, ruta));
+                    2 * Simulacion.calcularDistanciaEntrePuntoYTransferencia(puntoAux, ruta));
                 camion.añadirViajeATransferencia();
             }
         }

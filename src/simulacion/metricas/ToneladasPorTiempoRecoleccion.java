@@ -21,6 +21,10 @@ public class ToneladasPorTiempoRecoleccion extends Metrica {
         super(nombre);
     }
     
+    public ToneladasPorTiempoRecoleccion(String nombre, String unidades) {
+        super(nombre, unidades);
+    }
+    
     @Override
     public void evaluar(ContextoSimulacion contexto) {
         LinkedList<Camion> camiones = contexto.getCamiones();
@@ -31,7 +35,6 @@ public class ToneladasPorTiempoRecoleccion extends Metrica {
             cargaTotalRecolectada += camion.getCargaTotalRecolectada();
             tiempoTotalOperacion += camion.getTiempoOperacion();
         }
-        System.out.println(tiempoTotalOperacion);
         this.resultado = ((cargaTotalRecolectada / 1000) / (tiempoTotalOperacion / 60));
     }
 

@@ -419,8 +419,8 @@ public class MenuBarredores extends javax.swing.JFrame {
                     FACTOR_CONVERSION_VELOCIDAD_ACOPIO));
                 rutas.get(listaRutas.getSelectedIndex()).añadirArea(area);
                 modeloAreas.addElement("Area " + modeloAreas.getSize());
+                UI.alerta("Área de barrido añadida correctamente");
             }
-            UI.alerta("Área de barrido añadida correctamente");
         }
     }//GEN-LAST:event_btnCrearAreaBarridoActionPerformed
 

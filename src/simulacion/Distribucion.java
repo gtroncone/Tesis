@@ -245,26 +245,32 @@ public class Distribucion implements Serializable {
     }
         
     public double evaluarDistribucionInversa(double probabilidad) {
+        double aux;
         if (null == this.getTipoDistribucion()) {
             return 0;
         } else switch (this.getTipoDistribucion()) {
             case "Continua":
-                return this.getDistribucionReal().inverseCumulativeProbability(probabilidad);
+                aux = this.getDistribucionReal().inverseCumulativeProbability(probabilidad);
+                return Math.max(aux, 0);
             case "Discreta":
-                return this.getDistribucionDiscreta().inverseCumulativeProbability(probabilidad);
+                aux = (int) Math.floor(this.getDistribucionDiscreta().inverseCumulativeProbability(probabilidad));
+                return Math.max(aux, 0);
             default:
                 return 0;
         }
     }
     
     public double evaluarDistribucion(double valor) {
+        double aux;
         if (null == this.getTipoDistribucion()) {
             return 0;
         } else switch (this.getTipoDistribucion()) {
             case "Continua":
-                return this.getDistribucionReal().cumulativeProbability(valor);
+                aux = this.getDistribucionReal().cumulativeProbability(valor);
+                return Math.max(aux, 0);
             case "Discreta":
-                return this.getDistribucionDiscreta().cumulativeProbability((int) Math.floor(valor));
+                aux = (int) Math.floor(this.getDistribucionDiscreta().cumulativeProbability((int) Math.floor(valor)));
+                return Math.max(aux, 0);
             default:
                 return 0;
         }
@@ -272,7 +278,8 @@ public class Distribucion implements Serializable {
     
     public double evaluarDistribucionInversaEspecial(int tickInicial, int tickFinal, double probabilidad, int diaInicial) {
         if (this.esDistEspecial()) {
-            return this.getDistEspecial().evaluarProbabilidadInversa(tickInicial, tickFinal, probabilidad, arrayDiario, arraySemanal, diaInicial);
+            double aux = this.getDistEspecial().evaluarProbabilidadInversa(tickInicial, tickFinal, probabilidad, arrayDiario, arraySemanal, diaInicial);
+            return Math.max(aux, 0);
         } else {
             return 0;
         }

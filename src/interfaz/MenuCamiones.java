@@ -371,12 +371,14 @@ public class MenuCamiones extends javax.swing.JFrame {
                 reiniciarMenu();
                 campoModeloCamion.setText("");
                 dropSelCamion.addItem(camion.getId());
+                UI.alerta("Camión creado exitosamente");
             } else {
                 Camion camion = listaCamiones.get(dropSelCamion.getSelectedIndex() - 1);
                 camion.setModelo(campoModeloCamion.getText());
                 camion.setCapacidad(dropCapacidadCamion.getSelectedIndex());
                 camion.setId(campoIDCamion.getText());
                 camion.setPrecio(Double.parseDouble(campoCostoCamion.getText()));
+                UI.alerta("Camión editado exitosamente");
             }
         }
     }//GEN-LAST:event_btnNuevoCamionActionPerformed
@@ -415,6 +417,7 @@ public class MenuCamiones extends javax.swing.JFrame {
                 listaPiezas.add(pieza);
                 dropSelPieza.addItem(pieza.getNombre());
                 reiniciarMenuPieza();
+                UI.alerta("Pieza añadida exitosamente");
             } else {
                 Pieza pieza = listaPiezas.get(dropSelPieza.getSelectedIndex() - 1);
                 pieza.setNombre(campoNomPieza.getText());
@@ -422,6 +425,7 @@ public class MenuCamiones extends javax.swing.JFrame {
                 pieza.setTiempoDeVida(new Distribucion(campoDistTiempoVidaPieza.getText(),
                 FACTOR_CONVERSION_TASA_FALLA));
                 pieza.setOcasionaFallaCritica(checkFallaCritica.getState());
+                UI.alerta("Pieza editada exitosamente");
             }
         }
     }//GEN-LAST:event_btnAnadirPiezaActionPerformed

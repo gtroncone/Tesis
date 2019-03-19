@@ -20,7 +20,12 @@ public class DesechosTotalesRecolectados extends Metrica {
     public DesechosTotalesRecolectados(String nombre) {
         super(nombre);
     }
-
+    
+    public DesechosTotalesRecolectados(String nombre, String unidades) {
+        super(nombre, unidades);
+    }
+    
+    // Añadir unidades en el archivo de salida
     @Override
     public void evaluar(ContextoSimulacion contexto) {
         LinkedList<Camion> camiones = contexto.getCamiones();
@@ -30,7 +35,7 @@ public class DesechosTotalesRecolectados extends Metrica {
         for (Camion camion : camiones) {
             total += camion.getCargaTotalRecolectada();
         }
-        this.resultado = total;
+        this.resultado = total / 1000;
     }
 
     @Override
