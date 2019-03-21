@@ -372,6 +372,7 @@ public class Simulacion implements Serializable {
         Object[] resultadosIterables = new Object[listaMetricas.size()];
         double[] resultadosNoIterables = new double[listaMetricas.size()];
         String[] nombres = new String[listaMetricas.size()];
+        String filePath;
         
         for (int i = 0; i < listaMetricas.size(); i++) {
             Metrica metrica = listaMetricas.get(i);
@@ -407,7 +408,7 @@ public class Simulacion implements Serializable {
         }
                 
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            String filePath = j.getSelectedFile().getAbsolutePath();
+            filePath = j.getSelectedFile().getAbsolutePath();
             String[] partes = filePath.split(Pattern.quote("/"));
                String[] aux = partes[partes.length - 1].split(Pattern.quote("."));
                String extension = aux[aux.length - 1];
@@ -459,7 +460,7 @@ public class Simulacion implements Serializable {
                     if (Double.isNaN(resultadosNoIterables[i])) {
                         data += "<li>Sin resultado</li>\n";
                     } else {
-                        data += "<li>" + df.format(resultadosNoIterables[i]) + " " + unidades + "</li>\n";   
+                        data += "<li>" + df.format(resultadosNoIterables[i]) + inyectarUnidades(unidades) + "</li>\n";   
                     }
                 }
                 data += "</ul>\n";
@@ -472,11 +473,15 @@ public class Simulacion implements Serializable {
                 br.write(line);
             }
             br.close();
-            return j.getSelectedFile().getAbsolutePath();
+            return filePath;
         } else {
             UI.alerta("Simulación no ejecutada");
             return "";
         }
+    }
+    
+    private String inyectarUnidades(String unidades) {
+        return unidades.isEmpty() ? "" : " " + unidades;
     }
     
     public static double calcularDistanciaEntrePuntos(int puntoI, int puntoF, Ruta ruta) {

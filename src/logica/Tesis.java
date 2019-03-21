@@ -44,7 +44,7 @@ public class Tesis implements Serializable {
     private LinkedList<Metrica> metricas;
     
     public Tesis() {       
-        añadirMetricas();
+        inyectarMetricas();
         simulacion = new Simulacion(metricas);
         try {
             MetadataMapa.init();
@@ -59,7 +59,7 @@ public class Tesis implements Serializable {
         }
     }
     
-    public void añadirMetricas() {
+    public void inyectarMetricas() {
         metricas = new LinkedList<>();
         metricas.add(new CostoTotal("Costo Total"));
         metricas.add(new DesechosTotalesRecolectados("Total de Desechos Recolectados", "toneladas"));
@@ -92,7 +92,7 @@ public class Tesis implements Serializable {
         objectInputStream.close();
         
         this.simulacion = (Simulacion) object;
-        añadirMetricas();
+        inyectarMetricas();
         this.simulacion.setMetricas(metricas);
         this.interfaz.setSimulacion(this.simulacion);
     }

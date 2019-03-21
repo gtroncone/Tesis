@@ -37,9 +37,9 @@ public class SalidaRuta extends Evento {
             camion.añadirViajeATransferencia();
             Point puntoAuxI = new Point(ruta.getPuntos().get(calle.getPuntoInicial()));
             Point puntoAuxF = new Point(ruta.getPuntos().get(calle.getPuntoFinal()));
-            int factor = calle.getPuntosAcum().getNumeroPuntos();
-            int x = (int) Math.floor(puntoAuxF.getX() - puntoAuxI.getX()) * factor;
-            int y = (int) Math.floor(puntoAuxF.getY() - puntoAuxI.getY()) * factor;
+            int factor = calle.getPuntosAcum().getNumeroPuntos() + 1;
+            int x = (int) Math.floor(puntoAuxF.getX() - puntoAuxI.getX()) / factor;
+            int y = (int) Math.floor(puntoAuxF.getY() - puntoAuxI.getY()) / factor;
             Point puntoAux = new Point((int) Math.floor(puntoAuxI.getX()) + x, 
                 (int) Math.floor(puntoAuxF.getY()) + y);
             camion.añadirDistanciaRecorrida(

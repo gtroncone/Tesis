@@ -28,7 +28,7 @@ public class DistribucionPoissonCompuestaNoHomogeneaNormal {
     private final int NUMERO_ITERACIONES = 20;
     private final double TAMAÑO_STEP = 0.1;
     private final double LIMITE_SUPERIOR_SEGURIDAD = 50;
-    private final double LIMITE_INFERIOR_MDET = 50;
+    //private final double LIMITE_INFERIOR_MDET = 50;
     
     public DistribucionPoissonCompuestaNoHomogeneaNormal(double lambda, double media, double desviacion) {
         this.media = media;
@@ -142,10 +142,6 @@ public class DistribucionPoissonCompuestaNoHomogeneaNormal {
         double probabilidad, int[] arrayDiario, int[] arraySemanal, int diaInicial) {
         double mDeT = calcularFuncionM(tickInicial, tickFinal,
             arrayDiario, arraySemanal, diaInicial);
-        
-        if (mDeT < LIMITE_INFERIOR_MDET) {
-            return 0;
-        }
         
         double factorTemporal = Math.exp(-mDeT);
                
