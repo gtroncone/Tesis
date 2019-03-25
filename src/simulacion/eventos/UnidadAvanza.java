@@ -43,7 +43,10 @@ public class UnidadAvanza extends Evento {
             } else {
                 calle.camionAvanzaASiguientePunto(camion);
             }
-            int numPuntos = calle.getPuntosAcum().getNumeroPuntos();
+            int numPuntos = 0;
+            if (calle.getPuntosAcum() != null) {
+                numPuntos = calle.getPuntosAcum().getNumeroPuntos();
+            }
             double distanciaCalle = Simulacion.calcularDistanciaEntrePuntos(
                 calle.getPuntoInicial(), 
                 calle.getPuntoFinal(), ruta);

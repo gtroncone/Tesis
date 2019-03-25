@@ -273,6 +273,7 @@ public class MenuAsignacionCamiones extends javax.swing.JFrame {
         if (listaRutas.getSelectedIndex() > -1) {
             Horario horario = rutas.get(listaRutas.getSelectedIndex()).getHorario();
             modeloHorarios.clear();
+            modeloAsignados.clear();
             for (int i = 0; i < horario.getDatos().size(); i++) {
                 int[] datos = horario.getDato(i);
                 String cadena = "";

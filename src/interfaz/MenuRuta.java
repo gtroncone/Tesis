@@ -105,6 +105,8 @@ public class MenuRuta extends javax.swing.JFrame {
         campoDistDesPorPeaton.setText("");
         campoDistVelRecor.setText("");
         puntos = new LinkedList<>();
+        dropPrimerPuntoCalle.removeAllItems();
+        dropSegundoPuntoCalle.removeAllItems();
     }
     
     private void modoEdicion(int index) {

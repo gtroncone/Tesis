@@ -1,0 +1,53 @@
+Rutas:
+
+Av. Baralt
+Horario: Diario a las 6PM
+Flujo Peatonal: TRI(200,300,500)
+Desechos por Peatón: TRI(0,0.1,0.2)
+Calle (todos los nodos): Baralt
+Velocidad de Recorrido: TRI(5,7,20)
+Color verde
+
+Av. Baralt - Aledaños
+Horario: Diario a las 6PM
+Flujo Peatonal: TRI(20,80,200)
+Desechos por Peatón: TRI(0,0.1,0.2)
+Calles:
+1 - Seminario
+1 - Velocidad de Recorrido: TRI(5,7,15)
+Color: Morado
+2 - Baralt-1
+2 - Velocidad de Recorrido: TRI(10,20,30)
+Color: Blanco
+3 - Cuadra-1
+3 - Velocidad de Recorrido: TRI(5,7,15)
+Color: Morado
+4 - Baralt-2
+4 - Velocidad de Recorrido: TRI(10,20,30)
+Color: Blanco
+5 - Cuadra-2
+5 - Velocidad de Recorrido: TRI(5,7,15)
+Color: Morado
+
+Av. Urdaneta
+Horario: Diario a las 6PM
+Flujo Peatonal: TRI(200,400,600)
+Desechos por Peatón: TRI(0,0.1,0.2)
+Calle (todos los nodos): Urdaneta
+TRI(5,7,20)
+Color: Naranja
+
+Av. Urdaneta - Aledaños
+Horario: Diario a las 6PM
+Flujo Peatonal: TRI(20,80,200)
+Desechos por Peatón: TRI(0,0.1,0.2)
+Para i:1 -> 6
+Calles:
+Ó Cuadra-i
+Velocidad de Recorrido TRI(5,7,15)
+Color: Rojo
+Ó Urdaneta-i
+Velocidad de Recorrido: TRI(10,20,30)
+Color: Negro
+
+

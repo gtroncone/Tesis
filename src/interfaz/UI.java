@@ -72,7 +72,7 @@ public class UI extends javax.swing.JFrame {
         
         this.simulacion = simulacion;
         this.tesis = tesis;
-        
+                
         menuRuta = new MenuRuta(this);
         menuCamiones = new MenuCamiones(this);
         menuPuntosAcum = new MenuPuntosAcum(this);

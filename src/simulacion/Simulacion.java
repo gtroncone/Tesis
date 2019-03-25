@@ -358,8 +358,23 @@ public class Simulacion implements Serializable {
                             }
                         }
                     } else {
-                        break;
+                        return;
                     }   
+                }
+            } else {
+                double velocidad = 1;
+                velocidad = calle.getVelocidad().evaluarDistribucionInversa(rand.nextDouble());
+                double distancia = calcularDistanciaEntrePuntos(calle.getPuntoInicial(), calle.getPuntoFinal(), ruta);
+                ticksParaAvanzar = (int) Math.floor(distancia / velocidad);
+                if (ticksParaAvanzar == 0) {
+                    ticksParaAvanzar = 1;
+                }
+                if (ticksAcum + ticksParaAvanzar < numTicks) {
+                    ticksAcum += ticksParaAvanzar;
+                    contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksAcum,
+                    camionAvanza, ruta, calle, true));
+                } else {
+                    return;
                 }
             }
         }
@@ -498,6 +513,8 @@ public class Simulacion implements Serializable {
     public void ejecutar() {
         if (estadoEsValido()) {
             iniciarSimulacion();
+        } else {
+            UI.alerta("El estado del modelo es inválido. Verifique que todas las calles de cada ruta tienen asignados puntos de acumulación");
         }
     }
     
@@ -510,6 +527,15 @@ public class Simulacion implements Serializable {
     }
 
     private boolean estadoEsValido() {
+        /*for (Ruta ruta : rutas) {
+            boolean aux = ruta.getCalles().getFirst() != null;
+            LinkedList<Calle> calles = ruta.getCalles();
+            for (Calle calle : calles) {
+                if (!Boolean.logicalXor(aux, calle.getPuntosAcum() != null)) {
+                    return false;
+                }
+            }
+        }*/
         return true;
     }
 }
