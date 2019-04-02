@@ -243,6 +243,14 @@ public class Distribucion implements Serializable {
     private DistribucionPoissonCompuestaNoHomogeneaNormal getDistEspecial() {
         return distEspecial;
     }
+
+    public int[] getArraySemanal() {
+        return arraySemanal;
+    }
+
+    public int[] getArrayDiario() {
+        return arrayDiario;
+    }
         
     public double evaluarDistribucionInversa(double probabilidad) {
         double aux;
@@ -278,7 +286,7 @@ public class Distribucion implements Serializable {
     
     public double evaluarDistribucionInversaEspecial(int tickInicial, int tickFinal, double probabilidad, int diaInicial) {
         if (this.esDistEspecial()) {
-            double aux = this.getDistEspecial().evaluarProbabilidadInversa(tickInicial, tickFinal, probabilidad, arrayDiario, arraySemanal, diaInicial);
+            double aux = this.getDistEspecial().evaluarProbabilidadInversa(tickInicial, tickFinal, probabilidad, this.arrayDiario, this.arraySemanal, diaInicial);
             return Math.max(aux, 0);
         } else {
             return 0;

@@ -18,6 +18,7 @@ public class AcumulacionDesechoPeatonal extends Evento {
     private final AreaBarrido areaBarrido;
     private final Distribucion desechoPorPeaton;
     private final int personasEnEvento;
+    private final double FACTOR_EFICIENCIA = 0.1;
     
     public AcumulacionDesechoPeatonal(int tick, AreaBarrido areaBarrido,
             Distribucion desechoPorPeaton, int personasEnEvento) {
@@ -32,8 +33,10 @@ public class AcumulacionDesechoPeatonal extends Evento {
         //System.out.println("Se va a ejecutar un evento de aumulación peatonal en el tick " + tick);
         Random rand = new Random();
         for (int i = 0; i < areaBarrido.getCantidadBasura().length; i++) {
-            areaBarrido.añadirBasuraArea(i, desechoPorPeaton.evaluarDistribucionInversa(
+            if (rand.nextDouble() < FACTOR_EFICIENCIA) {
+                areaBarrido.añadirBasuraArea(i, desechoPorPeaton.evaluarDistribucionInversa(
                 rand.nextDouble()) * personasEnEvento);
+            }
         }
     }
 }

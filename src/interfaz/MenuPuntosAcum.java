@@ -1183,7 +1183,7 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
 
                 PuntosAcumulacion puntosAcum;
                 
-                if (Distribucion.seriaDistEspecial(campoTasaGen.getText()))                 {
+                if (Distribucion.seriaDistEspecial(campoTasaGen.getText())) {
                     puntosAcum = new PuntosAcumulacion(
                             new Distribucion(campoTasaAcum.getText()),
                             new Distribucion(campoTasaGen.getText(), arraySemanal, arrayDiario),
@@ -1212,7 +1212,6 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
                         .getCalles().get(listaCalles.getSelectedIndex()).getPuntosAcum();
                 puntosAcum.setNumeroPuntos(Integer.parseInt(etiquetaNumPuntosAcum.getText()));
                 puntosAcum.setTasaAcumulacion(new Distribucion(campoTasaAcum.getText()));
-                puntosAcum.setTasaGeneracion(new Distribucion(campoTasaGen.getText()));
 
                 int[] arraySemanal = new int[7];
                 int[] arrayDiario = new int[24];
@@ -1223,6 +1222,14 @@ public class MenuPuntosAcum extends javax.swing.JFrame {
 
                 for (int i = 0; i < sliderDiario.length; i++) {
                     arrayDiario[i] = sliderDiario[i].getValue();
+                }
+                
+                if (Distribucion.seriaDistEspecial(campoTasaGen.getText())) {
+                    puntosAcum.setTasaGeneracion(new Distribucion(campoTasaGen.getText(),
+                        arraySemanal,
+                        arrayDiario));
+                } else {
+                    puntosAcum.setTasaGeneracion(new Distribucion(campoTasaGen.getText()));
                 }
 
                 puntosAcum.setFactorSemanal(arraySemanal);

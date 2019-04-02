@@ -38,8 +38,14 @@ public class PuntosAcumulacion implements Serializable {
         this.color = new Color(puntosAcumulacion.getColor().getRGB());
         this.tasaAcumulacion = new Distribucion(puntosAcumulacion.getTasaAcumulacion().getCampo(),
             puntosAcumulacion.getTasaAcumulacion().getFactor());
-        this.tasaGeneracion = new Distribucion(puntosAcumulacion.getTasaGeneracion().getCampo(),
-            puntosAcumulacion.getTasaGeneracion().getFactor());
+        if (puntosAcumulacion.getTasaGeneracion().esDistEspecial()) {
+            this.tasaGeneracion = new Distribucion(puntosAcumulacion.getTasaGeneracion().getCampo(),
+                puntosAcumulacion.getTasaGeneracion().getArraySemanal(),
+                puntosAcumulacion.getTasaGeneracion().getArrayDiario());
+        } else {
+            this.tasaGeneracion = new Distribucion(puntosAcumulacion.getTasaGeneracion().getCampo(),
+                puntosAcumulacion.getTasaGeneracion().getFactor());   
+        }
         
         this.factorHora = new int[puntosAcumulacion.getFactorHora().length];
         for (int i = 0; i < puntosAcumulacion.getFactorHora().length; i++) {

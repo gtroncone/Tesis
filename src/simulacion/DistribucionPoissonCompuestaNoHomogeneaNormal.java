@@ -5,13 +5,14 @@
  */
 package simulacion;
 
+import java.io.Serializable;
 import org.apache.commons.math3.distribution.NormalDistribution;
 
 /**
  *
  * @author gtroncone
  */
-public class DistribucionPoissonCompuestaNoHomogeneaNormal {
+public class DistribucionPoissonCompuestaNoHomogeneaNormal implements Serializable {
 
     private final double media;
     private final double desviacion;

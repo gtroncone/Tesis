@@ -43,7 +43,7 @@ public class DepositoDesechoEnPuntoAcumulacion extends Evento {
         Random rand = new Random();
         Distribucion dist = callePuntoAcumulacion.getPuntosAcum().getTasaGeneracion();
         if (dist.esDistribucionEspecial()) {
-            double cantidadBasura = dist.evaluarDistribucionInversaEspecial(tick, tickEventoPrevio,
+            double cantidadBasura = dist.evaluarDistribucionInversaEspecial(tickEventoPrevio, tick,
                 rand.nextDouble(), diaInicial);
             callePuntoAcumulacion.getPuntosAcum().acumularCantidadBasuraPunto(numeroPuntoAcumulacion,
                 cantidadBasura);

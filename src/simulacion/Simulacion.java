@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import logica.MetadataMapa;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import simulacion.eventos.AcopioDesechoPeatonal;
 import simulacion.eventos.AcumulacionDesechoPeatonal;
 import simulacion.eventos.ManejoPiezasYAverias;
@@ -48,7 +49,7 @@ public class Simulacion implements Serializable {
     private int numeroDeDias = 1;
     private int diaInicial = 1;
     
-    private final int NUMERO_MINUTOS_RECOLECCION_PROMEDIO = 5;
+    private final NormalDistribution DistMinsRecoleccion;
     private final int INICIO_HORARIO_LABORAL = 8;
     private final int FINAL_HORARIO_LABORAL = 17;
     private final int INICIO_HORARIO_MANTENIMIENTO = 5;
@@ -59,6 +60,7 @@ public class Simulacion implements Serializable {
         this.rutas = new LinkedList<>();
         this.camiones = new LinkedList<>();
         this.listaMetricas = metricas;
+        DistMinsRecoleccion = new NormalDistribution(5, 2);
     }
 
     public void añadirRuta(Ruta ruta) {
@@ -351,8 +353,9 @@ public class Simulacion implements Serializable {
                             // En este caso hay que avanzar al siguiente punto de acumulación
                             contexto.añadirEventoAvanceUnidades(new UnidadAvanza(ticksAcum,
                                 camionAvanza, ruta, calle, false));
-                            if (ticksAcum + NUMERO_MINUTOS_RECOLECCION_PROMEDIO < numTicks) {
-                                ticksAcum += NUMERO_MINUTOS_RECOLECCION_PROMEDIO;
+                            double minsRecoleccion = DistMinsRecoleccion.inverseCumulativeProbability(rand.nextDouble());
+                            if (ticksAcum + (int) Math.floor(minsRecoleccion) < numTicks) {
+                                ticksAcum += (int) Math.floor(minsRecoleccion);
                                 contexto.añadirEventoRecoleccion(new RecoleccionConCamion(ticksAcum,
                                     calle, camionAvanza, ruta));
                             }
